@@ -1,0 +1,2569 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Russian.Town - 한국-러시아 커뮤니티 v2024.09.30</title>
+    <link rel="icon" href="data:,">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+        /* PT Sans Narrow 대체 폰트 */
+
+        :root {
+            --russian-red: #DA020E;
+            --russian-blue: #0039A6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-size: 12px;
+            line-height: 1.2;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 6px 0;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--russian-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, white 0%, white 33%, var(--russian-blue) 33%, var(--russian-blue) 66%, var(--russian-red) 66%, var(--russian-red) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+
+        .search-box {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 32px;
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            padding: 0 40px 0 15px;
+            font-size: 12px;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 6px;
+            width: 20px;
+            height: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+        }
+
+        .nav-menu a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        .nav-menu a:hover {
+            background: #f0f0f0;
+            border-radius: 3px;
+        }
+
+        /* 메인 레이아웃 */
+        .main-layout {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        /* 사이드바 */
+        .sidebar-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header {
+            background: #e8eaed;
+            border-bottom: 1px solid #d0d0d0;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-header .korean-text {
+            font-weight: 700;
+        }
+
+        .sidebar-header .russian-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: #666;
+            margin-left: 6px;
+        }
+
+        .sidebar-menu {
+            padding: 0;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 5px 10px;
+            font-size: 11px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .sidebar-item:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-item:hover {
+            background: #f8f9fa;
+        }
+
+        .sidebar-item.active {
+            background: #e3f2fd;
+            color: var(--russian-blue);
+            font-weight: 500;
+        }
+
+        .russian-text {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            font-size: 9px;
+            color: #666;
+            margin-top: 1px;
+            font-weight: normal;
+        }
+
+        /* 언어 전환 버튼 */
+        .language-switcher {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 3px 8px;
+            margin: 0 2px;
+            cursor: pointer;
+            font-size: 11px;
+            border-radius: 3px;
+        }
+
+        .lang-btn.active {
+            background: var(--russian-blue);
+            color: white;
+            border-color: var(--russian-blue);
+        }
+
+        .lang-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-btn.active:hover {
+            background: var(--russian-blue);
+        }
+
+
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 25px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--russian-blue);
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-label {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 4px;
+            font-weight: 500;
+            font-size: 11px;
+            color: #333;
+        }
+
+        .form-label .korean-text {
+            color: #333;
+        }
+
+        .form-label .russian-text {
+            color: #666;
+            font-size: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--russian-blue);
+        }
+
+        .form-submit {
+            width: 100%;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .form-submit:hover {
+            background: #002a75;
+        }
+
+        .form-submit .russian-text {
+            color: white !important;
+        }
+
+        .social-login {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .social-title {
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 11px;
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow: hidden;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
+            padding: 8px 30px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            background: #fff;
+            color: #333;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            min-height: 35px !important;
+            width: 90% !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transform: none !important;
+        }
+
+        .social-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-right: 4px;
+        }
+
+        .social-btn-text {
+            flex: 1;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .social-btn:hover {
+            background: #f9f9f9;
+        }
+
+        .social-btn.kakao {
+            border-color: #fee500;
+            background: #fee500;
+            color: #000;
+        }
+
+        .social-btn.naver {
+            border-color: #03c75a;
+            background: #03c75a;
+            color: white;
+        }
+
+        .social-btn.yandex {
+            border-color: #ffcc00;
+            background: #ffcc00;
+            color: #000;
+        }
+
+        .social-btn.vk {
+            border-color: #4c75a3;
+            background: #4c75a3;
+            color: white;
+        }
+
+        .social-btn.telegram {
+            border-color: #0088cc;
+            background: #0088cc;
+            color: white;
+        }
+
+        .modal-switch {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .switch-text-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .switch-link-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-switch a {
+            color: var(--russian-blue);
+            text-decoration: none;
+        }
+
+        .modal-switch a:hover {
+            text-decoration: underline;
+        }
+
+        /* 언어 표시 클래스 - 우선순위 높임 */
+        body.korean .russian-text { display: none !important; }
+        body.korean .korean-text { display: block !important; }
+
+        body.russian .korean-text { display: none !important; }
+        body.russian .russian-text { display: block !important; }
+
+        body.bilingual .russian-text { display: block !important; }
+        body.bilingual .korean-text { display: block !important; }
+
+        /* 기본 텍스트 표시 */
+        .korean-text {
+            display: block;
+        }
+
+        .russian-text {
+            display: none; /* 기본적으로 숨김 */
+        }
+
+        /* 통계 영역 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            padding: 8px;
+        }
+
+        .stats-item {
+            text-align: center;
+            padding: 6px;
+            background: #f8f9fa;
+            border-radius: 3px;
+        }
+
+        .stats-number {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--russian-blue);
+            margin-bottom: 1px;
+        }
+
+        .stats-label {
+            font-size: 9px;
+            color: #666;
+        }
+
+        /* 컨텐츠 영역 */
+        .content-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .content-tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .tab-item {
+            padding: 8px 15px;
+            font-size: 12px;
+            color: #666;
+            background: #f8f9fa;
+            border-right: 1px solid #e0e0e0;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .tab-item:last-child {
+            border-right: none;
+        }
+
+        .tab-item.active {
+            background: white;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* 게시글 목록 테이블 */
+        .post-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .post-table th {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 8px 10px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #666;
+            text-align: center;
+        }
+
+        .post-table th:first-child {
+            width: 60px;
+            white-space: nowrap;
+        }
+
+        .post-table th:nth-child(2) {
+            text-align: left;
+        }
+
+        .post-table th:nth-child(3) {
+            width: 60px;
+        }
+
+        .post-table th:nth-child(4) {
+            width: 80px;
+        }
+
+        .post-table td {
+            padding: 6px 10px;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        .post-table tr:hover {
+            background: #fafafa;
+        }
+
+        .post-number {
+            text-align: center;
+            color: #999;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .post-title {
+            color: #333;
+            text-decoration: none;
+            line-height: 1.4;
+            display: flex !important;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .post-title-content {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            margin-right: 8px;
+        }
+
+        .post-title:hover {
+            color: var(--russian-blue);
+        }
+
+        .comment-count {
+            color: var(--russian-red);
+            font-size: 11px;
+            font-weight: 500;
+            flex-shrink: 0 !important;
+            white-space: nowrap !important;
+            margin-left: 8px;
+            display: inline-block !important;
+            min-width: fit-content;
+        }
+
+        /* Popular posts styling */
+        .popular-post-link {
+            color: #333;
+            text-decoration: none;
+            display: flex !important;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .popular-post-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .popular-comment-count {
+            color: var(--russian-red);
+            font-size: 11px;
+            font-weight: 500;
+            flex-shrink: 0 !important;
+            white-space: nowrap !important;
+            margin-left: 8px;
+            display: inline-block !important;
+            min-width: fit-content;
+        }
+
+        /* 6-column grid layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 8px;
+            height: 750px;
+            margin: 10px 0;
+        }
+
+        .board-section {
+            background: #f8f9fa;
+            padding: 8px;
+            overflow: hidden;
+        }
+
+        .board-header {
+            font-size: 13px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #e0e0e0;
+            position: relative;
+        }
+
+        .board-header .korean-text {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .board-header .russian-text {
+            display: block;
+            font-size: 10px;
+            color: #666;
+            font-weight: 700;
+            margin-top: 1px;
+        }
+
+        .board-header .view-all {
+            font-size: 11px;
+            color: #666;
+            text-decoration: none;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .board-header .view-all:hover {
+            color: var(--russian-blue);
+        }
+
+        .board-posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .board-post-item {
+            margin-bottom: 2px;
+            padding-bottom: 1px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .board-post-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .board-post-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            color: #333;
+            text-decoration: none;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        .board-post-link:hover {
+            color: var(--russian-blue);
+        }
+
+        .board-post-title-wrapper {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .board-post-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-bottom: 0px;
+        }
+
+        .board-post-title.korean-text {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .board-post-title.russian-text {
+            font-size: 9px;
+            color: #666;
+            font-weight: normal;
+        }
+
+        .board-post-date {
+            flex-shrink: 0;
+            color: #666;
+            font-size: 9px;
+            margin-left: 6px;
+        }
+
+        /* Register link styling */
+        .register-link {
+            text-align: center;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .register-link a {
+            color: var(--russian-blue);
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .post-author {
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .post-date {
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+        }
+
+        .notice-row {
+            background: #fff9e6;
+        }
+
+        .notice-row .post-number {
+            color: #f39c12;
+            font-weight: 600;
+        }
+
+        .notice-row .post-title {
+            color: #e67e22;
+            font-weight: 500;
+        }
+
+        /* 우측 사이드바 */
+        .right-sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .widget {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .widget-header {
+            background: #e8eaed;
+            border-bottom: 1px solid #d0d0d0;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .widget-header .korean-text {
+            font-weight: 700;
+        }
+
+        .widget-header .russian-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: #666;
+            margin-left: 6px;
+        }
+
+        .widget-content {
+            padding: 10px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .login-input {
+            height: 28px;
+            border: 1px solid #ddd;
+            padding: 0 8px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+
+        .login-btn {
+            height: 28px;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            font-size: 12px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .social-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+        }
+
+        .naver { background: #03c75a; }
+        .kakao { background: #fee500; color: #000; }
+        .facebook { background: #4267b2; }
+        .google { background: #db4437; }
+
+        /* 메인 화면 가로 소셜 버튼 */
+        .main-social {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 4px;
+        }
+
+        .main-social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 6px;
+            flex: 1;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            color: white;
+            padding: 0 8px;
+            transition: all 0.2s;
+        }
+
+        .main-social-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .main-social-btn .social-icon {
+            font-weight: bold;
+            font-size: 14px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-social-btn .social-text {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .main-social-btn.naver { background: #03c75a; }
+        .main-social-btn.kakao { background: #fee500; color: #000; }
+        .main-social-btn.yandex { background: #ffcc00; color: #000; }
+        .main-social-btn.vk { background: #4c75a3; }
+        .main-social-btn.telegram { background: #0088cc; }
+
+        /* 국가별 소셜 로그인 섹션 */
+        .country-section {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .country-group {
+            margin-bottom: 15px;
+        }
+
+        .country-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 햄버거 메뉴 버튼 */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 15px;
+            z-index: 1001;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-login-btn {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 15px;
+            z-index: 1001;
+            background: var(--russian-red);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .search-box {
+                display: none;
+            }
+
+            .language-switcher {
+                font-size: 10px;
+                gap: 3px;
+            }
+
+            .lang-btn {
+                padding: 3px 6px;
+                font-size: 10px;
+            }
+
+            .mobile-menu-btn,
+            .mobile-login-btn {
+                display: flex;
+            }
+
+            .main-layout {
+                display: block;
+                margin-top: 70px;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 280px;
+                height: 100vh;
+                background: white;
+                z-index: 1000;
+                overflow-y: auto;
+                transition: left 0.3s ease;
+                padding-top: 60px;
+                box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .right-sidebar {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 300px;
+                height: 100vh;
+                background: white;
+                z-index: 1000;
+                overflow-y: auto;
+                transition: right 0.3s ease;
+                padding-top: 60px;
+                box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+            }
+
+            .right-sidebar.active {
+                right: 0;
+            }
+
+            .content {
+                width: 100%;
+                padding: 0 10px;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, auto);
+                height: auto;
+                gap: 10px;
+            }
+
+            .board-section {
+                min-height: 300px;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .main-layout {
+                flex-direction: column;
+            }
+
+            .sidebar, .right-sidebar {
+                width: 100%;
+            }
+        }
+
+        /* 언어 전환 버튼 */
+        .lang-switcher {
+            display: flex;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-btn.active {
+            background: var(--russian-blue);
+            color: white;
+            border-color: var(--russian-blue);
+        }
+
+        /* 러시아어 텍스트 숨기기 옵션 */
+        body[data-lang="ko"] .russian-text,
+        body[data-lang="ko"] .russian-label,
+        body[data-lang="ko"] .russian-subtitle,
+        body[data-lang="ko"] .russian-title {
+            display: none;
+        }
+
+        body[data-lang="ru"] .korean-text,
+        body[data-lang="ru"] .korean-title {
+            display: none;
+        }
+
+        body[data-lang="ru"] .russian-text,
+        body[data-lang="ru"] .russian-label,
+        body[data-lang="ru"] .russian-subtitle,
+        body[data-lang="ru"] .russian-title {
+            display: block;
+            font-size: inherit;
+            color: inherit;
+        }
+
+        /* 양쪽 언어 모두 표시 */
+        body[data-lang="both"] .russian-text,
+        body[data-lang="both"] .russian-label,
+        body[data-lang="both"] .russian-subtitle {
+            display: block;
+            font-size: inherit;
+            color: inherit;
+        }
+
+        body[data-lang="both"] .korean-text {
+            display: block;
+        }
+
+    </style>
+</head>
+<body class="bilingual">
+    <!-- 모바일 메뉴 버튼 -->
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+    <button class="mobile-login-btn" onclick="toggleLoginSidebar()">👤</button>
+
+    <!-- 모바일 오버레이 -->
+    <div class="mobile-overlay" id="mobile-overlay" onclick="closeAllSidebars()"></div>
+
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <div class="logo-icon">RC</div>
+                    Russian.Town
+                </a>
+            <div class="lang-switcher">
+                <button class="lang-btn" data-lang="ko" title="한국어만 표시">한국어</button>
+                <button class="lang-btn" data-lang="ru" title="Показать только русский">Русский</button>
+                <button class="lang-btn active" data-lang="both" title="한국어+러시아어">한국어+Русский</button>
+            </div>
+
+                <div class="search-box">
+                    <input type="text" class="search-input" id="search-input" placeholder="검색어를 입력하세요">
+                    <button class="search-btn">🔍</button>
+                </div>
+
+                <!-- 언어 선택 버튼 -->
+                <div class="language-switcher">
+                    <button class="lang-btn" onclick="setLanguage('korean')">한국어</button>
+                    <button class="lang-btn" onclick="setLanguage('russian')">Русский</button>
+                    <button class="lang-btn active" onclick="setLanguage('bilingual')">한국어+Русский</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- 왼쪽 사이드바 -->
+            <aside class="sidebar">
+                <!-- 게시판 메뉴 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <span class="korean-text">게시판</span>
+                        <div class="russian-text">Доски объявлений</div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="/board-notice.html" class="sidebar-item">
+                            <span class="korean-text">공지사항</span>
+                            <div class="russian-text">Объявления</div>
+                        </a>
+                        <a href="/board-free.html" class="sidebar-item">
+                            <span class="korean-text">자유게시판</span>
+                            <div class="russian-text">Свободное общение</div>
+                        </a>
+                        <a href="/board-life.html" class="sidebar-item">
+                            <span class="korean-text">생활정보</span>
+                            <div class="russian-text">Жизнь в Корее</div>
+                        </a>
+                        <a href="/board-admin.html" class="sidebar-item">
+                            <span class="korean-text">행정정보</span>
+                            <div class="russian-text">Админ. информация</div>
+                        </a>
+                        <a href="/board-job.html" class="sidebar-item">
+                            <span class="korean-text">구인구직</span>
+                            <div class="russian-text">Работа</div>
+                        </a>
+                        <a href="/board-market.html" class="sidebar-item">
+                            <span class="korean-text">벼룩시장</span>
+                            <div class="russian-text">Барахолка</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 비즈니스 메뉴 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <span class="korean-text">비즈니스</span>
+                        <div class="russian-text">Бизнес</div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="/board-startup.html" class="sidebar-item">
+                            <span class="korean-text">창업정보</span>
+                            <div class="russian-text">Информация о стартапах</div>
+                        </a>
+                        <a href="/partners.html" class="sidebar-item">
+                            <span class="korean-text">입점업체</span>
+                            <div class="russian-text">Партнерские компании</div>
+                        </a>
+                        <a href="/trade-partners.html" class="sidebar-item">
+                            <span class="korean-text">무역파트너</span>
+                            <div class="russian-text">Торговые партнеры</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 운영자 연락 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <span class="korean-text">운영자 연락</span>
+                        <div class="russian-text">Связаться с администрацией</div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="/contact-ad.html" class="sidebar-item">
+                            <span class="korean-text">광고 및 협력 요청</span>
+                            <div class="russian-text">Реклама и сотрудничество</div>
+                        </a>
+                        <a href="/contact-suggest.html" class="sidebar-item">
+                            <span class="korean-text">운영자에게 건의</span>
+                            <div class="russian-text">Предложения администрации</div>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 메인 컨텐츠 -->
+            <main class="content">
+                <div class="main-grid">
+                    <!-- 공지사항 -->
+                    <div class="board-section">
+                        <div class="board-header">
+                            <div>
+                                <span class="korean-text">공지사항</span>
+                                <div class="russian-text">Уведомления</div>
+                            </div>
+                            <a href="#" class="view-all">더보기</a>
+                        </div>
+                        <ul class="board-posts">
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">🎉 Russian.Town 커뮤니티 오픈!</div>
+                                        <div class="board-post-title russian-text">🎉 Открытие Russian.Town!</div>
+                                    </div>
+                                    <span class="board-post-date">09:30</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">📋 커뮤니티 이용 규칙 안내</div>
+                                        <div class="board-post-title russian-text">📋 Правила использования сообщества</div>
+                                    </div>
+                                    <span class="board-post-date">어제</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">💡 자동 번역 기능 추가 안내</div>
+                                        <div class="board-post-title russian-text">💡 Добавлена функция автоперевода</div>
+                                    </div>
+                                    <span class="board-post-date">12:45</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">📢 서버 정기 점검 안내 (10월 15일)</div>
+                                        <div class="board-post-title russian-text">📢 Плановое обслуживание (15 октября)</div>
+                                    </div>
+                                    <span class="board-post-date">10/13</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 자유게시판 -->
+                    <div class="board-section">
+                        <div class="board-header">
+                            <div>
+                                <span class="korean-text">자유게시판</span>
+                                <div class="russian-text">Свободное общение</div>
+                            </div>
+                            <a href="#" class="view-all">더보기</a>
+                        </div>
+                        <ul class="board-posts">
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">이태원에서 보르쉬 먹을 수 있는 곳 추천!</div>
+                                        <div class="board-post-title russian-text">Где поесть борщ в Итэвоне!</div>
+                                    </div>
+                                    <span class="board-post-date">14:20</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">주말에 축구하실 분 계신가요?</div>
+                                        <div class="board-post-title russian-text">Кто играет в футбол на выходных?</div>
+                                    </div>
+                                    <span class="board-post-date">11:15</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">한국에서 러시아 명절 어떻게 보내세요?</div>
+                                        <div class="board-post-title russian-text">Как отмечаете русские праздники?</div>
+                                    </div>
+                                    <span class="board-post-date">어제</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">서울 근처 스키장 정보 공유해요</div>
+                                        <div class="board-post-title russian-text">Горнолыжные курорты рядом с Сеулом</div>
+                                    </div>
+                                    <span class="board-post-date">10/12</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 생활정보 -->
+                    <div class="board-section">
+                        <div class="board-header">
+                            <div>
+                                <span class="korean-text">생활정보</span>
+                                <div class="russian-text">Полезная информация</div>
+                            </div>
+                            <a href="#" class="view-all">더보기</a>
+                        </div>
+                        <ul class="board-posts">
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">신한은행 vs 우리은행 외국인 계좌 비교</div>
+                                        <div class="board-post-title russian-text">Сравнение Shinhan и Woori Bank</div>
+                                    </div>
+                                    <span class="board-post-date">15:30</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">한국 생활 필수 앱 TOP 10</div>
+                                        <div class="board-post-title russian-text">ТОП-10 приложений для жизни в Корее</div>
+                                    </div>
+                                    <span class="board-post-date">어제</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">저렴한 마트 추천 (이마트/롯데/코스트코)</div>
+                                        <div class="board-post-title russian-text">Где дешевле: E-Mart, Lotte, Costco</div>
+                                    </div>
+                                    <span class="board-post-date">10/11</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">겨울철 난방비 절약 꿀팁!</div>
+                                        <div class="board-post-title russian-text">Как сэкономить на отоплении зимой</div>
+                                    </div>
+                                    <span class="board-post-date">10/10</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 행정정보 -->
+                    <div class="board-section">
+                        <div class="board-header">
+                            <div>
+                                <span class="korean-text">행정정보</span>
+                                <div class="russian-text">Административная информация</div>
+                            </div>
+                            <a href="#" class="view-all">더보기</a>
+                        </div>
+                        <ul class="board-posts">
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">F-2 비자 연장 성공 후기 (소요기간 15일)</div>
+                                        <div class="board-post-title russian-text">Успешное продление визы F-2 (15 дней)</div>
+                                    </div>
+                                    <span class="board-post-date">16:45</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">종합소득세 신고 방법 총정리</div>
+                                        <div class="board-post-title russian-text">Гид по подаче налоговой декларации</div>
+                                    </div>
+                                    <span class="board-post-date">13:20</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">운전면허 변경 절차 및 필요서류</div>
+                                        <div class="board-post-title russian-text">Обмен водительских прав - документы</div>
+                                    </div>
+                                    <span class="board-post-date">어제</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">외국인 전입신고 온라인으로 하는 방법</div>
+                                        <div class="board-post-title russian-text">Онлайн регистрация места жительства</div>
+                                    </div>
+                                    <span class="board-post-date">10/09</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 구인구직 -->
+                    <div class="board-section">
+                        <div class="board-header">
+                            <div>
+                                <span class="korean-text">구인구직</span>
+                                <div class="russian-text">Работа</div>
+                            </div>
+                            <a href="#" class="view-all">더보기</a>
+                        </div>
+                        <ul class="board-posts">
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">[구인] IT 스타트업 러시아어 가능자 (월 400만원)</div>
+                                        <div class="board-post-title russian-text">[Вакансия] IT стартап - 4 млн ₩/мес</div>
+                                    </div>
+                                    <span class="board-post-date">17:20</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">[구직] 한러 통번역 가능합니다 (경력 5년)</div>
+                                        <div class="board-post-title russian-text">[Ищу работу] Переводчик (опыт 5 лет)</div>
+                                    </div>
+                                    <span class="board-post-date">10:15</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">[구인] 무역회사 해외영업 담당 모집</div>
+                                        <div class="board-post-title russian-text">[Вакансия] Менеджер по экспорту</div>
+                                    </div>
+                                    <span class="board-post-date">14:50</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">[구인] 주말 카페 아르바이트 (시급 12,000원)</div>
+                                        <div class="board-post-title russian-text">[Вакансия] Кафе выходного дня - 12К ₩/ч</div>
+                                    </div>
+                                    <span class="board-post-date">10/11</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 벼룩시장 -->
+                    <div class="board-section">
+                        <div class="board-header">
+                            <div>
+                                <span class="korean-text">벼룩시장</span>
+                                <div class="russian-text">Барахолка</div>
+                            </div>
+                            <a href="#" class="view-all">더보기</a>
+                        </div>
+                        <ul class="board-posts">
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">[판매] 삼성 냉장고 거의 새것 (15만원)</div>
+                                        <div class="board-post-title russian-text">[Продам] Холодильник Samsung - 150К ₩</div>
+                                    </div>
+                                    <span class="board-post-date">16:45</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">[나눔] 러시아 소설책 50권 무료나눔</div>
+                                        <div class="board-post-title russian-text">[Отдам] 50 русских книг бесплатно</div>
+                                    </div>
+                                    <span class="board-post-date">11:30</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">[판매] 자이언트 MTB 자전거 (8만원/네고가능)</div>
+                                        <div class="board-post-title russian-text">[Продам] Giant MTB - 80К ₩ (торг)</div>
+                                    </div>
+                                    <span class="board-post-date">10/08</span>
+                                </a>
+                            </li>
+                            <li class="board-post-item">
+                                <a href="#" class="board-post-link">
+                                    <div class="board-post-title-wrapper">
+                                        <div class="board-post-title korean-text">[교환] 러시아 제품 ↔ 한국 화장품</div>
+                                        <div class="board-post-title russian-text">[Обмен] Русские товары ↔ Корейская косметика</div>
+                                    </div>
+                                    <span class="board-post-date">10/07</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </main>
+
+            <!-- 우측 사이드바 -->
+            <aside class="right-sidebar">
+                <!-- 로그인 -->
+                <div class="widget">
+                    <div class="widget-header">로그인</div>
+                    <div class="widget-content">
+                        <form class="login-form" id="mainLoginForm">
+                            <input type="text" class="login-input" id="mainUsername" placeholder="아이디" required>
+                            <input type="password" class="login-input" id="mainPassword" placeholder="비밀번호" required>
+                            <button type="submit" class="login-btn">로그인</button>
+                            <div class="social-login main-social">
+                                <div class="country-section korean">
+                                    <h4 class="section-title">🇰🇷 한국 서비스</h4>
+                                    <div class="social-row">
+                                        <button type="button" class="main-social-btn naver">
+                                            <span class="social-icon">N</span>
+                                            <span class="social-text">Naver</span>
+                                        </button>
+                                        <button type="button" class="main-social-btn kakao">
+                                            <span class="social-icon">K</span>
+                                            <span class="social-text">Kakao</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="country-section russian">
+                                    <h4 class="section-title">🇷🇺 Российские сервисы</h4>
+                                    <div class="social-row">
+                                        <button type="button" class="main-social-btn yandex">
+                                            <span class="social-icon">Я</span>
+                                            <span class="social-text">Yandex</span>
+                                        </button>
+                                        <button type="button" class="main-social-btn vk">
+                                            <span class="social-icon">VK</span>
+                                            <span class="social-text">VK</span>
+                                        </button>
+                                    </div>
+                                    <div class="social-row">
+                                        <button type="button" class="main-social-btn telegram">
+                                            <span class="social-icon">✈️</span>
+                                            <span class="social-text">Telegram</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="register-link">
+                                <a href="#" onclick="showRegisterModal(); return false;">
+                                    <span class="korean-text">회원가입</span>
+                                    <span class="russian-text">Регистрация</span>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 커뮤니티 현황 -->
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="korean-text">커뮤니티 현황</span>
+                        <span class="russian-text">Статистика</span>
+                    </div>
+                    <div class="widget-content">
+                        <div class="stats-grid">
+                            <div class="stats-item">
+                                <div class="stats-number">2,547</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">회원</span>
+                                    <div class="russian-text">Участники</div>
+                                </div>
+                            </div>
+                            <div class="stats-item">
+                                <div class="stats-number">8,932</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">게시글</span>
+                                    <div class="russian-text">Посты</div>
+                                </div>
+                            </div>
+                            <div class="stats-item">
+                                <div class="stats-number">24,681</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">댓글</span>
+                                    <div class="russian-text">Комментарии</div>
+                                </div>
+                            </div>
+                            <div class="stats-item">
+                                <div class="stats-number">156</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">파트너</span>
+                                    <div class="russian-text">Партнеры</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 인기글 -->
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="korean-text">인기글</span>
+                        <span class="russian-text">Популярные посты</span>
+                    </div>
+                    <div class="widget-content">
+                        <div style="font-size: 12px; line-height: 1.6;">
+                            <div style="margin-bottom: 8px;">
+                                <a href="#" class="popular-post-link">
+                                    <div class="popular-post-content">
+                                        <span class="korean-text">한국 은행계좌 개설 가이드</span>
+                                        <div class="russian-text">Руководство по открытию счета</div>
+                                    </div>
+                                    <span class="board-post-date">15:30</span>
+                                </a>
+                            </div>
+                            <div style="margin-bottom: 8px;">
+                                <a href="#" class="popular-post-link">
+                                    <div class="popular-post-content">
+                                        <span class="korean-text">서울 러시아 음식점 추천</span>
+                                        <div class="russian-text">Русские рестораны в Сеуле</div>
+                                    </div>
+                                    <span class="board-post-date">14:20</span>
+                                </a>
+                            </div>
+                            <div style="margin-bottom: 8px;">
+                                <a href="#" class="popular-post-link">
+                                    <div class="popular-post-content">
+                                        <span class="korean-text">비자 연장 신청 후기</span>
+                                        <div class="russian-text">Опыт продления визы</div>
+                                    </div>
+                                    <span class="board-post-date">16:45</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // 언어 전환 함수
+        function setLanguage(lang) {
+            const body = document.body;
+            const buttons = document.querySelectorAll('.lang-btn');
+            const searchInput = document.getElementById('search-input');
+
+            // 버튼 활성화 상태 변경
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[onclick="setLanguage('${lang}')"]`).classList.add('active');
+
+            // 바디 클래스 변경
+            body.className = lang;
+
+            // 검색창 placeholder 변경
+            if (lang === 'korean') {
+                searchInput.placeholder = '검색어를 입력하세요';
+            } else if (lang === 'russian') {
+                searchInput.placeholder = 'Введите поисковый запрос';
+            } else {
+                searchInput.placeholder = '검색어를 입력하세요 / Введите поисковый запрос';
+            }
+
+            console.log('Language changed to:', lang);
+            console.log('Body class:', body.className);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 탭 전환
+            const tabItems = document.querySelectorAll('.tab-item');
+            tabItems.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    tabItems.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 사이드바 메뉴
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+                    sidebarItems.forEach(si => si.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 검색
+            const searchBtn = document.querySelector('.search-btn');
+            const searchInput = document.querySelector('.search-input');
+
+            searchBtn.addEventListener('click', function() {
+                const query = searchInput.value.trim();
+                if (query) {
+                    console.log('검색:', query);
+                }
+            });
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+        });
+    </script>
+
+    <!-- 로그인 모달 -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="hideModals()">&times;</button>
+            <h2 class="modal-title">
+                <span class="korean-text">로그인</span>
+                <span class="russian-text">Войти</span>
+            </h2>
+
+            <form id="login-form" onsubmit="event.preventDefault(); const formData = new FormData(event.target); const email = formData.get('email'); const password = formData.get('password'); console.log('Login:', email); fetch('http://localhost:8000/api/auth/email/login', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, password})}).then(r => r.json()).then(data => {console.log('Result:', data); if(data.access_token) {localStorage.setItem('access_token', data.access_token); localStorage.setItem('userInfo', JSON.stringify({email, access_token: data.access_token})); alert('로그인 성공!'); location.reload();} else {alert(data.detail || '로그인 실패');}}).catch(e => {console.error(e); alert('오류: ' + e.message);});">
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="korean-text">이메일</span>
+                        <span class="russian-text">Email</span>
+                    </label>
+                    <input type="email" class="form-input" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="korean-text">비밀번호</span>
+                        <span class="russian-text">Пароль</span>
+                    </label>
+                    <input type="password" class="form-input" name="password" required>
+                </div>
+                <button type="submit" class="form-submit">
+                    <span class="korean-text">로그인</span>
+                    <span class="russian-text">Войти</span>
+                </button>
+            </form>
+
+            <div class="social-login">
+                <div class="social-title">
+                    <span class="korean-text">소셜 로그인</span>
+                    <span class="russian-text">Социальный вход</span>
+                </div>
+                <div class="social-buttons">
+                    <div class="country-group">
+                        <h5 class="country-label">🇰🇷 한국 서비스</h5>
+                        <a href="/api/auth/oauth/kakao" class="social-btn kakao">
+                            <span class="social-icon">💬</span>
+                            <span class="social-btn-text">Kakao로 로그인</span>
+                        </a>
+                        <a href="/api/auth/oauth/naver" class="social-btn naver">
+                            <span class="social-icon" style="font-weight: bold; font-size: 16px;">N</span>
+                            <span class="social-btn-text">Naver로 로그인</span>
+                        </a>
+                    </div>
+                    <div class="country-group">
+                        <h5 class="country-label">🇷🇺 Российские сервисы</h5>
+                        <a href="/api/auth/oauth/yandex" class="social-btn yandex">
+                            <span class="social-icon" style="font-weight: bold; font-size: 16px;">Я</span>
+                            <span class="social-btn-text">Yandex로 로그인</span>
+                        </a>
+                        <a href="/api/auth/oauth/vk" class="social-btn vk">
+                            <span class="social-icon" style="font-weight: bold; font-size: 16px;">VK</span>
+                            <span class="social-btn-text">VKontakte로 로그인</span>
+                        </a>
+                        <a href="/api/auth/oauth/telegram" class="social-btn telegram">
+                            <span class="social-icon">✈️</span>
+                            <span class="social-btn-text">Telegram로 로그인</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-switch">
+                <span class="korean-text">계정이 없으신가요? </span>
+                <span class="russian-text">Нет аккаунта? </span>
+                <a href="#" onclick="switchToRegister()">
+                    <span class="korean-text">회원가입</span>
+                    <span class="russian-text">Регистрация</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 회원가입 모달 -->
+    <div class="modal" id="register-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="hideModals()">&times;</button>
+            <h2 class="modal-title">
+                <span class="korean-text">회원가입</span>
+                <span class="russian-text">Регистрация</span>
+            </h2>
+
+            <form id="register-form" onsubmit="handleRegister(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="korean-text">이메일</span>
+                            <span class="russian-text">| Email</span>
+                        </label>
+                        <input type="email" class="form-input" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="korean-text">닉네임</span>
+                            <span class="russian-text">| Никнейм</span>
+                        </label>
+                        <input type="text" class="form-input" name="nickname" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="korean-text">사용자명</span>
+                            <span class="russian-text">| Логин (필수아님)</span>
+                        </label>
+                        <input type="text" class="form-input" name="username" placeholder="선택사항">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="korean-text">선호 언어</span>
+                            <span class="russian-text">| Язык</span>
+                        </label>
+                        <select class="form-input" name="preferred_lang">
+                            <option value="ko">한국어</option>
+                            <option value="ru">Русский</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="korean-text">비밀번호</span>
+                            <span class="russian-text">| Пароль</span>
+                        </label>
+                        <input type="password" class="form-input" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="korean-text">비밀번호 확인</span>
+                            <span class="russian-text">| Повтор</span>
+                        </label>
+                        <input type="password" class="form-input" name="password_confirm" required>
+                    </div>
+                </div>
+                <button type="submit" class="form-submit">
+                    <span class="korean-text">회원가입</span>
+                    <span class="russian-text">| Зарегистрироваться</span>
+                </button>
+            </form>
+
+            <div class="social-login">
+                <div class="social-title">
+                    <span class="korean-text">소셜 회원가입</span>
+                    <span class="russian-text">Социальная регистрация</span>
+                </div>
+                <div class="social-buttons">
+                    <div class="country-group">
+                        <h5 class="country-label">🇰🇷 한국 서비스</h5>
+                        <a href="/api/auth/oauth/kakao" class="social-btn kakao">
+                            <span class="social-icon">💬</span>
+                            <span class="social-btn-text">Kakao로 회원가입</span>
+                        </a>
+                        <a href="/api/auth/oauth/naver" class="social-btn naver">
+                            <span class="social-icon" style="font-weight: bold; font-size: 16px;">N</span>
+                            <span class="social-btn-text">Naver로 회원가입</span>
+                        </a>
+                    </div>
+                    <div class="country-group">
+                        <h5 class="country-label">🇷🇺 Российские сервисы</h5>
+                        <a href="/api/auth/oauth/yandex" class="social-btn yandex">
+                            <span class="social-icon" style="font-weight: bold; font-size: 16px;">Я</span>
+                            <span class="social-btn-text">Yandex로 회원가입</span>
+                        </a>
+                        <a href="/api/auth/oauth/vk" class="social-btn vk">
+                            <span class="social-icon" style="font-weight: bold; font-size: 16px;">VK</span>
+                            <span class="social-btn-text">VKontakte로 회원가입</span>
+                        </a>
+                        <a href="/api/auth/oauth/telegram" class="social-btn telegram">
+                            <span class="social-icon">✈️</span>
+                            <span class="social-btn-text">Telegram로 회원가입</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-switch">
+                <div class="switch-text-row">
+                    <span class="korean-text">이미 계정이 있으신가요?</span>
+                    <span class="russian-text">Уже есть аккаунт?</span>
+                </div>
+                <div class="switch-link-row">
+                    <a href="#" onclick="switchToLogin()">
+                        <span class="korean-text">로그인</span>
+                    </a>
+                    <a href="#" onclick="switchToLogin()">
+                        <span class="russian-text">Войти</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 인증 관련 JavaScript -->
+    <script>
+        // 전역 변수 및 설정
+        let currentUser = null;
+        const API_BASE = 'http://localhost:8000/api';
+
+        // APP_CONFIG 설정 (config.js 대체)
+        window.APP_CONFIG = {
+            API_URL: 'http://localhost:8000',
+            BASE_URL: 'http://localhost:3000'
+        };
+
+        // 페이지 로드 시 토큰 체크
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+        });
+
+        // 인증 상태 확인
+        function checkAuthStatus() {
+            const token = localStorage.getItem('access_token');
+            if (token) {
+                // 토큰이 있으면 사용자 정보 가져오기
+                fetchUserProfile(token);
+            }
+        }
+
+        // 사용자 프로필 가져오기
+        async function fetchUserProfile(token) {
+            try {
+                const response = await fetch(`${API_BASE}/users/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    currentUser = await response.json();
+                    updateAuthUI(true);
+                } else {
+                    // 토큰이 유효하지 않으면 제거
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('refresh_token');
+                }
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+            }
+        }
+
+        // 인증 UI 업데이트
+        function updateAuthUI(isLoggedIn) {
+            const authSection = document.getElementById('auth-section');
+            const userProfile = document.getElementById('user-profile');
+
+            // 요소가 존재하지 않으면 스킵
+            if (!authSection || !userProfile) {
+                console.log('Auth UI elements not found, skipping UI update');
+                return;
+            }
+
+            if (isLoggedIn && currentUser) {
+                authSection.style.display = 'none';
+                userProfile.style.display = 'flex';
+
+                const userName = document.getElementById('user-name');
+                if (userName) {
+                    userName.textContent = currentUser.nickname;
+                }
+
+                const avatar = document.getElementById('user-avatar');
+                if (avatar) {
+                    if (currentUser.profile_image) {
+                        avatar.src = currentUser.profile_image;
+                    } else {
+                        avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.nickname)}&background=0039A6&color=fff`;
+                    }
+                }
+            } else {
+                authSection.style.display = 'flex';
+                userProfile.style.display = 'none';
+            }
+        }
+
+        // 모달 표시/숨김
+        function showLoginModal() {
+            document.getElementById('login-modal').classList.add('show');
+        }
+
+        function showRegisterModal() {
+            document.getElementById('register-modal').classList.add('show');
+        }
+
+        function hideModals() {
+            document.getElementById('login-modal').classList.remove('show');
+            document.getElementById('register-modal').classList.remove('show');
+        }
+
+        function switchToRegister() {
+            hideModals();
+            showRegisterModal();
+        }
+
+        function switchToLogin() {
+            hideModals();
+            showLoginModal();
+        }
+
+        // 로그인 처리
+        async function handleLogin(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            const email = formData.get('email');
+            const password = formData.get('password');
+
+            // API_BASE 정의 (함수 내부에서)
+            const API_BASE = window.API_BASE || 'http://localhost:8000/api';
+
+            console.log('=== Login Attempt ===');
+            console.log('Email:', email);
+            console.log('API URL:', `${API_BASE}/auth/email/login`);
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/email/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                console.log('Response status:', response.status);
+
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                if (response.ok) {
+                    console.log('✓ Login successful!');
+                    // 토큰 저장
+                    localStorage.setItem('access_token', data.access_token);
+                    localStorage.setItem('refresh_token', data.refresh_token);
+
+                    // userInfo도 저장
+                    const userInfo = {
+                        email: email,
+                        access_token: data.access_token
+                    };
+                    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                    console.log('Tokens and userInfo saved to localStorage');
+
+                    hideModals();
+                    checkAuthStatus();
+
+                    alert('로그인되었습니다!');
+                } else {
+                    console.log('✗ Login failed:', data.detail);
+                    alert(data.detail || '로그인에 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('로그인 중 오류가 발생했습니다: ' + error.message);
+            }
+        }
+
+        // 회원가입 처리
+        async function handleRegister(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            // 비밀번호 확인
+            if (formData.get('password') !== formData.get('password_confirm')) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/email/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: formData.get('email'),
+                        nickname: formData.get('nickname'),
+                        username: formData.get('username') || null,
+                        password: formData.get('password'),
+                        preferred_lang: formData.get('preferred_lang')
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // 토큰 저장
+                    localStorage.setItem('access_token', data.access_token);
+                    localStorage.setItem('refresh_token', data.refresh_token);
+
+                    hideModals();
+                    checkAuthStatus();
+
+                    alert('회원가입이 완료되었습니다! 이메일 인증을 확인해주세요.');
+                } else {
+                    alert(data.detail || '회원가입에 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('Register error:', error);
+                alert('회원가입 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 로그아웃
+        function logout() {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            currentUser = null;
+            updateAuthUI(false);
+            alert('로그아웃되었습니다.');
+        }
+
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            const loginModal = document.getElementById('login-modal');
+            const registerModal = document.getElementById('register-modal');
+
+            if (event.target === loginModal || event.target === registerModal) {
+                hideModals();
+            }
+        }
+
+        // 모바일 사이드바 토글
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            const rightSidebar = document.querySelector('.right-sidebar');
+
+            // 오른쪽 사이드바가 열려있으면 닫기
+            if (rightSidebar.classList.contains('active')) {
+                rightSidebar.classList.remove('active');
+            }
+
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function toggleLoginSidebar() {
+            const rightSidebar = document.querySelector('.right-sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            const leftSidebar = document.querySelector('.sidebar');
+
+            // 왼쪽 사이드바가 열려있으면 닫기
+            if (leftSidebar.classList.contains('active')) {
+                leftSidebar.classList.remove('active');
+            }
+
+            rightSidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function closeAllSidebars() {
+            const sidebar = document.querySelector('.sidebar');
+            const rightSidebar = document.querySelector('.right-sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+
+            sidebar.classList.remove('active');
+            rightSidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        // 사이드바 링크 클릭 시 닫기 (모바일)
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    closeAllSidebars();
+                }
+            });
+        });
+
+        // 메인 화면 로그인 폼 처리
+        document.getElementById('mainLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('mainUsername').value.trim();
+            const password = document.getElementById('mainPassword').value;
+
+            // 관리자 계정 확인
+            if (username === 'admin1234' && password === 'kuro##@@') {
+                const userInfo = {
+                    username: username,
+                    isAdmin: true,
+                    loginTime: new Date().toISOString()
+                };
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                alert('관리자로 로그인되었습니다.');
+                location.reload();
+                return;
+            }
+
+            // 테스트 계정 확인
+            if (username === 'test' && password === 'test') {
+                const userInfo = {
+                    username: username,
+                    isAdmin: false,
+                    loginTime: new Date().toISOString()
+                };
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                alert('로그인되었습니다.');
+                location.reload();
+                return;
+            }
+
+            // 로그인 실패
+            alert('아이디 또는 비밀번호가 올바르지 않습니다.');
+        });
+
+        // 페이지 로드 시 로그인 상태 확인
+        window.addEventListener('DOMContentLoaded', function() {
+            const userInfoStr = localStorage.getItem('userInfo');
+            if (userInfoStr) {
+                try {
+                    const userInfo = JSON.parse(userInfoStr);
+                    const loginWidget = document.querySelector('.widget');
+
+                    if (loginWidget) {
+                        let html = `
+                            <div class="widget-header">사용자 정보</div>
+                            <div class="widget-content" style="padding: 15px; text-align: center;">
+                                <div style="margin-bottom: 10px;">
+                                    <strong style="color: var(--russian-blue); font-size: 14px;">${userInfo.username}</strong>님
+                                </div>
+                        `;
+
+                        if (userInfo.isAdmin) {
+                            html += `
+                                <div style="margin-bottom: 10px;">
+                                    <span style="background: var(--russian-red); color: white; padding: 3px 8px; border-radius: 3px; font-size: 10px;">관리자</span>
+                                </div>
+                                <button onclick="location.href='/admin.html'" style="width: 100%; padding: 8px; background: var(--russian-blue); color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 8px; font-size: 12px;">관리자 페이지</button>
+                            `;
+                        }
+
+                        html += `
+                                <button onclick="handleMainLogout()" style="width: 100%; padding: 8px; background: white; color: #666; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 12px;">로그아웃</button>
+                            </div>
+                        `;
+
+                        loginWidget.innerHTML = html;
+                    }
+                } catch (e) {
+                    console.error('사용자 정보 파싱 오류:', e);
+                }
+            }
+
+            // 게시판 링크 클릭 시 로그인 체크 (공지사항 제외)
+            document.querySelectorAll('a[href*="board-"]').forEach(link => {
+                const href = link.getAttribute('href');
+                // 공지사항은 제외
+                if (!href.includes('board-notice')) {
+                    link.addEventListener('click', function(e) {
+                        const userInfoStr = localStorage.getItem('userInfo');
+                        if (!userInfoStr) {
+                            e.preventDefault();
+                            showLoginModal();
+                            return false;
+                        }
+                    });
+                }
+            });
+        });
+
+        // 로그아웃 처리
+        function handleMainLogout() {
+            if (confirm('로그아웃하시겠습니까?')) {
+                localStorage.removeItem('userInfo');
+                alert('로그아웃되었습니다.');
+                location.reload();
+            }
+        }
+    </script>
+
+    <script>
+    // 언어 전환 기능
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const lang = this.dataset.lang;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            document.body.setAttribute('data-lang', lang);
+            localStorage.setItem('preferredLang', lang);
+        });
+    });
+
+    // 저장된 언어 설정 불러오기
+    const savedLang = localStorage.getItem('preferredLang') || 'both';
+    document.body.setAttribute('data-lang', savedLang);
+    document.querySelector(`.lang-btn[data-lang="${savedLang}"]`)?.classList.add('active');
+
+    </script>
+
+
+    <!-- 로그인 필요 모달 -->
+    <div id="loginRequiredModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 30px; border-radius: 8px; max-width: 400px; width: 90%; box-shadow: 0 4px 20px rgba(0,0,0,0.3); text-align: center;">
+            <div style="font-size: 48px; margin-bottom: 20px;">🔒</div>
+            <h2 style="font-size: 20px; font-weight: 700; color: #333; margin-bottom: 15px;">로그인이 필요합니다</h2>
+            <p style="font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 25px;">
+                공지사항을 제외한 모든 게시판은<br>
+                로그인 후 이용하실 수 있습니다.
+            </p>
+            <p style="font-size: 13px; color: #999; line-height: 1.6; margin-bottom: 25px;">
+                Требуется авторизация.<br>
+                Все доски объявлений, кроме объявлений,<br>
+                доступны после входа в систему.
+            </p>
+            <button onclick="closeLoginModal()" style="width: 100%; padding: 12px; background: #0039A6; color: white; border: none; border-radius: 4px; font-size: 15px; font-weight: 600; cursor: pointer;">
+                확인 / OK
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // API에서 게시글 로드
+        const API_BASE_URL = 'http://localhost:8000';
+
+        async function loadBoardPosts() {
+            const boards = [
+                { slug: 'notice', className: 'board-section', index: 0 },
+                { slug: 'free', className: 'board-section', index: 1 },
+                { slug: 'qna', className: 'board-section', index: 2 },
+                { slug: 'job', className: 'board-section', index: 3 },
+                { slug: 'market', className: 'board-section', index: 4 }
+            ];
+
+            for (const board of boards) {
+                try {
+                    // 카테고리 ID 가져오기
+                    const categoriesRes = await fetch(`${API_BASE_URL}/api/categories/`);
+                    const categories = await categoriesRes.json();
+                    const category = categories.find(c => c.slug === board.slug);
+
+                    if (!category) continue;
+
+                    // 게시글 로드
+                    const postsRes = await fetch(`${API_BASE_URL}/api/posts/?category_id=${category.id}&page=1&page_size=4`);
+                    const postsData = await postsRes.json();
+
+                    // HTML 업데이트
+                    const sections = document.querySelectorAll('.board-section');
+                    const section = sections[board.index];
+                    if (section && postsData.items && postsData.items.length > 0) {
+                        const postsList = section.querySelector('.board-posts');
+                        if (postsList) {
+                            postsList.innerHTML = postsData.items.map(post => {
+                                const titleKo = post.translated_title_ko || post.title;
+                                const titleRu = post.translated_title_ru || '';
+                                const date = formatDate(post.created_at);
+
+                                return `
+                                    <li class="board-post-item">
+                                        <a href="/board-view.html?category=${board.slug}&id=${post.id}" class="board-post-link">
+                                            <div class="board-post-title-wrapper">
+                                                <div class="board-post-title korean-text">${titleKo}</div>
+                                                ${titleRu ? `<div class="board-post-title russian-text">${titleRu}</div>` : ''}
+                                            </div>
+                                            <span class="board-post-date">${date}</span>
+                                        </a>
+                                    </li>
+                                `;
+                            }).join('');
+                        }
+                    }
+                } catch (error) {
+                    console.error(`Error loading ${board.slug}:`, error);
+                }
+            }
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffHours / 24);
+
+            if (diffHours < 24) {
+                return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+            } else if (diffDays === 1) {
+                return '어제';
+            } else if (diffDays < 7) {
+                return `${diffDays}일 전`;
+            } else {
+                return date.toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric' }).replace(/\. /g, '/').replace('.', '');
+            }
+        }
+
+        // 페이지 로드 시 실행
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBoardPosts();
+        });
+
+        function showLoginModal() {
+            const modal = document.getElementById('loginRequiredModal');
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('loginRequiredModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // 특정 메뉴 클릭 시 로그인 체크
+        document.addEventListener('DOMContentLoaded', function() {
+            const restrictedPages = [
+                '/board-free.html',
+                '/board-life.html',
+                '/board-admin.html',
+                '/board-startup.html',
+                '/board-job.html',
+                '/board-market.html',
+                '/partners.html',
+                '/trade-partners.html',
+                '/contact-ad.html',
+                '/contact-suggest.html'
+            ];
+
+            // 모든 링크에 클릭 이벤트 추가
+            document.querySelectorAll('a[href]').forEach(link => {
+                const href = link.getAttribute('href');
+
+                if (restrictedPages.includes(href)) {
+                    link.addEventListener('click', function(e) {
+                        const userInfoStr = localStorage.getItem('userInfo');
+                        if (!userInfoStr) {
+                            e.preventDefault();
+                            showLoginModal();
+                            return false;
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+</html>

@@ -1,0 +1,145 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: kru_postgres
+    environment:
+      POSTGRES_DB: kru_community
+      POSTGRES_USER: kru_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - kru_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: kru_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - kru_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: kru_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@russian.town}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin1234}
+      PGADMIN_CONFIG_SERVER_MODE: 'True'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'True'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - kru_network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kru_backend
+    environment:
+      DATABASE_URL: postgresql://kru_user:${DB_PASSWORD:-password}@postgres:5432/kru_community
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-your-secret-key-here}
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - static_files:/app/static
+      - media_files:/app/media
+    networks:
+      - kru_network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: kru_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - kru_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: kru_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - static_files:/var/www/static
+      - media_files:/var/www/media
+      - ./frontend/public:/var/www/html
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - kru_network
+    command: |
+      sh -c "cat > /etc/nginx/nginx.conf << 'EOF'
+      events {
+          worker_connections 1024;
+      }
+      http {
+          include /etc/nginx/mime.types;
+          default_type application/octet-stream;
+          upstream backend {
+              server backend:8000;
+          }
+          server {
+              listen 80;
+              server_name _;
+              location /api/ {
+                  proxy_pass http://backend;
+                  proxy_set_header Host \$$host;
+                  proxy_set_header X-Real-IP \$$remote_addr;
+                  proxy_set_header X-Forwarded-For \$$proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto \$$scheme;
+              }
+              location /static/ {
+                  alias /var/www/static/;
+              }
+              location /media/ {
+                  alias /var/www/media/;
+              }
+              location / {
+                  proxy_pass http://frontend:3000;
+                  proxy_set_header Host \$$host;
+                  proxy_set_header X-Real-IP \$$remote_addr;
+                  proxy_set_header X-Forwarded-For \$$proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto \$$scheme;
+              }
+          }
+      }
+      EOF
+      nginx -g 'daemon off;'"
+
+networks:
+  kru_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  pgadmin_data:
+  static_files:
+  media_files:
+  frontend_node_modules:
+  frontend_next:
