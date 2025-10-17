@@ -1,0 +1,59 @@
+# 환경 변수 파일
+.env
+.env.local
+.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# 데이터 파일
+data/
+*.json
+*.db
+*.sqlite
+
+# 로그 파일
+*.log
+logs/
+
+# IDE 설정
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS 파일
+.DS_Store
+Thumbs.db
+
+# 백엔드 특정
+backend/.env
+backend/data/
+
+# 임시 파일
+tmp/
+temp/
+
+# Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.next/cache/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Backup
+backup/
