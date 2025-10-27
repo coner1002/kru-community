@@ -9,8 +9,18 @@
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 
         :root {
-            --russian-red: #DA020E;
+            --russian-red: #C1272D;
             --russian-blue: #0039A6;
+            --russian-gold: #D4AF37;
+            --russian-navy: #002B5C;
+            --russian-white: #FFFFFF;
+            --russian-light-blue: #4A90E2;
+            --russian-cream: #F5F3EE;
+            --gradient-primary: linear-gradient(135deg, var(--russian-blue) 0%, var(--russian-light-blue) 100%);
+            --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #F4E4B3 100%);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
         }
 
         * {
@@ -22,9 +32,10 @@
         body {
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
             font-size: 12px;
-            line-height: 1.3;
-            color: #333;
-            background: #f8f9fa;
+            line-height: 1.5;
+            color: #2c3e50;
+            background: linear-gradient(to bottom, #f8f9fa 0%, var(--russian-cream) 100%);
+            min-height: 100vh;
         }
 
         .container {
@@ -35,9 +46,12 @@
 
         /* 헤더 */
         .header {
-            background: white;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 6px 0;
+            background: var(--gradient-primary);
+            box-shadow: var(--shadow-md);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .header-content {
@@ -49,11 +63,17 @@
         .logo {
             font-size: 24px;
             font-weight: 700;
-            color: var(--russian-blue);
+            color: white !important;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         .logo-icon {
@@ -122,27 +142,46 @@
 
         .nav-menu {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             font-size: 12px;
             align-items: center;
         }
 
         .nav-menu a {
-            color: #333;
-            text-decoration: none;
-            padding: 5px 10px;
+            color: white !important;
+            text-decoration: none !important;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
             gap: 6px;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
         .nav-menu a:hover {
-            color: var(--russian-blue);
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--russian-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 80%;
         }
 
         .nav-menu .russian-label {
             font-size: 10px;
-            color: #666;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .user-info {
@@ -197,18 +236,41 @@
         /* 사이드바 */
         .sidebar-section {
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
+            border: none;
+            border-radius: 10px;
             margin-bottom: 10px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-section:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
         }
 
         .sidebar-header {
-            background: #f8f9fa;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 6px 10px;
+            background: var(--gradient-primary);
+            border-bottom: none;
+            padding: 8px 12px;
             font-size: 11px;
+            font-weight: 700;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-header .korean-text {
+            font-weight: 700;
+            color: white !important;
+        }
+
+        .sidebar-header .russian-text {
+            font-size: 9px;
             font-weight: 600;
-            color: #333;
+            color: rgba(255, 255, 255, 0.9) !important;
+            margin-left: 4px;
         }
 
         .sidebar-menu {
@@ -217,64 +279,168 @@
 
         .sidebar-item {
             display: block;
-            padding: 6px 10px;
-            color: #666;
-            text-decoration: none;
+            padding: 6px 12px;
             font-size: 11px;
-            transition: background 0.2s;
+            color: #333 !important;
+            text-decoration: none !important;
+            border-bottom: 1px solid #f5f5f5;
+            transition: all 0.2s ease;
+            position: relative;
+            line-height: 1.3;
+        }
+
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: var(--gradient-gold);
+            transition: width 0.3s ease;
+        }
+
+        .sidebar-item:last-child {
+            border-bottom: none;
         }
 
         .sidebar-item:hover {
-            background: #f0f0f0;
+            background: #f8f9fa;
+            padding-left: 16px;
+        }
+
+        .sidebar-item:hover::before {
+            width: 4px;
         }
 
         .sidebar-item.active {
-            background: #e3f2fd;
-            color: var(--russian-blue);
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            color: var(--russian-navy) !important;
             font-weight: 600;
+            border-left: 4px solid var(--russian-gold);
+            padding-left: 8px;
         }
 
-        .russian-text {
+        .sidebar-item .russian-text {
+            font-family: 'Arial', 'Helvetica', sans-serif;
             font-size: 9px;
-            color: #999;
+            color: #666;
             margin-top: 1px;
+            font-weight: normal;
+        }
+
+        /* 오른쪽 사이드바 */
+        .right-sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .widget {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .widget-header {
+            background: #e8eaed;
+            border-bottom: 1px solid #d0d0d0;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .widget-content {
+            padding: 15px;
+        }
+
+        .login-box {
+            text-align: center;
+        }
+
+        .login-box p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .login-box .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .login-box .btn-primary:hover {
+            background: #002d7a;
+        }
+
+        .login-box .btn-secondary {
+            width: 100%;
+            padding: 10px;
+            background: white;
+            color: #666;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .login-box .btn-secondary:hover {
+            background: #f5f5f5;
         }
 
         /* 게시글 헤더 */
         .post-header {
             background: white;
-            border-radius: 5px 5px 0 0;
-            border-bottom: 2px solid var(--russian-blue);
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
         }
 
         .post-category {
-            background: #f8f9fa;
-            padding: 6px 12px;
-            border-bottom: 1px solid #e0e0e0;
+            background: var(--gradient-primary);
+            padding: 8px 15px;
             font-size: 11px;
-            color: #666;
+            color: white;
+            font-weight: 600;
         }
 
         .post-category a {
-            color: var(--russian-blue);
+            color: white;
             text-decoration: none;
         }
 
+        .post-category a:hover {
+            text-decoration: underline;
+        }
+
         .post-title-area {
-            padding: 12px 15px;
+            padding: 15px 20px;
+            background: white;
         }
 
         .post-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
-            color: #333;
-            margin-bottom: 4px;
+            color: var(--russian-navy);
+            margin-bottom: 6px;
         }
 
         .post-title-ru {
-            font-size: 14px;
+            font-size: 15px;
             color: #666;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .post-meta {
@@ -283,8 +449,8 @@
             gap: 15px;
             font-size: 11px;
             color: #666;
-            padding-top: 8px;
-            border-top: 1px solid #f0f0f0;
+            padding-top: 10px;
+            border-top: 2px solid #f5f5f5;
         }
 
         .post-meta-item {
@@ -295,16 +461,17 @@
 
         .post-author {
             font-weight: 600;
-            color: #333;
+            color: var(--russian-navy);
         }
 
         /* 게시글 본문 */
         .post-body {
             background: white;
-            padding: 20px 15px;
+            padding: 30px 20px;
             min-height: 400px;
             line-height: 1.8;
-            font-size: 13px;
+            font-size: 14px;
+            box-shadow: var(--shadow-md);
         }
 
         /* 게시글 푸터 */
@@ -362,62 +529,83 @@
             border-top: 1px solid #f0f0f0;
             font-size: 11px;
             color: #666;
+            margin-bottom: 15px;
+        }
+
+        .post-edit-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            padding-bottom: 10px;
         }
 
         /* 댓글 영역 */
         .comments-section {
             background: white;
-            margin-top: 10px;
-            border-radius: 5px;
+            margin-top: 15px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
         }
 
         .comments-header {
-            padding: 10px 15px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 20px;
+            background: var(--gradient-primary);
             font-size: 13px;
-            font-weight: 600;
-            color: #333;
+            font-weight: 700;
+            color: white;
         }
 
         .comment-count {
-            color: var(--russian-blue);
+            color: var(--russian-gold);
         }
 
         .comment-write {
-            padding: 15px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 20px;
+            background: #f8f9fa;
         }
 
         .comment-textarea {
             width: 100%;
             min-height: 80px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 12px;
+            border: 2px solid #e5e5e5;
+            border-radius: 6px;
+            font-size: 13px;
             font-family: inherit;
             resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .comment-textarea:focus {
+            outline: none;
+            border-color: var(--russian-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
         }
 
         .comment-submit-area {
             display: flex;
             justify-content: flex-end;
-            margin-top: 8px;
-            gap: 8px;
+            margin-top: 10px;
+            gap: 10px;
         }
 
         .comment-submit {
-            padding: 6px 16px;
-            background: var(--russian-blue);
+            padding: 8px 20px;
+            background: var(--gradient-primary);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .comment-submit:hover {
-            background: #002a75;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            filter: brightness(1.1);
         }
 
         /* 댓글 목록 */
@@ -477,45 +665,59 @@
             color: var(--russian-blue);
         }
 
-        /* 목록/수정/삭제 버튼 */
+        /* 목록 버튼 */
         .bottom-actions {
             background: white;
             padding: 12px 15px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             border-radius: 0 0 5px 5px;
         }
 
         .btn-list {
-            padding: 6px 16px;
-            background: #666;
+            padding: 8px 24px;
+            background: #6c757d;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .btn-list:hover {
-            background: #555;
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .btn-group {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .btn-edit, .btn-delete {
-            padding: 6px 16px;
-            border: 1px solid #ddd;
+            padding: 8px 24px;
+            border: 2px solid;
             background: white;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            color: var(--russian-blue);
+            border-color: var(--russian-blue);
         }
 
         .btn-edit:hover {
-            background: #f8f9fa;
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .btn-delete {
@@ -524,7 +726,10 @@
         }
 
         .btn-delete:hover {
-            background: #fff5f5;
+            background: var(--russian-red);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         /* 이전/다음 글 */
@@ -572,7 +777,13 @@
 
             // 공지사항이 아니고 로그인하지 않은 경우에만 모달 표시
             const userInfoStr = localStorage.getItem('userInfo');
-            if (!isNoticeBoard && !userInfoStr) {
+            const accessToken = localStorage.getItem('access_token');
+
+            console.log('Login check (view) - userInfo:', userInfoStr);
+            console.log('Login check (view) - access_token:', accessToken);
+
+            // userInfo 또는 access_token 중 하나라도 있으면 로그인된 것으로 간주
+            if (!isNoticeBoard && !userInfoStr && !accessToken) {
                 // 즉시 모달 표시 함수 정의
                 function showModal() {
                     const modal = document.getElementById('loginRequiredModal');
@@ -597,42 +808,20 @@
         })();
     </script>
 
-
-    <script>
-        // 로그인 체크 및 모달 표시 - 공지사항 제외
-        (function() {
-            // URL에서 카테고리 확인
-            const urlParams = new URLSearchParams(window.location.search);
-            const categorySlug = urlParams.get('category') || '';
-            const isNoticeBoard = categorySlug === 'notice';
-
-            // 공지사항이 아니고 로그인하지 않은 경우에만 모달 표시
-            const userInfoStr = localStorage.getItem('userInfo');
-            if (!isNoticeBoard && !userInfoStr) {
-                // 페이지 로드 후 즉시 모달 표시
-                window.addEventListener('DOMContentLoaded', function() {
-                    const modal = document.getElementById('loginRequiredModal');
-                    if (modal) {
-                        modal.style.display = 'flex';
-                    }
-                });
-            }
-        })();
-    </script>
-
+    <script src="/js/language-init.js"></script>
 </head>
-<body>
+<body class="bilingual" data-lang="both">
     <!-- 헤더 -->
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <a href="/" class="logo">
+                <a href="/index.html" class="logo">
                     <div class="logo-icon">RC</div>
                     Russian.Town
                 </a>
                 <div style="display: flex; align-items: center; gap: 20px;">
                     <nav class="nav-menu">
-                        <a href="/">
+                        <a href="/index.html">
                             <span>홈으로가기</span>
                             <span class="russian-label">Главная</span>
                         </a>
@@ -653,82 +842,8 @@
     <!-- 메인 컨텐츠 -->
     <div class="container">
         <div class="main-layout">
-            <!-- 좌측 사이드바 -->
-            <aside class="sidebar">
-                <!-- 게시판 메뉴 -->
-                <div class="sidebar-section">
-                    <div class="sidebar-header">
-                        <span class="korean-text">게시판</span>
-                        <div class="russian-text">Доски объявлений</div>
-                    </div>
-                    <div class="sidebar-menu">
-                        <a href="/board-notice.html" class="sidebar-item" data-category="notice">
-                            <span class="korean-text">공지사항</span>
-                            <div class="russian-text">Объявления</div>
-                        </a>
-                        <a href="/board-free.html" class="sidebar-item" data-category="free">
-                            <span class="korean-text">자유게시판</span>
-                            <div class="russian-text">Свободное общение</div>
-                        </a>
-                        <a href="/board-life.html" class="sidebar-item" data-category="life">
-                            <span class="korean-text">생활정보</span>
-                            <div class="russian-text">Жизнь в Корее</div>
-                        </a>
-                        <a href="/board-admin.html" class="sidebar-item" data-category="admin">
-                            <span class="korean-text">행정정보</span>
-                            <div class="russian-text">Админ. информация</div>
-                        </a>
-                        <a href="/board-job.html" class="sidebar-item" data-category="job">
-                            <span class="korean-text">구인구직</span>
-                            <div class="russian-text">Работа</div>
-                        </a>
-                        <a href="/board-market.html" class="sidebar-item" data-category="market">
-                            <span class="korean-text">벼룩시장</span>
-                            <div class="russian-text">Барахолка</div>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 비즈니스 메뉴 -->
-                <div class="sidebar-section">
-                    <div class="sidebar-header">
-                        <span class="korean-text">비즈니스</span>
-                        <div class="russian-text">Бизнес</div>
-                    </div>
-                    <div class="sidebar-menu">
-                        <a href="/startup" class="sidebar-item">
-                            <span class="korean-text">창업정보</span>
-                            <div class="russian-text">Информация о стартапах</div>
-                        </a>
-                        <a href="/partners" class="sidebar-item">
-                            <span class="korean-text">입점업체</span>
-                            <div class="russian-text">Партнерские компании</div>
-                        </a>
-                        <a href="/trade" class="sidebar-item">
-                            <span class="korean-text">무역파트너</span>
-                            <div class="russian-text">Торговые партнеры</div>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 운영자 연락 -->
-                <div class="sidebar-section">
-                    <div class="sidebar-header">
-                        <span class="korean-text">운영자 연락</span>
-                        <div class="russian-text">Связаться с администрацией</div>
-                    </div>
-                    <div class="sidebar-menu">
-                        <a href="/contact-ad.html" class="sidebar-item">
-                            <span class="korean-text">광고 및 협력 요청</span>
-                            <div class="russian-text">Реклама и сотрудничество</div>
-                        </a>
-                        <a href="/contact-suggest.html" class="sidebar-item">
-                            <span class="korean-text">운영자에게 건의</span>
-                            <div class="russian-text">Предложения администрации</div>
-                        </a>
-                    </div>
-                </div>
-            </aside>
+            <!-- 좌측 사이드바 - 동적 로드 -->
+            <div id="sidebar-container"></div>
 
             <!-- 메인 컨텐츠 -->
             <div class="content">
@@ -762,7 +877,7 @@
 
                 <!-- 게시글 본문 -->
                 <div class="post-body">
-                    <div class="post-content" style="text-align: center; padding: 40px; color: #666;">
+                    <div class="post-content" style="text-align: left; padding: 40px; color: #666; white-space: pre-wrap;">
                         로딩 중...
                     </div>
                 </div>
@@ -783,6 +898,16 @@
                     <div class="post-info">
                         <div><span>등록일</span> <span style="font-size: 9px; color: #999;">Дата публикации</span>: 2025.09.30 17:20</div>
                         <div><span>최종 수정</span> <span style="font-size: 9px; color: #999;">Последнее изменение</span>: 2025.09.30 17:25</div>
+                    </div>
+                    <div class="post-edit-actions" id="authorActions">
+                        <button class="btn-edit" id="editBtn">
+                            <span>수정</span>
+                            <span style="font-size: 9px; margin-left: 4px;">Изменить</span>
+                        </button>
+                        <button class="btn-delete" id="deleteBtn">
+                            <span>삭제</span>
+                            <span style="font-size: 9px; margin-left: 4px;">Удалить</span>
+                        </button>
                     </div>
                 </div>
 
@@ -849,22 +974,12 @@
                     </div>
                 </div>
 
-                <!-- 목록/수정/삭제 버튼 -->
+                <!-- 목록 버튼 -->
                 <div class="bottom-actions">
                     <button class="btn-list" onclick="location.href='/board-free.html'">
                         <span>목록</span>
                         <span style="font-size: 9px; margin-left: 4px;">Список</span>
                     </button>
-                    <div class="btn-group" id="authorActions">
-                        <button class="btn-edit" id="editBtn">
-                            <span>수정</span>
-                            <span style="font-size: 9px; margin-left: 4px;">Изменить</span>
-                        </button>
-                        <button class="btn-delete" id="deleteBtn">
-                            <span>삭제</span>
-                            <span style="font-size: 9px; margin-left: 4px;">Удалить</span>
-                        </button>
-                    </div>
                 </div>
 
                 <!-- 이전/다음 글 -->
@@ -885,6 +1000,33 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 우측 사이드바 -->
+            <aside class="right-sidebar">
+                <!-- 로그인 위젯 -->
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="korean-text">로그인</span>
+                        <span class="russian-text">Авторизация</span>
+                    </div>
+                    <div class="widget-content">
+                        <div class="login-box" id="loginWidget">
+                            <p>
+                                <span class="korean-text">로그인하고 더 많은 기능을 이용하세요</span><br>
+                                <span class="russian-text">Войдите, чтобы получить доступ к дополнительным функциям</span>
+                            </p>
+                            <button class="btn-primary" onclick="location.href='/login.html'">
+                                <span class="korean-text">로그인</span>
+                                <span class="russian-text">/ Войти</span>
+                            </button>
+                            <button class="btn-secondary" onclick="location.href='/signup.html'">
+                                <span class="korean-text">회원가입</span>
+                                <span class="russian-text">/ Регистрация</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
 
@@ -893,14 +1035,33 @@
     <script>
         // 로그인 정보 가져오기
         let currentUser = '익명'; // 기본값
+        let currentUserDisplay = '익명'; // 화면 표시용
         let isAdmin = false;
 
         const userInfoStr = localStorage.getItem('userInfo');
+        const accessToken = localStorage.getItem('access_token');
+
         if (userInfoStr) {
             try {
                 const userInfo = JSON.parse(userInfoStr);
-                currentUser = userInfo.username || '익명';
-                isAdmin = userInfo.isAdmin || false;
+                currentUser = userInfo.username || userInfo.email || '익명';
+                isAdmin = userInfo.isAdmin || userInfo.role === 'admin' || userInfo.role === 'moderator';
+
+                // 사용자 언어에 따라 적절한 닉네임 표시
+                // 한국어 사용자: 한국닉네임(러시아닉네임)
+                // 러시아어 사용자: 러시아닉네임(한국닉네임)
+                const preferredLang = userInfo.preferred_lang || 'ko';
+                if (preferredLang === 'ko') {
+                    // 한국어 사용자
+                    const koNick = userInfo.nickname_ko || userInfo.nickname || userInfo.username;
+                    const ruNick = userInfo.nickname_ru || '';
+                    currentUserDisplay = ruNick ? `${koNick} (${ruNick})` : koNick;
+                } else {
+                    // 러시아어 사용자
+                    const ruNick = userInfo.nickname_ru || userInfo.nickname || userInfo.username;
+                    const koNick = userInfo.nickname_ko || '';
+                    currentUserDisplay = koNick ? `${ruNick} (${koNick})` : ruNick;
+                }
             } catch (e) {
                 console.error('사용자 정보 파싱 오류:', e);
             }
@@ -914,17 +1075,17 @@
         const isNoticeBoard = categorySlug === 'notice';
 
         // 로그인 체크 - 공지사항이 아닌 게시판은 로그인 필수
-        if (!isNoticeBoard && !userInfoStr) {
+        if (!isNoticeBoard && !userInfoStr && !accessToken) {
             alert('로그인이 필요한 서비스입니다.\n공지사항을 제외한 모든 게시판은 로그인 후 이용하실 수 있습니다.\n\nТребуется авторизация.\nВсе доски объявлений, кроме объявлений, доступны после входа в систему.');
-            location.href = '/';
+            location.href = '/index.html';
         }
 
-        // 사용자 정보 표시
+        // 사용자 정보 표시 및 로그인 위젯 업데이트
         window.addEventListener('DOMContentLoaded', function() {
             const userInfoDiv = document.getElementById('userInfo');
 
-            if (userInfoStr) {
-                // 로그인된 경우
+            if (userInfoStr || accessToken) {
+                // 로그인된 경우 - 헤더 사용자 정보
                 let html = `<span class="username">${currentUser}</span>`;
 
                 if (isAdmin) {
@@ -934,6 +1095,26 @@
 
                 html += `<button class="btn-logout" onclick="handleLogout()">로그아웃</button>`;
                 userInfoDiv.innerHTML = html;
+
+                // 로그인 위젯 업데이트
+                const loginWidget = document.getElementById('loginWidget');
+                if (loginWidget) {
+                    loginWidget.innerHTML = `
+                        <div style="text-align: center; padding: 10px 0;">
+                            <div style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 8px;">
+                                ${currentUser}
+                            </div>
+                            <div style="font-size: 13px; color: #666; margin-bottom: 12px;">
+                                <span class="korean-text">로그인 중입니다</span><br>
+                                <span class="russian-text">Вы вошли в систему</span>
+                            </div>
+                            <button class="btn-secondary" onclick="handleLogout()" style="width: 100%; padding: 8px;">
+                                <span class="korean-text">로그아웃</span>
+                                <span class="russian-text">/ Выйти</span>
+                            </button>
+                        </div>
+                    `;
+                }
             } else {
                 // 로그인되지 않은 경우 (공지사항에서만 표시됨)
                 userInfoDiv.innerHTML = `<button class="btn-login" onclick="location.href='/login.html'">로그인</button>`;
@@ -942,9 +1123,11 @@
 
         // 로그아웃 처리
         function handleLogout() {
-            if (confirm('로그아웃하시겠습니까?\nВыйти из системы?')) {
+            if (confirm('로그아웃하시겠습니까? / Выйти из системы?')) {
                 localStorage.removeItem('userInfo');
-                alert('로그아웃되었습니다.\nВы вышли из системы.');
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                alert('로그아웃되었습니다 / Вы вышли из системы');
                 location.reload();
             }
         }
@@ -976,11 +1159,60 @@
         document.addEventListener('DOMContentLoaded', function() {
             const deleteBtn = document.getElementById('deleteBtn');
             if (deleteBtn) {
-                deleteBtn.addEventListener('click', function() {
+                deleteBtn.addEventListener('click', async function() {
                     if (confirm('정말로 이 게시글을 삭제하시겠습니까?\n삭제된 게시글은 복구할 수 없습니다.\n\nВы действительно хотите удалить эту запись?\nУдаленную запись невозможно восстановить.')) {
-                        // 실제로는 API 호출해서 삭제
-                        alert('게시글이 삭제되었습니다.\nЗапись удалена.');
-                        location.href = '/board-free.html';
+                        try {
+                            const token = localStorage.getItem('access_token');
+                            console.log('Delete - Token check:', token ? 'Token exists' : 'No token');
+                            console.log('Delete - isAdmin:', isAdmin);
+
+                            if (!token) {
+                                console.error('No access token found');
+                                alert('로그인이 필요합니다.\nТребуется авторизация.');
+                                // 관리자 페이지에서 온 경우 admin.html로, 아니면 login.html로
+                                const userInfo = localStorage.getItem('userInfo');
+                                if (userInfo) {
+                                    const user = JSON.parse(userInfo);
+                                    if (user.isAdmin || user.role === 'admin' || user.role === 'moderator') {
+                                        location.href = '/admin.html';
+                                        return;
+                                    }
+                                }
+                                location.href = '/login.html';
+                                return;
+                            }
+
+                            const response = await fetch(`${API_BASE}/api/posts/${postId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            if (response.status === 401) {
+                                alert('로그인이 만료되었습니다. 다시 로그인해주세요.\nСрок действия входа истек. Пожалуйста, войдите снова.');
+                                localStorage.removeItem('access_token');
+                                localStorage.removeItem('refresh_token');
+                                localStorage.removeItem('userInfo');
+                                location.href = '/login.html';
+                                return;
+                            }
+
+                            if (!response.ok) {
+                                const error = await response.json();
+                                throw new Error(error.detail || '게시글 삭제에 실패했습니다.');
+                            }
+
+                            alert('게시글이 삭제되었습니다.\nЗапись удалена.');
+
+                            // 카테고리별 목록 페이지로 이동
+                            const categorySlug = new URLSearchParams(window.location.search).get('category') || 'free';
+                            location.href = `/board-${categorySlug}.html`;
+                        } catch (error) {
+                            console.error('Delete error:', error);
+                            alert('게시글 삭제 중 오류가 발생했습니다.\nПроизошла ошибка при удалении записи.\n\n' + error.message);
+                        }
                     }
                 });
             }
@@ -1073,7 +1305,7 @@
             const commentHTML = `
                 <div class="comment-item" data-author="${currentUser}">
                     <div class="comment-header">
-                        <span class="comment-author">${currentUser}</span>
+                        <span class="comment-author">${currentUserDisplay}</span>
                         <span class="comment-date">${dateStr}</span>
                     </div>
                     <div class="comment-content">${content}</div>
@@ -1299,7 +1531,7 @@
                 if (!response.ok) {
                     if (response.status === 401) {
                         alert('로그인이 필요합니다');
-                        location.href = '/';
+                        location.href = '/index.html';
                         return;
                     }
                     throw new Error('게시글을 불러오는데 실패했습니다');
@@ -1380,8 +1612,8 @@
 
             // 본문 내용 업데이트 - korean-text, russian-text 클래스 추가
             document.querySelector('.post-content').innerHTML = `
-                <div class="korean-text">${contentKo}</div>
-                ${contentRu ? `<div class="russian-text" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">${contentRu}</div>` : ''}
+                <div class="korean-text" style="white-space: pre-wrap; text-align: left;">${contentKo}</div>
+                ${contentRu ? `<div class="russian-text" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; white-space: pre-wrap; text-align: left;">${contentRu}</div>` : ''}
             `;
 
             // 페이지 타이틀 업데이트
@@ -1411,7 +1643,7 @@
 
         function closeLoginModal() {
             document.getElementById('loginRequiredModal').style.display = 'none';
-            location.href = '/';
+            location.href = '/index.html';
         }
     </script>
 
@@ -1432,7 +1664,10 @@
                 Все доски объявлений, кроме объявлений,<br>
                 доступны после входа в систему.
             </p>
-            <button onclick="location.href='/'" style="width: 100%; padding: 14px; background: #0039A6; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s;">
+            <button onclick="location.href='/login.html'" style="width: 100%; padding: 14px; background: #0039A6; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-bottom: 10px;">
+                로그인하기 / Войти
+            </button>
+            <button onclick="location.href='/index.html'" style="width: 100%; padding: 14px; background: #fff; color: #666; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s;">
                 홈으로 이동 / На главную
             </button>
         </div>
@@ -1440,9 +1675,12 @@
 
     <script>
         function closeLoginModal() {
-            location.href = '/';
+            location.href = '/index.html';
         }
     </script>
+
+    <!-- 공통 사이드바 로드 스크립트 -->
+    <script src="/js/load-sidebar.js"></script>
 
 </body>
 </html>
