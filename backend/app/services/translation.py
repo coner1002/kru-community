@@ -37,7 +37,6 @@ def get_settings_from_db():
 class TranslationProvider(str, Enum):
     GOOGLE = "google"
     DEEPL = "deepl"
-    YANDEX = "yandex"
 
 class TranslationService:
     def __init__(self):
@@ -161,8 +160,6 @@ class TranslationService:
             return await self._translate_with_google(text, target_lang, source_lang)
         elif self.provider == TranslationProvider.DEEPL:
             return await self._translate_with_deepl(text, target_lang, source_lang)
-        elif self.provider == TranslationProvider.YANDEX:
-            return await self._translate_with_yandex(text, target_lang, source_lang)
         else:
             raise ValueError(f"지원하지 않는 번역 프로바이더: {self.provider}")
 
@@ -249,19 +246,6 @@ class TranslationService:
                 "target_lang": target_lang
             }
 
-    async def _translate_with_yandex(
-        self,
-        text: str,
-        target_lang: str,
-        source_lang: Optional[str] = None
-    ) -> Dict[str, str]:
-        """Yandex Translate API를 사용한 번역 (추후 구현)"""
-        # TODO: Yandex Translate API 구현
-        return {
-            "translated_text": text,
-            "source_lang": source_lang or "ko",
-            "target_lang": target_lang
-        }
 
     async def translate_batch(
         self,
