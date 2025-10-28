@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Board Debug Page</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        .log { margin: 10px 0; padding: 10px; background: #f5f5f5; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e9; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <h1>게시판 디버그 페이지</h1>
+    <div id="logs"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        const logs = document.getElementById('logs');
+
+        function log(message, isError = false) {
+            const div = document.createElement('div');
+            div.className = 'log ' + (isError ? 'error' : 'success');
+            div.textContent = new Date().toLocaleTimeString() + ' - ' + message;
+            logs.appendChild(div);
+        }
+
+        async function testAPI() {
+            try {
+                log('Starting API test...');
+
+                // Test without login
+                log('Testing API without login token...');
+                const response = await fetch(`${API_BASE}/api/posts/?category_id=1`);
+                log(`API Response Status: ${response.status}`);
+
+                if (!response.ok) {
+                    log(`API Error: ${response.statusText}`, true);
+                    const error = await response.text();
+                    log(`Error Details: ${error}`, true);
+                    return;
+                }
+
+                const data = await response.json();
+                log(`✓ Success! Found ${data.total} posts`);
+                log(`Posts: ${JSON.stringify(data.items.map(p => p.title))}`);
+
+            } catch (error) {
+                log(`Exception: ${error.message}`, true);
+                console.error('API Test Error:', error);
+            }
+        }
+
+        // Run test immediately
+        testAPI();
+    </script>
+</body>
+</html>

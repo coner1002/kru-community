@@ -57,3 +57,4 @@ yarn.lock
 
 # Backup
 backup/
+frontend/public/index-old.html

@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구인구직 등록 - Russian.Town</title>
+    <link rel="icon" href="data:,">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+        :root {
+            --russian-red: #DA020E;
+            --russian-blue: #0039A6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-size: 12px;
+            line-height: 1.3;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* 메인 레이아웃 */
+        .main-layout {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        /* 사이드바 */
+        .sidebar-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header {
+            background: #e8eaed;
+            border-bottom: 1px solid #d0d0d0;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-menu {
+            padding: 4px 0;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 6px 10px;
+            color: #666;
+            text-decoration: none;
+            font-size: 11px;
+            transition: background 0.2s;
+        }
+
+        .sidebar-item:hover {
+            background: #f0f0f0;
+        }
+
+        .sidebar-item.active {
+            background: #e3f2fd;
+            color: var(--russian-blue);
+            font-weight: 600;
+        }
+
+        .sidebar-header .russian-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: #666;
+            margin-left: 6px;
+        }
+
+        .sidebar-item .russian-text {
+            font-size: 9px;
+            color: #999;
+            margin-top: 1px;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 6px 0;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--russian-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, white 0%, white 33%, var(--russian-blue) 33%, var(--russian-blue) 66%, var(--russian-red) 66%, var(--russian-red) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-menu a:hover {
+            color: var(--russian-blue);
+        }
+
+        .nav-menu .russian-label {
+            font-size: 10px;
+            color: #666;
+        }
+
+        .page-header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            color: var(--russian-blue);
+            margin-bottom: 5px;
+        }
+
+        .page-header .subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .write-form {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .form-row {
+            margin-bottom: 20px;
+        }
+
+        .form-row.half {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row.half > div {
+            flex: 1;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-label .required {
+            color: var(--russian-red);
+            margin-left: 3px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Pretendard', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--russian-blue);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 150px;
+            line-height: 1.6;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--russian-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #002a75;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid var(--russian-blue);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .info-box .title {
+            font-weight: 600;
+            color: #1565c0;
+            margin-bottom: 8px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #1565c0;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* 언어 전환 버튼 */
+        .lang-switcher {
+            display: flex;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-btn.active {
+            background: var(--russian-blue);
+            color: white;
+            border-color: var(--russian-blue);
+        }
+
+        /* 러시아어 텍스트 숨기기 옵션 */
+        body[data-lang="ko"] .russian-text,
+        body[data-lang="ko"] .russian-label,
+        body[data-lang="ko"] .russian-subtitle,
+        body[data-lang="ko"] .russian-title {
+            display: none;
+        }
+
+        body[data-lang="ru"] .korean-text,
+        body[data-lang="ru"] .korean-title {
+            display: none;
+        }
+
+        body[data-lang="ru"] .russian-text,
+        body[data-lang="ru"] .russian-label,
+        body[data-lang="ru"] .russian-subtitle,
+        body[data-lang="ru"] .russian-title {
+            display: block;
+            font-size: inherit;
+            color: inherit;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon">RC</div>
+                    Russian.Town
+                </a>
+            <div class="lang-switcher">
+                <button class="lang-btn" data-lang="ko" title="한국어만 표시">한국어</button>
+                <button class="lang-btn" data-lang="ru" title="Показать только русский">Русский</button>
+                <button class="lang-btn active" data-lang="both" title="한국어+러시아어">한국어+Русский</button>
+            </div>
+                <nav class="nav-menu">
+                    <a href="/index.html">
+                        <span>홈으로가기</span>
+                        <span class="russian-label">Главная</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- 왼쪽 사이드바 -->
+            <div id="sidebar-container"></div>
+
+            <!-- 메인 컨텐츠 -->
+            <div class="content">
+        <div class="page-header">
+            <h1>구인구직 등록 Публикация вакансии</h1>
+            <div class="subtitle">구인/구직 정보를 등록해주세요 | Разместите информацию о работе</div>
+        </div>
+
+        <div class="info-box">
+            <div class="title">📌 작성 안내</div>
+            <ul>
+                <li>정확한 정보를 입력해주세요</li>
+                <li>연락처는 실제 연락 가능한 번호를 입력해주세요</li>
+                <li>허위 정보 등록 시 게시글이 삭제될 수 있습니다</li>
+            </ul>
+        </div>
+
+        <form class="write-form" id="jobForm">
+            <div class="form-row half">
+                <div>
+                    <label class="form-label">구분 Тип <span class="required">*</span></label>
+                    <select class="form-select" id="jobType" required>
+                        <option value="">선택하세요</option>
+                        <option value="구인">구인 Вакансия (ищем сотрудника)</option>
+                        <option value="구직">구직 Резюме (ищу работу)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">분야 Сфера <span class="required">*</span></label>
+                    <select class="form-select" id="category" required>
+                        <option value="">선택하세요</option>
+                        <option value="restaurant">음식점 Ресторан</option>
+                        <option value="office">사무직 Офисная работа</option>
+                        <option value="sales">영업/판매 Продажи</option>
+                        <option value="service">서비스업 Сфера услуг</option>
+                        <option value="manufacturing">제조/생산 Производство</option>
+                        <option value="construction">건설 Строительство</option>
+                        <option value="it">IT/개발 IT/Разработка</option>
+                        <option value="education">교육 Образование</option>
+                        <option value="translation">통역/번역 Перевод</option>
+                        <option value="etc">기타 Прочее</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="form-label">제목 Название <span class="required">*</span></label>
+                <input type="text" class="form-input" id="title" placeholder="예: 한식당 홀 서빙 직원 구합니다" required>
+            </div>
+
+            <div class="form-row half">
+                <div>
+                    <label class="form-label">회사명 / 이름 Компания/Имя <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="companyName" placeholder="예: (주)한국식당" required>
+                </div>
+                <div>
+                    <label class="form-label">지역 Регион <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="location" placeholder="예: 서울 강남구" required>
+                </div>
+            </div>
+
+            <div class="form-row half">
+                <div>
+                    <label class="form-label">급여 Зарплата <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="salary" placeholder="예: 월 250만원, 시급 15,000원" required>
+                </div>
+                <div>
+                    <label class="form-label">고용형태 Тип занятости <span class="required">*</span></label>
+                    <select class="form-select" id="employmentType" required>
+                        <option value="">선택하세요</option>
+                        <option value="정규직">정규직 Полная занятость</option>
+                        <option value="계약직">계약직 Контракт</option>
+                        <option value="아르바이트">아르바이트 Частичная занятость</option>
+                        <option value="인턴">인턴 Стажировка</option>
+                        <option value="프리랜서">프리랜서 Фриланс</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row half">
+                <div>
+                    <label class="form-label">경력 Опыт</label>
+                    <select class="form-select" id="experience">
+                        <option value="무관">무관 Не важен</option>
+                        <option value="신입">신입 Без опыта</option>
+                        <option value="1년이상">1년 이상 1+ год</option>
+                        <option value="3년이상">3년 이상 3+ года</option>
+                        <option value="5년이상">5년 이상 5+ лет</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">근무시간 Рабочие часы</label>
+                    <input type="text" class="form-input" id="workingHours" placeholder="예: 09:00 ~ 18:00">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="form-label">상세설명 Описание <span class="required">*</span></label>
+                <textarea class="form-textarea" id="description" placeholder="담당업무, 자격요건, 우대사항, 복리후생 등을 작성해주세요&#10;&#10;- 담당업무:&#10;- 자격요건:&#10;- 우대사항:&#10;- 복리후생:" required></textarea>
+            </div>
+
+            <div class="form-row half">
+                <div>
+                    <label class="form-label">연락처 Контакт <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="contact" placeholder="예: 010-1234-5678" required>
+                </div>
+                <div>
+                    <label class="form-label">이메일 Email</label>
+                    <input type="email" class="form-input" id="email" placeholder="예: contact@company.kr">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="form-label">마감일 Крайний срок</label>
+                <input type="date" class="form-input" id="deadline">
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">등록하기 Опубликовать</button>
+                <button type="button" class="btn btn-secondary" onclick="history.back()">취소 Отмена</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // 폼 제출
+        document.getElementById('jobForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // 로그인 체크
+            const userInfo = localStorage.getItem('userInfo');
+            if (!userInfo) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            const user = JSON.parse(userInfo);
+
+            // 폼 데이터 수집
+            const formData = {
+                category_slug: 'job',
+                title: document.getElementById('title').value,
+                content: document.getElementById('description').value,
+                metadata: {
+                    job_type: document.getElementById('jobType').value,
+                    category: document.getElementById('category').value,
+                    company_name: document.getElementById('companyName').value,
+                    location: document.getElementById('location').value,
+                    salary: document.getElementById('salary').value,
+                    employment_type: document.getElementById('employmentType').value,
+                    experience: document.getElementById('experience').value,
+                    working_hours: document.getElementById('workingHours').value,
+                    contact: document.getElementById('contact').value,
+                    email: document.getElementById('email').value,
+                    deadline: document.getElementById('deadline').value
+                }
+            };
+
+            try {
+                const response = await fetch('http://localhost:8000/api/posts/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token || 'dummy-token'}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('등록되었습니다!');
+                    window.location.href = '/board-job.html';
+                } else {
+                    const error = await response.json();
+                    alert('등록 실패: ' + (error.detail || '알 수 없는 오류'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('서버 연결 실패');
+            }
+        });
+
+        // 페이지 로드 시 로그인 체크
+        window.addEventListener('DOMContentLoaded', function() {
+            const userInfo = localStorage.getItem('userInfo');
+            if (!userInfo) {
+                if (confirm('로그인이 필요한 페이지입니다. 로그인 페이지로 이동하시겠습니까?')) {
+                    window.location.href = '/login.html';
+                } else {
+                    history.back();
+                }
+            }
+        });
+    </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

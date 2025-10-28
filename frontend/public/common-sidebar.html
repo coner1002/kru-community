@@ -1,0 +1,101 @@
+<aside class="sidebar">
+    <!-- 게시판 메뉴 -->
+    <div class="sidebar-section">
+        <div class="sidebar-header">
+            <span class="korean-text">게시판</span>
+            <div class="russian-text">Доски объявлений</div>
+        </div>
+        <div class="sidebar-menu" id="boardMenuList">
+            <!-- 동적으로 로드됨 -->
+        </div>
+    </div>
+</aside>
+
+<script>
+    // API에서 게시판 메뉴 동적 생성
+    const API_BASE_URL = 'http://localhost:8000';
+
+    // 현재 페이지의 slug 추출
+    function getCurrentSlug() {
+        const currentPage = window.location.pathname.split('/').pop();
+        const match = currentPage.match(/board-(\w+)\.html/);
+        return match ? match[1] : '';
+    }
+
+    const CURRENT_SLUG = getCurrentSlug();
+
+    async function loadBoardMenu() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/categories/`);
+            if (!response.ok) {
+                console.error('카테고리 로드 실패:', response.status);
+                return;
+            }
+
+            const categories = await response.json();
+            const menuList = document.getElementById('boardMenuList');
+
+            if (!menuList) {
+                console.error('boardMenuList 요소를 찾을 수 없습니다');
+                return;
+            }
+
+            if (categories && categories.length > 0) {
+                // 활성화된 카테고리만 필터링하고 sort_order로 정렬
+                const activeCategories = categories
+                    .filter(cat => cat.is_active)
+                    .sort((a, b) => a.sort_order - b.sort_order);
+
+                menuList.innerHTML = activeCategories.map(cat => {
+                    const isActive = cat.slug === CURRENT_SLUG ? ' active' : '';
+                    // 그룹 헤더인 경우
+                    if (cat.is_group) {
+                        return `
+                            <div class="sidebar-header" style="margin-top: 20px;">
+                                <span class="korean-text">${cat.name_ko || cat.slug}</span>
+                                <div class="russian-text">${cat.name_ru || ''}</div>
+                            </div>
+                        `;
+                    }
+
+                    // layout_type에 따라 페이지 URL 결정
+                    const isContactForm = cat.layout_type === 'form';
+                    const pageUrl = isContactForm ? `/contact-${cat.slug}.html` : `/board-${cat.slug}.html`;
+
+                    // 일반 게시판 또는 문의 양식
+                    return `
+                        <a href="${pageUrl}" class="sidebar-item${isActive}">
+                            <span class="korean-text">${cat.icon || '📋'} ${cat.name_ko || cat.slug}</span>
+                            <div class="russian-text">${cat.name_ru || ''}</div>
+                        </a>
+                    `;
+                }).join('');
+            } else {
+                menuList.innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #999;">
+                        <span class="korean-text">게시판이 없습니다</span><br>
+                        <span class="russian-text">Нет досок</span>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error('게시판 메뉴 로드 오류:', error);
+            const menuList = document.getElementById('boardMenuList');
+            if (menuList) {
+                menuList.innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #f44336;">
+                        <span class="korean-text">로드 실패</span><br>
+                        <span class="russian-text">Ошибка загрузки</span>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    // 페이지 로드 시 실행
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadBoardMenu);
+    } else {
+        loadBoardMenu();
+    }
+</script>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 게시판 - Russian.Town</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['GmarketSans', 'Pretendard', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="config.js"></script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+        @import url('https://webfontworld.github.io/gmarket/GmarketSans.css');
+
+        :root {
+            --russian-red: #DA020E;
+            --russian-blue: #0039A6;
+            --russian-white: #FFFFFF;
+            --text-gray: #6b7280;
+            --light-red: #FEF2F2;
+            --light-blue: #EFF6FF;
+        }
+
+        body {
+            font-family: 'Gmarket Sans', 'Noto Sans KR', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* 게시판 테이블 스타일 */
+        .board-table {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .board-table th {
+            background-color: #f8f9fa;
+            color: #374151;
+            font-weight: 600;
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .board-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 14px;
+        }
+
+        .board-table tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .post-title {
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .post-title:hover {
+            color: var(--russian-blue);
+        }
+
+        .comment-count {
+            color: var(--russian-red);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .category-tag {
+            background-color: #e5e7eb;
+            color: #6b7280;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .category-tag.life { background-color: #dcfce7; color: #16a34a; }
+        .category-tag.admin { background-color: #dbeafe; color: #2563eb; }
+        .category-tag.community { background-color: #f3e8ff; color: #9333ea; }
+        .category-tag.business { background-color: #fef3c7; color: #d97706; }
+
+        /* 사이드바 스타일 */
+        .sidebar {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 8px 12px;
+            color: #6b7280;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .sidebar-item:hover, .sidebar-item.active {
+            background-color: var(--light-blue);
+            color: var(--russian-blue);
+        }
+
+        /* 검색 박스 스타일 */
+        .search-box {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* 페이지네이션 스타일 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .pagination a, .pagination span {
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .pagination a {
+            color: #6b7280;
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        .pagination a:hover {
+            background-color: var(--light-blue);
+            color: var(--russian-blue);
+        }
+
+        .pagination .current {
+            background-color: var(--russian-blue);
+            color: white;
+        }
+
+        /* 글쓰기 버튼 */
+        .write-btn {
+            background: linear-gradient(135deg, var(--russian-red), #ff4757);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(218, 2, 14, 0.3);
+            transition: all 0.2s;
+        }
+
+        .write-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(218, 2, 14, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-xl font-bold" style="color: var(--russian-blue);">
+                        Russian.Town
+                    </a>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-600">홈</a>
+                    <a href="board.html" class="text-blue-600 font-semibold">커뮤니티</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600">파트너</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600">소개</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-blue-600">언어</button>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">로그인</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- 사이드바 -->
+            <div class="lg:col-span-1">
+                <!-- 검색 박스 -->
+                <div class="search-box">
+                    <h3 class="font-semibold text-gray-800 mb-3">게시글 검색</h3>
+                    <div class="flex">
+                        <input type="text" placeholder="검색어 입력"
+                               class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 text-sm">
+                            검색
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 카테고리 메뉴 -->
+                <div class="sidebar">
+                    <h3 class="font-semibold text-gray-800 mb-4">카테고리</h3>
+                    <div class="space-y-1">
+                        <a href="#" class="sidebar-item active">전체 게시글</a>
+                        <a href="#" class="sidebar-item">생활 적응·정보</a>
+                        <a href="#" class="sidebar-item">행정·언어 지원</a>
+                        <a href="#" class="sidebar-item">커뮤니티·소통</a>
+                        <a href="#" class="sidebar-item">비즈니스·경제</a>
+                    </div>
+                </div>
+
+                <!-- 최근 인기글 -->
+                <div class="sidebar mt-6">
+                    <h3 class="font-semibold text-gray-800 mb-4">인기 게시글</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <a href="#" class="text-sm text-gray-700 hover:text-blue-600 block">
+                                한국 은행계좌 개설 완벽 가이드 <span class="comment-count">[24]</span>
+                            </a>
+                            <div class="text-xs text-gray-500 mt-1">김민수 · 1시간 전</div>
+                        </div>
+                        <div>
+                            <a href="#" class="text-sm text-gray-700 hover:text-blue-600 block">
+                                서울 맛집 추천 - 러시아 음식점 <span class="comment-count">[18]</span>
+                            </a>
+                            <div class="text-xs text-gray-500 mt-1">Анна · 2시간 전</div>
+                        </div>
+                        <div>
+                            <a href="#" class="text-sm text-gray-700 hover:text-blue-600 block">
+                                카카오톡 사용법 완전정복 <span class="comment-count">[12]</span>
+                            </a>
+                            <div class="text-xs text-gray-500 mt-1">Pavel · 3시간 전</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 게시판 메인 -->
+            <div class="lg:col-span-3">
+                <!-- 게시판 헤더 -->
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">커뮤니티 게시판</h1>
+                        <p class="text-gray-600 mt-1">한국-러시아 교류를 위한 소통 공간입니다</p>
+                    </div>
+                    <a href="#" class="write-btn">글쓰기</a>
+                </div>
+
+                <!-- 게시글 목록 -->
+                <div class="board-table">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="text-left w-12">번호</th>
+                                <th class="text-left">제목</th>
+                                <th class="text-center w-24">작성자</th>
+                                <th class="text-center w-24">날짜</th>
+                                <th class="text-center w-16">조회</th>
+                                <th class="text-center w-16">추천</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 공지사항 -->
+                            <tr class="bg-blue-50">
+                                <td class="text-center"><span class="text-blue-600 font-semibold">공지</span></td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <span class="category-tag admin mr-2">공지</span>
+                                        <a href="#" class="post-title font-semibold">🎉 Russian.Town 커뮤니티 오픈 안내</a>
+                                        <span class="comment-count ml-2">[15]</span>
+                                    </div>
+                                </td>
+                                <td class="text-center text-gray-600">관리자</td>
+                                <td class="text-center text-gray-600">01-20</td>
+                                <td class="text-center text-gray-600">1,245</td>
+                                <td class="text-center text-gray-600">32</td>
+                            </tr>
+
+                            <!-- 일반 게시글 -->
+                            <tr>
+                                <td class="text-center text-gray-600">156</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <span class="category-tag life mr-2">생활</span>
+                                        <a href="#" class="post-title">한국 은행계좌 개설하는 방법 정리했습니다</a>
+                                        <span class="comment-count ml-2">[24]</span>
+                                        <span class="text-xs text-green-600 ml-2">NEW</span>
+                                    </div>
+                                </td>
+                                <td class="text-center text-gray-600">김민수</td>
+                                <td class="text-center text-gray-600">01-22</td>
+                                <td class="text-center text-gray-600">432</td>
+                                <td class="text-center text-gray-600">18</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center text-gray-600">155</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <span class="category-tag community mr-2">소통</span>
+                                        <a href="#" class="post-title">서울에서 러시아 음식점 찾기 힘드네요 ㅠㅠ</a>
+                                        <span class="comment-count ml-2">[35]</span>
+                                        <span class="text-xs text-red-500 ml-2">HOT</span>
+                                    </div>
+                                </td>
+                                <td class="text-center text-gray-600">Анна</td>
+                                <td class="text-center text-gray-600">01-22</td>
+                                <td class="text-center text-gray-600">789</td>
+                                <td class="text-center text-gray-600">45</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center text-gray-600">154</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <span class="category-tag admin mr-2">행정</span>
+                                        <a href="#" class="post-title">비자 연장 신청 후기 및 팁 공유</a>
+                                        <span class="comment-count ml-2">[8]</span>
+                                    </div>
+                                </td>
+                                <td class="text-center text-gray-600">МихаÐл</td>
+                                <td class="text-center text-gray-600">01-21</td>
+                                <td class="text-center text-gray-600">356</td>
+                                <td class="text-center text-gray-600">12</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center text-gray-600">153</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <span class="category-tag business mr-2">비즈니스</span>
+                                        <a href="#" class="post-title">한국에서 러시아어 과외 선생님 구합니다</a>
+                                        <span class="comment-count ml-2">[12]</span>
+                                    </div>
+                                </td>
+                                <td class="text-center text-gray-600">박지영</td>
+                                <td class="text-center text-gray-600">01-21</td>
+                                <td class="text-center text-gray-600">234</td>
+                                <td class="text-center text-gray-600">7</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center text-gray-600">152</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <span class="category-tag life mr-2">생활</span>
+                                        <a href="#" class="post-title">카카오톡 사용법 처음부터 끝까지 설명</a>
+                                        <span class="comment-count ml-2">[18]</span>
+                                    </div>
+                                </td>
+                                <td class="text-center text-gray-600">Pavel</td>
+                                <td class="text-center text-gray-600">01-20</td>
+                                <td class="text-center text-gray-600">567</td>
+                                <td class="text-center text-gray-600">22</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center text-gray-600">151</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <span class="category-tag community mr-2">소통</span>
+                                        <a href="#" class="post-title">안녕하세요! 한국 온지 3개월된 러시아인입니다</a>
+                                        <span class="comment-count ml-2">[25]</span>
+                                    </div>
+                                </td>
+                                <td class="text-center text-gray-600">ЕкатериÐна</td>
+                                <td class="text-center text-gray-600">01-20</td>
+                                <td class="text-center text-gray-600">445</td>
+                                <td class="text-center text-gray-600">31</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center text-gray-600">150</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <span class="category-tag admin mr-2">행정</span>
+                                        <a href="#" class="post-title">주민등록증 발급 관련 질문 있습니다</a>
+                                        <span class="comment-count ml-2">[6]</span>
+                                    </div>
+                                </td>
+                                <td class="text-center text-gray-600">이현우</td>
+                                <td class="text-center text-gray-600">01-19</td>
+                                <td class="text-center text-gray-600">198</td>
+                                <td class="text-center text-gray-600">4</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center text-gray-600">149</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <span class="category-tag life mr-2">생활</span>
+                                        <a href="#" class="post-title">한국 생활 적응을 위한 필수 앱 추천</a>
+                                        <span class="comment-count ml-2">[14]</span>
+                                    </div>
+                                </td>
+                                <td class="text-center text-gray-600">Владимир</td>
+                                <td class="text-center text-gray-600">01-19</td>
+                                <td class="text-center text-gray-600">389</td>
+                                <td class="text-center text-gray-600">16</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center text-gray-600">148</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <span class="category-tag business mr-2">비즈니스</span>
+                                        <a href="#" class="post-title">러시아-한국 수입/수출 비즈니스 관심있으신분</a>
+                                        <span class="comment-count ml-2">[9]</span>
+                                    </div>
+                                </td>
+                                <td class="text-center text-gray-600">알렉세이</td>
+                                <td class="text-center text-gray-600">01-18</td>
+                                <td class="text-center text-gray-600">276</td>
+                                <td class="text-center text-gray-600">5</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center text-gray-600">147</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <span class="category-tag community mr-2">소통</span>
+                                        <a href="#" class="post-title">주말에 같이 한강 나들이 하실분 계신가요?</a>
+                                        <span class="comment-count ml-2">[11]</span>
+                                    </div>
+                                </td>
+                                <td class="text-center text-gray-600">Ольга</td>
+                                <td class="text-center text-gray-600">01-18</td>
+                                <td class="text-center text-gray-600">322</td>
+                                <td class="text-center text-gray-600">8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 페이지네이션 -->
+                <div class="pagination">
+                    <a href="#">‹ 이전</a>
+                    <span class="current">1</span>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <span>...</span>
+                    <a href="#">10</a>
+                    <a href="#">다음 ›</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="bg-gray-900 text-white mt-16">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <h3 class="text-lg font-semibold mb-4">Russian.Town</h3>
+                    <p class="text-gray-400">한국-러시아 교류의 중심, 함께 만들어가는 커뮤니티</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold mb-4 uppercase tracking-wider">링크</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">소개</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">이용약관</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">개인정보처리방침</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold mb-4 uppercase tracking-wider">문의</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">문의하기</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800">
+                <p class="text-center text-gray-400">© 2025 Russian.Town Community. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 기본 인터랙션 스크립트
+        document.addEventListener('DOMContentLoaded', function() {
+            // 카테고리 메뉴 클릭 이벤트
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sidebarItems.forEach(si => si.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 검색 기능
+            const searchBtn = document.querySelector('.search-box button');
+            const searchInput = document.querySelector('.search-box input');
+
+            searchBtn.addEventListener('click', function() {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm) {
+                    console.log('검색어:', searchTerm);
+                    // 여기에 실제 검색 로직 구현
+                }
+            });
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

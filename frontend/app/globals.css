@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* 언어 전환 기능 */
+.korean-text {
+  display: inline;
+}
+
+.russian-text,
+.russian-label {
+  display: inline;
+  font-size: 0.9em;
+  color: #666;
+}
+
+/* 한국어만 보기 */
+body[data-lang="ko"] .russian-text,
+body[data-lang="ko"] .russian-label {
+  display: none;
+}
+
+/* 러시아어만 보기 */
+body[data-lang="ru"] .korean-text {
+  display: none;
+}
+
+body[data-lang="ru"] .russian-text,
+body[data-lang="ru"] .russian-label {
+  display: inline;
+  font-size: inherit;
+  color: inherit;
+}

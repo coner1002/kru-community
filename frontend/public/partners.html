@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>입점업체 - Russian.Town</title>
+    <link rel="icon" href="data:,">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+        /* PT Sans Narrow 대체 폰트 */
+
+        :root {
+            --russian-red: #C1272D;
+            --russian-blue: #0039A6;
+            --russian-gold: #D4AF37;
+            --russian-navy: #002B5C;
+            --russian-white: #FFFFFF;
+            --russian-light-blue: #4A90E2;
+            --russian-cream: #F5F3EE;
+            --gradient-primary: linear-gradient(135deg, var(--russian-blue) 0%, var(--russian-light-blue) 100%);
+            --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #F4E4B3 100%);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #2c3e50;
+            background: linear-gradient(to bottom, #f8f9fa 0%, var(--russian-cream) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* 헤더 */
+        .header {
+            background: var(--gradient-primary);
+            box-shadow: var(--shadow-md);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: white !important;
+            text-decoration: none !important;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, white 0%, white 33%, var(--russian-blue) 33%, var(--russian-blue) 66%, var(--russian-red) 66%, var(--russian-red) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border: 3px solid white;
+        }
+
+        .search-box {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 38px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 0 45px 0 18px;
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--russian-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            background: white;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            background: var(--gradient-gold);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .nav-menu a {
+            color: white !important;
+            text-decoration: none !important;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--russian-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-menu a:hover::after {
+            width: 80%;
+        }
+
+        /* 메인 레이아웃 */
+        .main-layout {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        /* 사이드바 */
+        .sidebar-section {
+            background: white;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-section:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .sidebar-header {
+            background: var(--gradient-primary);
+            border-bottom: none;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-header .korean-text {
+            font-weight: 700;
+            color: white !important;
+        }
+
+        .sidebar-header .russian-text {
+            font-size: 9px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9) !important;
+            margin-left: 4px;
+        }
+
+        .sidebar-menu {
+            padding: 4px 0;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 6px 12px;
+            font-size: 11px;
+            color: #333 !important;
+            text-decoration: none !important;
+            border-bottom: 1px solid #f5f5f5;
+            transition: all 0.2s ease;
+            position: relative;
+            line-height: 1.3;
+        }
+
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: var(--gradient-gold);
+            transition: width 0.3s ease;
+        }
+
+        .sidebar-item:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-item:hover {
+            background: #f8f9fa;
+            padding-left: 16px;
+        }
+
+        .sidebar-item:hover::before {
+            width: 4px;
+        }
+
+        .sidebar-item.active {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            color: var(--russian-navy) !important;
+            font-weight: 600;
+            border-left: 4px solid var(--russian-gold);
+            padding-left: 8px;
+        }
+
+        .russian-text {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            font-size: 9px;
+            color: #666;
+            margin-top: 1px;
+            font-weight: normal;
+        }
+
+        /* 언어 전환 버튼 */
+        .language-switcher {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 3px 8px;
+            margin: 0 2px;
+            cursor: pointer;
+            font-size: 11px;
+            border-radius: 3px;
+        }
+
+        .lang-btn.active {
+            background: var(--russian-blue);
+            color: white;
+            border-color: var(--russian-blue) !important;
+        }
+
+        .lang-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-btn.active:hover {
+            background: var(--russian-blue);
+        }
+
+
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 25px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--russian-blue) !important;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-label {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 4px;
+            font-weight: 500;
+            font-size: 11px;
+            color: #333 !important;
+        }
+
+        .form-label .korean-text {
+            color: #333 !important;
+        }
+
+        .form-label .russian-text {
+            color: #666;
+            font-size: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--russian-blue) !important;
+        }
+
+        .form-submit {
+            width: 100%;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .form-submit:hover {
+            background: #002a75;
+        }
+
+        .form-submit .russian-text {
+            color: white !important;
+        }
+
+        .social-login {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .social-title {
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 11px;
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow: hidden;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
+            padding: 8px 30px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            background: #fff;
+            color: #333 !important;
+            text-decoration: none !important;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            min-height: 35px !important;
+            width: 90% !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transform: none !important;
+        }
+
+        .social-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-right: 4px;
+        }
+
+        .social-btn-text {
+            flex: 1;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .social-btn:hover {
+            background: #f9f9f9;
+        }
+
+        .social-btn.kakao {
+            border-color: #fee500;
+            background: #fee500;
+            color: #000;
+        }
+
+        .social-btn.naver {
+            border-color: #03c75a;
+            background: #03c75a;
+            color: white;
+        }
+
+        .social-btn.yandex {
+            border-color: #ffcc00;
+            background: #ffcc00;
+            color: #000;
+        }
+
+        .social-btn.vk {
+            border-color: #4c75a3;
+            background: #4c75a3;
+            color: white;
+        }
+
+        .social-btn.telegram {
+            border-color: #0088cc;
+            background: #0088cc;
+            color: white;
+        }
+
+        .modal-switch {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .switch-text-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .switch-link-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-switch a {
+            color: var(--russian-blue) !important;
+            text-decoration: none !important;
+        }
+
+        .modal-switch a:hover {
+            text-decoration: underline;
+        }
+
+        /* 언어 표시 클래스 - 우선순위 높임 */
+        body.korean .russian-text { display: none !important; }
+        body.korean .korean-text { display: block !important; }
+
+        body.russian .korean-text { display: none !important; }
+        body.russian .russian-text { display: block !important; }
+
+        body.bilingual .russian-text { display: block !important; }
+        body.bilingual .korean-text { display: block !important; }
+
+        /* 기본 텍스트 표시 */
+        .korean-text {
+            display: block;
+        }
+
+        .russian-text {
+            display: none; /* 기본적으로 숨김 */
+        }
+
+        /* 통계 영역 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            padding: 8px;
+        }
+
+        .stats-item {
+            text-align: center;
+            padding: 6px;
+            background: #f8f9fa;
+            border-radius: 3px;
+        }
+
+        .stats-number {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--russian-blue) !important;
+            margin-bottom: 1px;
+        }
+
+        .stats-label {
+            font-size: 9px;
+            color: #666;
+        }
+
+        /* 컨텐츠 영역 */
+        .content-section {
+            background: white;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .content-tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .tab-item {
+            padding: 8px 15px;
+            font-size: 12px;
+            color: #666;
+            background: #f8f9fa;
+            border-right: 1px solid #e0e0e0;
+            cursor: pointer;
+            text-decoration: none !important;
+        }
+
+        .tab-item:last-child {
+            border-right: none;
+        }
+
+        .tab-item.active {
+            background: white;
+            color: #333 !important;
+            font-weight: 500;
+        }
+
+        /* 게시글 목록 테이블 - Russian Theme */
+        .post-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .post-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .post-table th {
+            background: var(--gradient-primary);
+            padding: 10px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white !important;
+            text-align: center;
+            border: none;
+        }
+
+        .post-table th:first-child {
+            width: 60px;
+            border-radius: 10px 0 0 0;
+        }
+
+        .post-table th:nth-child(2) {
+            text-align: left;
+            padding-left: 15px;
+        }
+
+        .post-table th:nth-child(3) {
+            width: 100px;
+        }
+
+        .post-table th:nth-child(4) {
+            width: 80px;
+        }
+
+        .post-table th:nth-child(5) {
+            width: 60px;
+        }
+
+        .post-table th:nth-child(6) {
+            width: 60px;
+            border-radius: 0 10px 0 0;
+        }
+
+        .post-table td {
+            padding: 12px 8px;
+            font-size: 12px;
+            vertical-align: middle;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .post-table tbody tr:hover {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+            transform: translateX(2px);
+        }
+
+        .post-table tbody tr:hover td {
+            background: transparent;
+        }
+
+        /* 공지글 스타일 - Russian Theme */
+        .notice-row {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.12) 0%, rgba(255, 255, 255, 0) 100%) !important;
+            border-left: 4px solid var(--russian-gold) !important;
+        }
+
+        .notice-row:hover {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.18) 0%, rgba(255, 255, 255, 0) 100%) !important;
+            transform: translateX(2px);
+        }
+
+        .notice-row .post-number {
+            color: var(--russian-gold) !important;
+            font-weight: 700 !important;
+        }
+
+        .notice-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #ff6b00;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 3px;
+            margin-right: 6px;
+        }
+
+        .post-number {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* 제목 영역 */
+        .post-title-cell {
+            text-align: left;
+            padding-left: 15px !important;
+        }
+
+        .post-title-link {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .post-title-link:hover {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        /* 말머리 */
+        .post-prefix {
+            display: inline-block;
+            padding: 2px 6px;
+            background: #f0f0f0;
+            color: #666;
+            font-size: 11px;
+            border-radius: 3px;
+            margin-right: 6px;
+            font-weight: 500;
+        }
+
+        .post-prefix.notice {
+            background: #ff6b00;
+            color: white;
+        }
+
+        /* 제목 텍스트 */
+        .post-title-text {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .korean-title {
+            font-size: 13px;
+            color: #333;
+            font-weight: 400;
+        }
+
+        .russian-title {
+            font-size: 11px;
+            color: #999;
+            margin-left: 4px;
+        }
+
+        /* 댓글 수 */
+        .comment-count {
+            color: #ff3d00 !important;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        /* 작성자 */
+        .post-author {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* 날짜 */
+        .post-date {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* 조회수 */
+        .post-views {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* 추천수 */
+        .post-likes {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* Popular posts styling */
+        .popular-post-link {
+            color: #333;
+            text-decoration: none;
+            display: flex !important;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .popular-post-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .popular-comment-count {
+            color: var(--russian-red);
+            font-size: 11px;
+            font-weight: 500;
+            flex-shrink: 0 !important;
+            white-space: nowrap !important;
+            margin-left: 8px;
+            display: inline-block !important;
+            min-width: fit-content;
+        }
+
+        /* 6-column grid layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 8px;
+            height: 750px;
+            margin: 10px 0;
+        }
+
+        .board-section {
+            background: #f8f9fa;
+            padding: 8px;
+            overflow: hidden;
+        }
+
+        .board-header {
+            font-size: 13px;
+            font-weight: 700;
+            color: #333 !important;
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #e0e0e0;
+            position: relative;
+        }
+
+        .board-header .korean-text {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .board-header .russian-text {
+            display: block;
+            font-size: 10px;
+            color: #666;
+            font-weight: 700;
+            margin-top: 1px;
+        }
+
+        .board-header .view-all {
+            font-size: 11px;
+            color: #666;
+            text-decoration: none !important;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .board-header .view-all:hover {
+            color: var(--russian-blue) !important;
+        }
+
+        .board-posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .board-post-item {
+            margin-bottom: 2px;
+            padding-bottom: 1px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .board-post-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .board-post-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            color: #333 !important;
+            text-decoration: none !important;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        .board-post-link:hover {
+            color: var(--russian-blue) !important;
+        }
+
+        .board-post-title-wrapper {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .board-post-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-bottom: 0px;
+        }
+
+        .board-post-title.korean-text {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .board-post-title.russian-text {
+            font-size: 9px;
+            color: #666;
+            font-weight: normal;
+        }
+
+        .board-post-date {
+            flex-shrink: 0;
+            color: #666;
+            font-size: 9px;
+            margin-left: 6px;
+        }
+
+        /* Register link styling */
+        .register-link {
+            text-align: center;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .register-link a {
+            color: var(--russian-blue) !important;
+            text-decoration: none !important;
+            font-size: 12px;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .post-author {
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .post-date {
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+        }
+
+        .notice-row {
+            background: #fff9e6;
+        }
+
+        .notice-row .post-number {
+            color: #f39c12;
+            font-weight: 600;
+        }
+
+        .notice-row .post-title {
+            color: #e67e22;
+            font-weight: 500;
+        }
+
+        /* 우측 사이드바 */
+        .right-sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .widget {
+            background: white;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .widget:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .widget-header {
+            background: var(--gradient-primary);
+            border-bottom: none;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .widget-header .korean-text {
+            font-weight: 700;
+            color: white;
+        }
+
+        .widget-header .russian-text {
+            font-size: 9px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-left: 4px;
+        }
+
+        .widget-content {
+            padding: 10px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .login-input {
+            height: 28px;
+            border: 1px solid #ddd;
+            padding: 0 8px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+
+        .login-btn {
+            height: 28px;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            font-size: 12px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .social-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+        }
+
+        .naver { background: #03c75a; }
+        .kakao { background: #fee500; color: #000; }
+        .facebook { background: #4267b2; }
+        .google { background: #db4437; }
+
+        /* 메인 화면 가로 소셜 버튼 */
+        .main-social {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 4px;
+        }
+
+        .main-social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 6px;
+            flex: 1;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            color: white;
+            padding: 0 8px;
+            transition: all 0.2s;
+        }
+
+        .main-social-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .main-social-btn .social-icon {
+            font-weight: bold;
+            font-size: 14px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-social-btn .social-text {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .main-social-btn.naver { background: #03c75a; }
+        .main-social-btn.kakao { background: #fee500; color: #000; }
+        .main-social-btn.yandex { background: #ffcc00; color: #000; }
+        .main-social-btn.vk { background: #4c75a3; }
+        .main-social-btn.telegram { background: #0088cc; }
+
+        /* 국가별 소셜 로그인 섹션 */
+        .country-section {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .country-group {
+            margin-bottom: 15px;
+        }
+
+        .country-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 햄버거 메뉴 버튼 */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 15px;
+            z-index: 1001;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-login-btn {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 15px;
+            z-index: 1001;
+            background: var(--russian-red);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .search-box {
+                display: none;
+            }
+
+            .language-switcher {
+                font-size: 10px;
+                gap: 3px;
+            }
+
+            .lang-btn {
+                padding: 3px 6px;
+                font-size: 10px;
+            }
+
+            .mobile-menu-btn,
+            .mobile-login-btn {
+                display: flex;
+            }
+
+            .main-layout {
+                display: block;
+                margin-top: 70px;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 280px;
+                height: 100vh;
+                background: white;
+                z-index: 1000;
+                overflow-y: auto;
+                transition: left 0.3s ease;
+                padding-top: 60px;
+                box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .right-sidebar {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 300px;
+                height: 100vh;
+                background: white;
+                z-index: 1000;
+                overflow-y: auto;
+                transition: right 0.3s ease;
+                padding-top: 60px;
+                box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+            }
+
+            .right-sidebar.active {
+                right: 0;
+            }
+
+            .content {
+                width: 100%;
+                padding: 0 10px;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, auto);
+                height: auto;
+                gap: 10px;
+            }
+
+            .board-section {
+                min-height: 300px;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .main-layout {
+                flex-direction: column;
+            }
+
+            .sidebar, .right-sidebar {
+                width: 100%;
+            }
+        }
+
+        /* 언어 전환 버튼 */
+        .lang-switcher {
+            display: flex;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-btn.active {
+            background: var(--russian-blue);
+            color: white;
+            border-color: var(--russian-blue) !important;
+        }
+
+        /* 러시아어 텍스트 숨기기 옵션 */
+        body[data-lang="ko"] .russian-text,
+        body[data-lang="ko"] .russian-label,
+        body[data-lang="ko"] .russian-subtitle,
+        body[data-lang="ko"] .russian-title {
+            display: none;
+        }
+
+        body[data-lang="ru"] .korean-text,
+        body[data-lang="ru"] .korean-label,
+        body[data-lang="ru"] .korean-subtitle,
+        body[data-lang="ru"] .korean-title {
+            display: none !important;
+        }
+
+        body[data-lang="ru"] .russian-text,
+        body[data-lang="ru"] .russian-label,
+        body[data-lang="ru"] .russian-subtitle,
+        body[data-lang="ru"] .russian-title {
+            display: block;
+            font-size: inherit;
+            color: inherit;
+        }
+
+        /* 양쪽 언어 모두 표시 */
+        body[data-lang="both"] .russian-text,
+        body[data-lang="both"] .russian-label,
+        body[data-lang="both"] .russian-subtitle {
+            display: block;
+            font-size: inherit;
+            color: inherit;
+        }
+
+        body[data-lang="both"] .korean-text {
+            display: block;
+        }
+
+
+        .post-title-cell {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+
+        .post-table a,
+        .post-table a:link,
+        .post-table a:visited,
+        .post-title-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #333 !important;
+            text-decoration: none !important;
+            width: 100%;
+        }
+
+        .post-table a:hover,
+        .post-title-link:hover {
+            color: var(--russian-blue) !important;
+        }
+
+        .post-title-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .korean-title {
+            font-size: 13px;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: inherit !important;
+        }
+
+        .russian-title {
+            font-size: 11px;
+            color: #666 !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .comment-count {
+            margin-left: 8px;
+            color: var(--russian-red);
+            font-size: 11px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+    
+
+    </style>
+
+    <script>
+        // 로그인 체크 및 모달 표시 (즉시 실행)
+        (function() {
+            const userInfoStr = localStorage.getItem('userInfo');
+            if (!userInfoStr) {
+                // 즉시 모달 표시 함수 정의
+                function showModal() {
+                    const modal = document.getElementById('loginRequiredModal');
+                    if (modal) {
+                        modal.style.display = 'flex';
+                        return true;
+                    }
+                    return false;
+                }
+
+                // 즉시 시도
+                if (!showModal()) {
+                    // 모달이 아직 로드되지 않았다면 DOMContentLoaded에서 재시도
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', showModal);
+                    } else {
+                        // DOM이 이미 로드되었다면 약간의 딜레이 후 재시도
+                        setTimeout(showModal, 10);
+                    }
+                }
+            }
+        })();
+    </script>
+
+
+    <script>
+        // 로그인 체크 및 모달 표시
+        (function() {
+            const userInfoStr = localStorage.getItem('userInfo');
+            if (!userInfoStr) {
+                // 페이지 로드 후 즉시 모달 표시
+                window.addEventListener('DOMContentLoaded', function() {
+                    const modal = document.getElementById('loginRequiredModal');
+                    if (modal) {
+                        modal.style.display = 'flex';
+                    }
+                });
+            }
+        })();
+    </script>
+
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon">RC</div>
+                    Russian.Town
+                </a>
+            <div class="lang-switcher">
+                <button class="lang-btn" data-lang="ko" title="한국어만 표시">한국어</button>
+                <button class="lang-btn" data-lang="ru" title="Показать только русский">Русский</button>
+                <button class="lang-btn active" data-lang="both" title="한국어+러시아어">한국어+Русский</button>
+            </div>
+                <nav class="nav-menu">
+                    <a href="/index.html">
+                        <span>홈으로가기</span>
+                        <span class="russian-label">Главная</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- 왼쪽 사이드바 -->
+            <div id="sidebar-container"></div>
+
+            <!-- 메인 컨텐츠 -->
+            <div class="content">
+        <div class="page-header">
+            <div class="header-title">
+                <h1><span class="korean-text">입점업체</span><span class="russian-text">Партнерские компании</span></h1>
+                <div class="subtitle"><span class="korean-text">러시아 커뮤니티 등록 업체</span><span class="russian-text">Зарегистрированные компании</span></div>
+            </div>
+            <button class="register-btn" onclick="openRegisterModal()"><span class="korean-text">업체 등록하기</span><span class="russian-text">Регистрация</span></button>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-row">
+                <span class="filter-label">카테고리:</span>
+                <select class="filter-select" id="categoryFilter" onchange="filterPartners()">
+                    <option value="">전체</option>
+                    <option value="restaurant">음식점 Ресторан</option>
+                    <option value="shop">상점 Магазин</option>
+                    <option value="service">서비스 Сервис</option>
+                    <option value="education">교육 Образование</option>
+                    <option value="medical">의료 Медицина</option>
+                    <option value="beauty">뷰티 Красота</option>
+                    <option value="etc">기타 Прочее</option>
+                </select>
+
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="업체명, 주소, 키워드 검색..." onkeyup="filterPartners()">
+                    <button>🔍</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="partners-grid" id="partnersGrid">
+            <!-- 샘플 데이터 -->
+            <div class="partner-card" data-category="restaurant" onclick="showPartnerDetail(this)">
+                <div class="card-header">
+                    <div class="card-logo">КО</div>
+                    <div class="card-title-group">
+                        <div class="card-company">코리안푸드 Korean Food</div>
+                        <span class="card-category">음식점 Ресторан</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-info-row">
+                        <span class="info-icon">👤</span>
+                        <span class="info-text">김철수 Kim Chulsoo</span>
+                    </div>
+                    <div class="card-info-row">
+                        <span class="info-icon">📍</span>
+                        <span class="info-text">서울 강남구 테헤란로 123</span>
+                    </div>
+                    <div class="card-info-row">
+                        <span class="info-icon">📞</span>
+                        <span class="info-text">02-1234-5678</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="detail-btn" onclick="event.stopPropagation(); showPartnerDetail(this.closest('.partner-card'))">자세히보기 Подробнее</button>
+                </div>
+            </div>
+
+            <!-- 추가 샘플 카드들 -->
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="icon">🏢</div>
+            <div>등록된 업체가 없습니다.<br>Нет зарегистрированных компаний.</div>
+        </div>
+    </div>
+
+    <!-- 상세보기 모달 -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="detailCompanyName"></h2>
+                <button class="modal-close" onclick="closeDetailModal()">×</button>
+            </div>
+            <div class="modal-body" id="detailContent">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 등록 모달 -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>업체 등록 Регистрация компании</h2>
+                <button class="modal-close" onclick="closeRegisterModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="partnerForm">
+                    <div class="form-row">
+                        <label class="form-label">회사명 Название компании <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="companyName" placeholder="예: 코리안푸드" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">회사명 (러시아어) Название (по-русски)</label>
+                        <input type="text" class="form-input" id="companyNameRu" placeholder="예: Korean Food">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">카테고리 Категория <span class="required">*</span></label>
+                        <select class="form-select" id="category" required>
+                            <option value="">선택하세요</option>
+                            <option value="restaurant">음식점 Ресторан</option>
+                            <option value="shop">상점 Магазин</option>
+                            <option value="service">서비스 Сервис</option>
+                            <option value="education">교육 Образование</option>
+                            <option value="medical">의료 Медицина</option>
+                            <option value="beauty">뷰티 Красота</option>
+                            <option value="etc">기타 Прочее</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">대표자명 Имя представителя <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="representative" placeholder="예: 김철수" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">주소 Адрес <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="address" placeholder="예: 서울특별시 강남구 테헤란로 123" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">전화번호 Телефон <span class="required">*</span></label>
+                        <input type="tel" class="form-input" id="phone" placeholder="예: 02-1234-5678" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">이메일 Email <span class="required">*</span></label>
+                        <input type="email" class="form-input" id="email" placeholder="예: info@company.kr" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">웹사이트 Веб-сайт</label>
+                        <input type="url" class="form-input" id="website" placeholder="예: https://www.company.kr">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">사업자등록번호 Регистрационный номер</label>
+                        <input type="text" class="form-input" id="businessNumber" placeholder="예: 123-45-67890">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">업체 소개 Описание компании <span class="required">*</span></label>
+                        <textarea class="form-textarea" id="description" placeholder="업체에 대한 간단한 소개를 작성해주세요" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">로고 이미지 Логотип</label>
+                        <div class="logo-upload" onclick="document.getElementById('logoInput').click()">
+                            <input type="file" id="logoInput" accept="image/*">
+                            <div>📷 로고 업로드 (선택사항)</div>
+                            <div style="font-size: 11px; color: #999; margin-top: 5px;">JPG/PNG, 최대 2MB</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeRegisterModal()">취소 Отмена</button>
+                <button type="button" class="btn btn-primary" onclick="submitPartner()">등록 Зарегистрировать</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPartnerDetail(card) {
+            const companyName = card.querySelector('.card-company').textContent;
+            const category = card.querySelector('.card-category').textContent;
+            const representative = card.querySelector('.info-text').textContent;
+            const address = card.querySelectorAll('.info-text')[1].textContent;
+            const phone = card.querySelectorAll('.info-text')[2].textContent;
+
+            document.getElementById('detailCompanyName').textContent = companyName;
+            document.getElementById('detailContent').innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                        <span style="background: #f0f0f0; padding: 3px 8px; border-radius: 3px;">${category}</span>
+                    </div>
+                </div>
+                <div style="font-size: 13px; line-height: 1.8;">
+                    <div style="margin-bottom: 10px;"><strong>대표 Представитель:</strong> ${representative}</div>
+                    <div style="margin-bottom: 10px;"><strong>주소 Адрес:</strong> ${address}</div>
+                    <div style="margin-bottom: 10px;"><strong>전화번호 Телефон:</strong> ${phone}</div>
+                    <div style="margin-bottom: 10px;"><strong>이메일 Email:</strong> info@koreanfood.kr</div>
+                    <div style="margin-bottom: 10px;"><strong>웹사이트 Веб-сайт:</strong> www.koreanfood.kr</div>
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
+                        <strong>업체 소개 Описание:</strong>
+                        <p style="margin-top: 8px; color: #666;">전통 한식과 현대식 퓨전 요리를 제공하는 레스토랑입니다. 러시아어 메뉴 제공.<br>Ресторан предлагает традиционную корейскую кухню и современные фьюжн-блюда. Меню на русском языке.</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function openRegisterModal() {
+            // 로그인 체크
+            const userInfo = localStorage.getItem('userInfo');
+            if (!userInfo) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/login.html';
+                return;
+            }
+            document.getElementById('registerModal').classList.add('active');
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.remove('active');
+            document.getElementById('partnerForm').reset();
+        }
+
+        async function submitPartner() {
+            const form = document.getElementById('partnerForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+            const formData = new FormData();
+            formData.append('company_name', document.getElementById('companyName').value);
+            formData.append('company_name_ru', document.getElementById('companyNameRu').value || '');
+            formData.append('category', document.getElementById('category').value);
+            formData.append('representative', document.getElementById('representative').value);
+            formData.append('address', document.getElementById('address').value);
+            formData.append('phone', document.getElementById('phone').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('website', document.getElementById('website').value || '');
+            formData.append('business_number', document.getElementById('businessNumber').value || '');
+            formData.append('description', document.getElementById('description').value);
+
+            const logoInput = document.getElementById('logoInput');
+            if (logoInput.files.length > 0) {
+                formData.append('logo', logoInput.files[0]);
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/api/partners/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${userInfo.token || 'dummy-token'}`
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('업체가 등록되었습니다!');
+                    closeRegisterModal();
+                    location.reload();
+                } else {
+                    const error = await response.json();
+                    alert('등록 실패: ' + (error.detail || '알 수 없는 오류'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('서버 연결 실패');
+            }
+        }
+
+        function filterPartners() {
+            const category = document.getElementById('categoryFilter').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.partner-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const cardCategory = card.dataset.category;
+                const cardText = card.textContent.toLowerCase();
+
+                const categoryMatch = !category || cardCategory === category;
+                const searchMatch = !search || cardText.includes(search);
+
+                if (categoryMatch && searchMatch) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+
+        // 페이지 로드 시 데이터 로드
+        window.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('http://localhost:8000/api/partners/');
+                if (response.ok) {
+                    const partners = await response.json();
+                    // TODO: 파트너 목록 렌더링
+                }
+            } catch (error) {
+                console.error('Error loading partners:', error);
+            }
+        });
+    </script>
+            
+
+        <aside class="right-sidebar">
+                <!-- 로그인 -->
+                <div class="widget">
+                    <div class="widget-header">로그인</div>
+                    <div class="widget-content">
+                        <form class="login-form" id="mainLoginForm">
+                            <input type="text" class="login-input" id="mainUsername" placeholder="아이디" required>
+                            <input type="password" class="login-input" id="mainPassword" placeholder="비밀번호" required>
+                            <button type="submit" class="login-btn">로그인</button>
+                            <div class="social-login main-social">
+                                <div class="country-section korean">
+                                    <h4 class="section-title">🇰🇷 한국 서비스</h4>
+                                    <div class="social-row">
+                                        <button type="button" class="main-social-btn naver">
+                                            <span class="social-icon">N</span>
+                                            <span class="social-text">Naver</span>
+                                        </button>
+                                        <button type="button" class="main-social-btn kakao">
+                                            <span class="social-icon">K</span>
+                                            <span class="social-text">Kakao</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="country-section russian">
+                                    <h4 class="section-title">🇷🇺 Российские сервисы</h4>
+                                    <div class="social-row">
+                                        <button type="button" class="main-social-btn yandex">
+                                            <span class="social-icon">Я</span>
+                                            <span class="social-text">Yandex</span>
+                                        </button>
+                                        <button type="button" class="main-social-btn vk">
+                                            <span class="social-icon">VK</span>
+                                            <span class="social-text">VK</span>
+                                        </button>
+                                    </div>
+                                    <div class="social-row">
+                                        <button type="button" class="main-social-btn telegram">
+                                            <span class="social-icon">✈️</span>
+                                            <span class="social-text">Telegram</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="register-link">
+                                <a href="#" onclick="showRegisterModal(); return false;">
+                                    <span class="korean-text">회원가입</span>
+                                    <span class="russian-text">Регистрация</span>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 커뮤니티 현황 -->
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="korean-text">커뮤니티 현황</span>
+                        <span class="russian-text">Статистика</span>
+                    </div>
+                    <div class="widget-content">
+                        <div class="stats-grid">
+                            <div class="stats-item">
+                                <div class="stats-number">2,547</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">회원</span>
+                                    <div class="russian-text">Участники</div>
+                                </div>
+                            </div>
+                            <div class="stats-item">
+                                <div class="stats-number">8,932</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">게시글</span>
+                                    <div class="russian-text">Посты</div>
+                                </div>
+                            </div>
+                            <div class="stats-item">
+                                <div class="stats-number">24,681</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">댓글</span>
+                                    <div class="russian-text">Комментарии</div>
+                                </div>
+                            </div>
+                            <div class="stats-item">
+                                <div class="stats-number">156</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">파트너</span>
+                                    <div class="russian-text">Партнеры</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 인기글/최신글 탭 -->
+                <div class="widget">
+                    <div class="widget-header" style="padding: 0;">
+                        <div style="display: flex; border-bottom: 1px solid #e0e0e0; width: 100%;">
+                            <button class="post-tab active" onclick="switchPostTab('popular')" data-tab="popular">
+                                <span class="korean-text">인기글</span>
+                                <span class="russian-text">Популярные</span>
+                            </button>
+                            <button class="post-tab" onclick="switchPostTab('recent')" data-tab="recent">
+                                <span class="korean-text">최신글</span>
+                                <span class="russian-text">Последние</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="widget-content" style="padding: 8px;">
+                        <!-- 인기글 탭 내용 -->
+                        <div id="popular-posts" class="tab-content active" style="font-size: 10px; line-height: 1.4;">
+                            <div style="margin-bottom: 4px;">
+                                <a href="#" class="popular-post-link">
+                                    <div class="popular-post-content">
+                                        <span class="korean-text">한국 은행계좌 개설 가이드</span>
+                                        <div class="russian-text">Руководство по открытию счета</div>
+                                    </div>
+                                    <span class="board-post-date">15:30</span>
+                                </a>
+                            </div>
+                            <div style="margin-bottom: 4px;">
+                                <a href="#" class="popular-post-link">
+                                    <div class="popular-post-content">
+                                        <span class="korean-text">서울 러시아 음식점 추천</span>
+                                        <div class="russian-text">Русские рестораны в Сеуле</div>
+                                    </div>
+                                    <span class="board-post-date">14:20</span>
+                                </a>
+                            </div>
+                            <div style="margin-bottom: 4px;">
+                                <a href="#" class="popular-post-link">
+                                    <div class="popular-post-content">
+                                        <span class="korean-text">비자 연장 신청 후기</span>
+                                        <div class="russian-text">Опыт продления визы</div>
+                                    </div>
+                                    <span class="board-post-date">16:45</span>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- 최신글 탭 내용 -->
+                        <div id="recent-posts" class="tab-content" style="font-size: 10px; line-height: 1.4; display: none;">
+                            <div style="margin-bottom: 4px;">
+                                <a href="#" class="popular-post-link">
+                                    <div class="popular-post-content">
+                                        <span class="korean-text">로딩 중...</span>
+                                        <div class="russian-text">Загрузка...</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+        </div> <!-- close main-layout -->
+    </div> <!-- close container -->
+
+    <script>
+        // 언어 전환 기능
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const lang = this.dataset.lang;
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.body.setAttribute('data-lang', lang);
+                localStorage.setItem('preferredLang', lang);
+            });
+        });
+
+        // 저장된 언어 설정 불러오기
+        const savedLang = localStorage.getItem('preferredLang') || 'both';
+        document.body.setAttribute('data-lang', savedLang);
+        document.querySelector(`.lang-btn[data-lang="${savedLang}"]`)?.classList.add('active');
+    </script>
+
+    <script>
+        // 로그인 체크
+        const userInfoStr = localStorage.getItem('userInfo');
+        if (!userInfoStr) {
+            alert('로그인이 필요한 서비스입니다.\n\nТребуется авторизация.');
+            location.href = '/index.html';
+        }
+
+        // 등록 모달 열기 시 추가 체크
+        const originalOpenRegisterModal = window.openRegisterModal;
+        window.openRegisterModal = function() {
+            const userInfoStr = localStorage.getItem('userInfo');
+            if (!userInfoStr) {
+                alert('로그인이 필요한 서비스입니다.\n\nТребуется авторизация.');
+                location.href = '/index.html';
+                return;
+            }
+            if (originalOpenRegisterModal) {
+                originalOpenRegisterModal();
+            }
+        };
+    </script>
+
+
+    
+
+
+    <!-- 로그인 필요 모달 -->
+    <div id="loginRequiredModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 40px; border-radius: 12px; max-width: 450px; width: 90%; box-shadow: 0 8px 32px rgba(0,0,0,0.3); text-align: center;">
+            <div style="font-size: 64px; margin-bottom: 20px;">🔒</div>
+            <h2 style="font-size: 24px; font-weight: 700; color: #333; margin-bottom: 20px;">로그인이 필요합니다</h2>
+            <p style="font-size: 15px; color: #666; line-height: 1.8; margin-bottom: 15px;">
+                공지사항을 제외한 모든 게시판은<br>
+                로그인 후 이용하실 수 있습니다.
+            </p>
+            <p style="font-size: 14px; color: #999; line-height: 1.8; margin-bottom: 30px; padding-top: 15px; border-top: 1px solid #eee;">
+                Требуется авторизация.<br>
+                Все доски объявлений, кроме объявлений,<br>
+                доступны после входа в систему.
+            </p>
+            <button onclick="location.href='/index.html'" style="width: 100%; padding: 14px; background: #0039A6; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s;">
+                홈으로 이동 / На главную
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function closeLoginModal() {
+            location.href = '/index.html';
+        }
+    </script>
+
+</body>
+</html>

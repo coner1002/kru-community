@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 Authentication Test</h1>
+
+    <div class="section">
+        <h2>1️⃣ Check localStorage</h2>
+        <button onclick="checkLocalStorage()">Check Storage</button>
+        <button onclick="clearStorage()">Clear All</button>
+        <div id="storage-result"></div>
+    </div>
+
+    <div class="section">
+        <h2>2️⃣ Test Login</h2>
+        <button onclick="testLogin()">Test Login (test/test)</button>
+        <div id="login-result"></div>
+    </div>
+
+    <div class="section">
+        <h2>3️⃣ Test API Calls</h2>
+        <button onclick="testPublicAPI()">Test Public API (공지사항)</button>
+        <button onclick="testProtectedAPI()">Test Protected API (자유게시판)</button>
+        <div id="api-result"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8000';
+
+        function checkLocalStorage() {
+            const userInfo = localStorage.getItem('userInfo');
+            const accessToken = localStorage.getItem('access_token');
+            const refreshToken = localStorage.getItem('refresh_token');
+
+            let html = '<pre>';
+            html += 'userInfo: ' + (userInfo || 'NULL') + '\n';
+            html += 'access_token: ' + (accessToken || 'NULL') + '\n';
+            html += 'refresh_token: ' + (refreshToken || 'NULL') + '\n';
+            html += '</pre>';
+
+            if (userInfo) {
+                try {
+                    const parsed = JSON.parse(userInfo);
+                    html += '<p class="info">Parsed userInfo:</p><pre>' + JSON.stringify(parsed, null, 2) + '</pre>';
+                } catch (e) {
+                    html += '<p class="error">Error parsing userInfo: ' + e.message + '</p>';
+                }
+            }
+
+            document.getElementById('storage-result').innerHTML = html;
+        }
+
+        function clearStorage() {
+            localStorage.clear();
+            document.getElementById('storage-result').innerHTML = '<p class="success">✅ All localStorage cleared!</p>';
+        }
+
+        async function testLogin() {
+            const resultDiv = document.getElementById('login-result');
+            resultDiv.innerHTML = '<p>Testing login...</p>';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/email/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        email: 'test@example.com',
+                        password: 'test123'
+                    })
+                });
+
+                const data = await response.json();
+
+                let html = '<p><strong>Response Status:</strong> ' + response.status + '</p>';
+                html += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+
+                if (data.access_token) {
+                    // Store tokens
+                    localStorage.setItem('access_token', data.access_token);
+                    if (data.refresh_token) {
+                        localStorage.setItem('refresh_token', data.refresh_token);
+                    }
+
+                    // Store user info
+                    const userInfo = {
+                        username: 'test',
+                        email: 'test@example.com',
+                        access_token: data.access_token
+                    };
+                    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+                    html += '<p class="success">✅ Login successful! Tokens stored.</p>';
+                } else {
+                    html += '<p class="error">❌ Login failed: ' + (data.detail || 'Unknown error') + '</p>';
+                }
+
+                resultDiv.innerHTML = html;
+            } catch (error) {
+                resultDiv.innerHTML = '<p class="error">❌ Error: ' + error.message + '</p>';
+            }
+        }
+
+        async function testPublicAPI() {
+            await testAPI('공지사항', 1);
+        }
+
+        async function testProtectedAPI() {
+            await testAPI('자유게시판', 2);
+        }
+
+        async function testAPI(boardName, categoryId) {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = `<p>Testing ${boardName} API...</p>`;
+
+            try {
+                // Get token
+                const accessToken = localStorage.getItem('access_token');
+                const userInfo = localStorage.getItem('userInfo');
+                const token = accessToken || (userInfo ? JSON.parse(userInfo).access_token : null);
+
+                // Make request
+                const headers = {};
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const response = await fetch(`${API_BASE_URL}/api/posts/?category_id=${categoryId}&page=1&page_size=4`, {
+                    headers: headers
+                });
+
+                const data = await response.json();
+
+                let html = `<h3>${boardName} API Test</h3>`;
+                html += '<p><strong>Status:</strong> ' + response.status + '</p>';
+                html += '<p><strong>Token used:</strong> ' + (token ? 'YES (Bearer ' + token.substring(0, 20) + '...)' : 'NO') + '</p>';
+
+                if (response.ok) {
+                    html += '<p class="success">✅ Success!</p>';
+                    html += '<p>Total posts: ' + data.total + '</p>';
+                    html += '<p>Returned: ' + data.items.length + ' posts</p>';
+                } else {
+                    html += '<p class="error">❌ Failed!</p>';
+                    html += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                }
+
+                resultDiv.innerHTML = html;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Error testing ${boardName}: ${error.message}</p>`;
+            }
+        }
+
+        // Auto-check on load
+        window.addEventListener('DOMContentLoaded', checkLocalStorage);
+    </script>
+</body>
+</html>

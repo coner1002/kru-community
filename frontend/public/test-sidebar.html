@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>사이드바 테스트</title>
+    <style>
+        .sidebar {
+            width: 250px;
+            background: #f5f5f5;
+            padding: 20px;
+            border: 2px solid #ddd;
+        }
+        .sidebar-section {
+            margin-bottom: 20px;
+        }
+        .sidebar-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #4a90e2;
+            color: white;
+        }
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: #333;
+        }
+        .sidebar-item:hover {
+            background: #e3f2fd;
+        }
+        .sidebar-item.active {
+            background: #2196f3;
+            color: white;
+        }
+        .korean-text {
+            display: block;
+        }
+        .russian-text {
+            display: block;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>사이드바 로드 테스트</h1>
+    <div id="sidebar-container"></div>
+
+    <script src="/js/load-sidebar.js"></script>
+</body>
+</html>

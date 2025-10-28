@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>입점업체 - Russki.Center</title>
+    <link rel="icon" href="data:,">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+        :root {
+            --russian-red: #DA020E;
+            --russian-blue: #0039A6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-size: 12px;
+            line-height: 1.3;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* 메인 레이아웃 */
+        .main-layout {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        /* 사이드바 */
+        .sidebar-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header {
+            background: #e8eaed;
+            border-bottom: 1px solid #d0d0d0;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-menu {
+            padding: 4px 0;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 6px 10px;
+            color: #666;
+            text-decoration: none;
+            font-size: 11px;
+            transition: background 0.2s;
+        }
+
+        .sidebar-item:hover {
+            background: #f0f0f0;
+        }
+
+        .sidebar-item.active {
+            background: #e3f2fd;
+            color: var(--russian-blue);
+            font-weight: 600;
+        }
+
+        .sidebar-header .russian-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: #666;
+            margin-left: 6px;
+        }
+
+        .sidebar-item .russian-text {
+            font-size: 9px;
+            color: #999;
+            margin-top: 1px;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 6px 0;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--russian-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, white 0%, white 33%, var(--russian-blue) 33%, var(--russian-blue) 66%, var(--russian-red) 66%, var(--russian-red) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-menu a:hover {
+            color: var(--russian-blue);
+        }
+
+        .nav-menu .russian-label {
+            font-size: 10px;
+            color: #666;
+        }
+
+        
+            .page-header {
+            background: white;
+            padding: 12px;
+            border-radius: 5px 5px 0 0;
+            border-bottom: 2px solid var(--russian-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+        }
+
+        .header-title h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .header-title .subtitle {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .register-btn {
+            padding: 8px 16px;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .register-btn:hover {
+            background: #002a75;
+        }
+
+        .filter-section {
+            background: white;
+            padding: 12px;
+            border-radius: 0;
+            margin-bottom: 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 35px 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .partners-grid {
+            background: white;
+            padding: 12px;
+            border-radius: 0 0 5px 5px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .partner-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .partner-card:hover {
+            border-color: var(--russian-blue);
+            box-shadow: 0 2px 8px rgba(0,57,166,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .card-logo {
+            width: 40px;
+            height: 40px;
+            background: var(--russian-blue);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .card-title-group {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-company {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-category {
+            font-size: 10px;
+            color: #666;
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        .card-body {
+            margin-bottom: 8px;
+        }
+
+        .card-info-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+            font-size: 11px;
+        }
+
+        .card-info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-icon {
+            width: 16px;
+            font-size: 11px;
+            color: var(--russian-blue);
+            margin-right: 6px;
+        }
+
+        .info-text {
+            flex: 1;
+            color: #666;
+            line-height: 1.4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-footer {
+            padding-top: 8px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .detail-btn {
+            padding: 4px 12px;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .detail-btn:hover {
+            background: #002a75;
+        }
+
+        /* 모달 공통 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            color: var(--russian-blue);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-row {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-label .required {
+            color: var(--russian-red);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--russian-blue);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .logo-upload {
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .logo-upload:hover {
+            border-color: var(--russian-blue);
+            background: #f8f9fa;
+        }
+
+        .logo-upload input {
+            display: none;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--russian-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #002a75;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <div class="logo-icon">RC</div>
+                    Russki.Center
+                </a>
+                <nav class="nav-menu">
+                    <a href="/">
+                        <span>홈으로가기</span>
+                        <span class="russian-label">Главная</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- 왼쪽 사이드바 -->
+            <aside class="sidebar">
+                <!-- 게시판 메뉴 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <span class="korean-text">게시판</span>
+                        <span class="russian-text">Доски объявлений</span>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="/board-notice.html" class="sidebar-item">
+                            <span class="korean-text">공지사항</span>
+                            <div class="russian-text">Объявления</div>
+                        </a>
+                        <a href="/board-free.html" class="sidebar-item">
+                            <span class="korean-text">자유게시판</span>
+                            <div class="russian-text">Свободное общение</div>
+                        </a>
+                        <a href="/board-life.html" class="sidebar-item">
+                            <span class="korean-text">생활정보</span>
+                            <div class="russian-text">Жизнь в Корее</div>
+                        </a>
+                        <a href="/board-admin.html" class="sidebar-item">
+                            <span class="korean-text">행정정보</span>
+                            <div class="russian-text">Админ. информация</div>
+                        </a>
+                        <a href="/board-job.html" class="sidebar-item">
+                            <span class="korean-text">구인구직</span>
+                            <div class="russian-text">Работа</div>
+                        </a>
+                        <a href="/board-market.html" class="sidebar-item">
+                            <span class="korean-text">벼룩시장</span>
+                            <div class="russian-text">Барахолка</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 비즈니스 메뉴 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <span class="korean-text">비즈니스</span>
+                        <span class="russian-text">Бизнес</span>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="/board-startup.html" class="sidebar-item">
+                            <span class="korean-text">창업정보</span>
+                            <div class="russian-text">Информация о стартапах</div>
+                        </a>
+                        <a href="/partners.html" class="sidebar-item active">
+                            <span class="korean-text">입점업체</span>
+                            <div class="russian-text">Партнерские компании</div>
+                        </a>
+                        <a href="/trade-partners.html" class="sidebar-item">
+                            <span class="korean-text">무역파트너</span>
+                            <div class="russian-text">Торговые партнеры</div>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 메인 컨텐츠 -->
+            <div class="content">
+        <div class="page-header">
+            <div class="header-title">
+                <h1>입점업체 Партнерские компании</h1>
+                <div class="subtitle">러시아 커뮤니티 등록 업체 | Зарегистрированные компании</div>
+            </div>
+            <button class="register-btn" onclick="openRegisterModal()">업체 등록하기 Регистрация</button>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-row">
+                <span class="filter-label">카테고리:</span>
+                <select class="filter-select" id="categoryFilter" onchange="filterPartners()">
+                    <option value="">전체</option>
+                    <option value="restaurant">음식점 Ресторан</option>
+                    <option value="shop">상점 Магазин</option>
+                    <option value="service">서비스 Сервис</option>
+                    <option value="education">교육 Образование</option>
+                    <option value="medical">의료 Медицина</option>
+                    <option value="beauty">뷰티 Красота</option>
+                    <option value="etc">기타 Прочее</option>
+                </select>
+
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="업체명, 주소, 키워드 검색..." onkeyup="filterPartners()">
+                    <button>🔍</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="partners-grid" id="partnersGrid">
+            <!-- 샘플 데이터 -->
+            <div class="partner-card" data-category="restaurant" onclick="showPartnerDetail(this)">
+                <div class="card-header">
+                    <div class="card-logo">КО</div>
+                    <div class="card-title-group">
+                        <div class="card-company">코리안푸드 Korean Food</div>
+                        <span class="card-category">음식점 Ресторан</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-info-row">
+                        <span class="info-icon">👤</span>
+                        <span class="info-text">김철수 Kim Chulsoo</span>
+                    </div>
+                    <div class="card-info-row">
+                        <span class="info-icon">📍</span>
+                        <span class="info-text">서울 강남구 테헤란로 123</span>
+                    </div>
+                    <div class="card-info-row">
+                        <span class="info-icon">📞</span>
+                        <span class="info-text">02-1234-5678</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="detail-btn" onclick="event.stopPropagation(); showPartnerDetail(this.closest('.partner-card'))">자세히보기 Подробнее</button>
+                </div>
+            </div>
+
+            <!-- 추가 샘플 카드들 -->
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="icon">🏢</div>
+            <div>등록된 업체가 없습니다.<br>Нет зарегистрированных компаний.</div>
+        </div>
+    </div>
+
+    <!-- 상세보기 모달 -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="detailCompanyName"></h2>
+                <button class="modal-close" onclick="closeDetailModal()">×</button>
+            </div>
+            <div class="modal-body" id="detailContent">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 등록 모달 -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>업체 등록 Регистрация компании</h2>
+                <button class="modal-close" onclick="closeRegisterModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="partnerForm">
+                    <div class="form-row">
+                        <label class="form-label">회사명 Название компании <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="companyName" placeholder="예: 코리안푸드" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">회사명 (러시아어) Название (по-русски)</label>
+                        <input type="text" class="form-input" id="companyNameRu" placeholder="예: Korean Food">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">카테고리 Категория <span class="required">*</span></label>
+                        <select class="form-select" id="category" required>
+                            <option value="">선택하세요</option>
+                            <option value="restaurant">음식점 Ресторан</option>
+                            <option value="shop">상점 Магазин</option>
+                            <option value="service">서비스 Сервис</option>
+                            <option value="education">교육 Образование</option>
+                            <option value="medical">의료 Медицина</option>
+                            <option value="beauty">뷰티 Красота</option>
+                            <option value="etc">기타 Прочее</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">대표자명 Имя представителя <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="representative" placeholder="예: 김철수" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">주소 Адрес <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="address" placeholder="예: 서울특별시 강남구 테헤란로 123" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">전화번호 Телефон <span class="required">*</span></label>
+                        <input type="tel" class="form-input" id="phone" placeholder="예: 02-1234-5678" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">이메일 Email <span class="required">*</span></label>
+                        <input type="email" class="form-input" id="email" placeholder="예: info@company.kr" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">웹사이트 Веб-сайт</label>
+                        <input type="url" class="form-input" id="website" placeholder="예: https://www.company.kr">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">사업자등록번호 Регистрационный номер</label>
+                        <input type="text" class="form-input" id="businessNumber" placeholder="예: 123-45-67890">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">업체 소개 Описание компании <span class="required">*</span></label>
+                        <textarea class="form-textarea" id="description" placeholder="업체에 대한 간단한 소개를 작성해주세요" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">로고 이미지 Логотип</label>
+                        <div class="logo-upload" onclick="document.getElementById('logoInput').click()">
+                            <input type="file" id="logoInput" accept="image/*">
+                            <div>📷 로고 업로드 (선택사항)</div>
+                            <div style="font-size: 11px; color: #999; margin-top: 5px;">JPG/PNG, 최대 2MB</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeRegisterModal()">취소 Отмена</button>
+                <button type="button" class="btn btn-primary" onclick="submitPartner()">등록 Зарегистрировать</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPartnerDetail(card) {
+            const companyName = card.querySelector('.card-company').textContent;
+            const category = card.querySelector('.card-category').textContent;
+            const representative = card.querySelector('.info-text').textContent;
+            const address = card.querySelectorAll('.info-text')[1].textContent;
+            const phone = card.querySelectorAll('.info-text')[2].textContent;
+
+            document.getElementById('detailCompanyName').textContent = companyName;
+            document.getElementById('detailContent').innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                        <span style="background: #f0f0f0; padding: 3px 8px; border-radius: 3px;">${category}</span>
+                    </div>
+                </div>
+                <div style="font-size: 13px; line-height: 1.8;">
+                    <div style="margin-bottom: 10px;"><strong>대표 Представитель:</strong> ${representative}</div>
+                    <div style="margin-bottom: 10px;"><strong>주소 Адрес:</strong> ${address}</div>
+                    <div style="margin-bottom: 10px;"><strong>전화번호 Телефон:</strong> ${phone}</div>
+                    <div style="margin-bottom: 10px;"><strong>이메일 Email:</strong> info@koreanfood.kr</div>
+                    <div style="margin-bottom: 10px;"><strong>웹사이트 Веб-сайт:</strong> www.koreanfood.kr</div>
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
+                        <strong>업체 소개 Описание:</strong>
+                        <p style="margin-top: 8px; color: #666;">전통 한식과 현대식 퓨전 요리를 제공하는 레스토랑입니다. 러시아어 메뉴 제공.<br>Ресторан предлагает традиционную корейскую кухню и современные фьюжн-блюда. Меню на русском языке.</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function openRegisterModal() {
+            // 로그인 체크
+            const userInfo = localStorage.getItem('userInfo');
+            if (!userInfo) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/login.html';
+                return;
+            }
+            document.getElementById('registerModal').classList.add('active');
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.remove('active');
+            document.getElementById('partnerForm').reset();
+        }
+
+        async function submitPartner() {
+            const form = document.getElementById('partnerForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+            const formData = new FormData();
+            formData.append('company_name', document.getElementById('companyName').value);
+            formData.append('company_name_ru', document.getElementById('companyNameRu').value || '');
+            formData.append('category', document.getElementById('category').value);
+            formData.append('representative', document.getElementById('representative').value);
+            formData.append('address', document.getElementById('address').value);
+            formData.append('phone', document.getElementById('phone').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('website', document.getElementById('website').value || '');
+            formData.append('business_number', document.getElementById('businessNumber').value || '');
+            formData.append('description', document.getElementById('description').value);
+
+            const logoInput = document.getElementById('logoInput');
+            if (logoInput.files.length > 0) {
+                formData.append('logo', logoInput.files[0]);
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/api/partners/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${userInfo.token || 'dummy-token'}`
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('업체가 등록되었습니다!');
+                    closeRegisterModal();
+                    location.reload();
+                } else {
+                    const error = await response.json();
+                    alert('등록 실패: ' + (error.detail || '알 수 없는 오류'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('서버 연결 실패');
+            }
+        }
+
+        function filterPartners() {
+            const category = document.getElementById('categoryFilter').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.partner-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const cardCategory = card.dataset.category;
+                const cardText = card.textContent.toLowerCase();
+
+                const categoryMatch = !category || cardCategory === category;
+                const searchMatch = !search || cardText.includes(search);
+
+                if (categoryMatch && searchMatch) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+
+        // 페이지 로드 시 데이터 로드
+        window.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('http://localhost:8000/api/partners/');
+                if (response.ok) {
+                    const partners = await response.json();
+                    // TODO: 파트너 목록 렌더링
+                }
+            } catch (error) {
+                console.error('Error loading partners:', error);
+            }
+        });
+    </script>
+            </div> <!-- close content -->
+        </div> <!-- close main-layout -->
+    </div> <!-- close container -->
+</body>
+</html>

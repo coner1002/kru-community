@@ -1,0 +1,2597 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지 - Russian.Town</title>
+    <link rel="icon" href="data:,">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+        :root {
+            --admin-primary: #7C3AED;
+            --admin-secondary: #A78BFA;
+            --admin-dark: #5B21B6;
+            --russian-red: #DA020E;
+            --russian-blue: #0039A6;
+            --russian-gold: #D4AF37;
+            --gradient-admin: linear-gradient(135deg, #7C3AED 0%, #A78BFA 100%);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #2c3e50;
+            background: linear-gradient(to bottom, #f8f9fa 0%, #f3f4f6 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* 헤더 - index.html과 동일하나 관리자 색상 */
+        .header {
+            background: var(--gradient-admin);
+            box-shadow: var(--shadow-md);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--admin-primary), var(--admin-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border: 3px solid white;
+        }
+
+        .admin-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 2px solid white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* 탭 메뉴 */
+        .tabs {
+            background: white;
+            margin-top: 15px;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            border-bottom: 3px solid #e0e0e0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-btn {
+            padding: 10px 24px;
+            border: 2px solid transparent;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            background: #f8f9fa;
+            color: var(--admin-primary);
+            border-color: var(--admin-secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-btn.active {
+            background: var(--gradient-admin);
+            color: white;
+            border-color: var(--admin-primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* 콘텐츠 영역 */
+        .tab-content {
+            display: none;
+            background: white;
+            margin-top: 10px;
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--russian-blue);
+        }
+
+        /* 테이블 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            padding: 6px 8px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+            font-size: 11px;
+        }
+
+        .data-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-deleted {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .status-badge {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .badge-reported {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-deleted {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-normal {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        /* 버튼 */
+        .action-btn {
+            padding: 4px 10px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 10px;
+            margin-right: 4px;
+        }
+
+        .action-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .btn-restore {
+            color: var(--russian-blue);
+            border-color: var(--russian-blue);
+        }
+
+        .btn-delete {
+            color: var(--russian-red);
+            border-color: var(--russian-red);
+        }
+
+        .btn-ignore {
+            color: #666;
+        }
+
+        /* 회원 유형 탭 */
+        .user-type-tab {
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+
+        .user-type-tab:hover {
+            color: var(--admin-primary);
+            background: rgba(124, 58, 237, 0.05);
+        }
+
+        .user-type-tab.active {
+            color: var(--admin-primary);
+            border-bottom-color: var(--admin-primary);
+            font-weight: 700;
+        }
+
+        .report-detail {
+            font-size: 10px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .report-reason {
+            color: var(--russian-red);
+            font-weight: 600;
+        }
+
+        /* 통계 카드 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--russian-blue);
+        }
+
+        .stat-card.warning .stat-value {
+            color: var(--russian-red);
+        }
+
+        /* 사이드바 */
+        .main-layout {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .content-area {
+            flex: 1;
+        }
+
+        .sidebar-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .sidebar-menu {
+            padding: 4px 0;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 6px 10px;
+            color: #666;
+            text-decoration: none;
+            font-size: 11px;
+            transition: background 0.2s;
+        }
+
+        .sidebar-item:hover {
+            background: #f0f0f0;
+        }
+
+        .sidebar-item.active {
+            background: #e3f2fd;
+            color: var(--russian-blue);
+            font-weight: 600;
+        }
+
+        .russian-text {
+            font-size: 9px;
+            color: #999;
+            margin-top: 1px;
+        }
+
+        /* 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 600px;
+            max-width: 90vw;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background: var(--russian-blue);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .detail-row {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 13px;
+            color: #333;
+        }
+
+        .detail-content {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon">⚙️</div>
+                    <span>Russian.Town</span>
+                </a>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <a href="/index.html" style="text-decoration: none; color: white; font-size: 13px; padding: 8px 16px; background: rgba(255, 255, 255, 0.2); border: 2px solid white; border-radius: 20px; transition: all 0.3s; font-weight: 600;">
+                        🏠 <span style="margin-left: 4px;">홈으로 가기</span>
+                    </a>
+                    <div class="admin-badge">🔐 관리자 모드</div>
+                    <button onclick="handleLogout()" style="text-decoration: none; color: white; font-size: 13px; padding: 8px 16px; background: rgba(220, 38, 38, 0.8); border: 2px solid white; border-radius: 20px; transition: all 0.3s; font-weight: 600; cursor: pointer;">
+                        🚪 <span style="margin-left: 4px;">로그아웃</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container">
+        <div class="content-area" style="max-width: 1400px; margin: 0 auto; padding: 0 10px;">
+        <!-- 통계 -->
+        <div class="stats-grid" style="margin-top: 10px;">
+            <div class="stat-card">
+                <div class="stat-label">전체 게시글</div>
+                <div class="stat-value">1,247</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-label">삭제된 게시글</div>
+                <div class="stat-value">35</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-label">신고된 게시글</div>
+                <div class="stat-value">8</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-label">신고된 댓글</div>
+                <div class="stat-value">12</div>
+            </div>
+        </div>
+
+        <!-- 탭 메뉴 -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('dashboard')">📊 대시보드</button>
+            <button class="tab-btn" onclick="showTab('users')">👥 회원관리</button>
+            <button class="tab-btn" onclick="showTab('posts')">📝 게시판관리</button>
+            <button class="tab-btn" onclick="showTab('stats')">📈 통계</button>
+            <button class="tab-btn" onclick="showTab('system-settings')">⚙️ 설정</button>
+            <button class="tab-btn" onclick="showTab('reports')">🚨 신고관리</button>
+        </div>
+
+        <!-- 신고된 게시글 -->
+        <div id="reported-posts" class="tab-content">
+            <div class="section-title">신고된 게시글 관리</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">번호</th>
+                        <th style="width: 100px;">게시판</th>
+                        <th>제목</th>
+                        <th style="width: 100px;">작성자</th>
+                        <th style="width: 120px;">신고사유</th>
+                        <th style="width: 100px;">신고일시</th>
+                        <th style="width: 80px;">상태</th>
+                        <th style="width: 150px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2546</td>
+                        <td>자유게시판</td>
+                        <td><a href="/board-view.html">여기서 물건 사고파는 사람들 조심하세요</a></td>
+                        <td>Иван</td>
+                        <td><span class="report-reason">스팸/광고</span><br><span class="report-detail">중복 게시물</span></td>
+                        <td>2025.10.01 13:20</td>
+                        <td><span class="status-badge badge-reported">신고됨</span></td>
+                        <td>
+                            <button class="action-btn btn-delete" onclick="handleDeletePost(2546)">삭제</button>
+                            <button class="action-btn btn-ignore" onclick="handleIgnoreReport(2546, 'post')">무시</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2543</td>
+                        <td>자유게시판</td>
+                        <td><a href="/board-view.html">이거 완전 사기입니다!!! 조심하세요!</a></td>
+                        <td>박지영</td>
+                        <td><span class="report-reason">욕설/비방</span><br><span class="report-detail">특정인 비방</span></td>
+                        <td>2025.10.01 11:45</td>
+                        <td><span class="status-badge badge-reported">신고됨</span></td>
+                        <td>
+                            <button class="action-btn btn-delete" onclick="handleDeletePost(2543)">삭제</button>
+                            <button class="action-btn btn-ignore" onclick="handleIgnoreReport(2543, 'post')">무시</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 신고된 댓글 -->
+        <div id="reported-comments" class="tab-content">
+            <div class="section-title">신고된 댓글 관리</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">번호</th>
+                        <th>댓글 내용</th>
+                        <th style="width: 100px;">작성자</th>
+                        <th style="width: 100px;">게시글</th>
+                        <th style="width: 120px;">신고사유</th>
+                        <th style="width: 100px;">신고일시</th>
+                        <th style="width: 80px;">상태</th>
+                        <th style="width: 150px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>15234</td>
+                        <td>이런 쓰레기 같은 정보는 필요없어요. 광고하지 마세요.</td>
+                        <td>Владимир</td>
+                        <td><a href="/board-view.html">은행계좌 개설...</a></td>
+                        <td><span class="report-reason">욕설/비방</span><br><span class="report-detail">부적절한 표현</span></td>
+                        <td>2025.10.01 14:10</td>
+                        <td><span class="status-badge badge-reported">신고됨</span></td>
+                        <td>
+                            <button class="action-btn btn-delete" onclick="handleDeleteComment(15234)">삭제</button>
+                            <button class="action-btn btn-ignore" onclick="handleIgnoreReport(15234, 'comment')">무시</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>15198</td>
+                        <td>여기 전화하면 바로 해결됩니다 010-1234-5678</td>
+                        <td>김철수</td>
+                        <td><a href="/board-view.html">비자 연장 문의...</a></td>
+                        <td><span class="report-reason">개인정보 노출</span><br><span class="report-detail">전화번호 공개</span></td>
+                        <td>2025.10.01 12:30</td>
+                        <td><span class="status-badge badge-reported">신고됨</span></td>
+                        <td>
+                            <button class="action-btn btn-delete" onclick="handleDeleteComment(15198)">삭제</button>
+                            <button class="action-btn btn-ignore" onclick="handleIgnoreReport(15198, 'comment')">무시</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 삭제된 게시글 -->
+        <div id="deleted-posts" class="tab-content">
+            <div class="section-title">삭제된 게시글 관리</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">번호</th>
+                        <th style="width: 100px;">게시판</th>
+                        <th>제목</th>
+                        <th style="width: 100px;">작성자</th>
+                        <th style="width: 100px;">삭제자</th>
+                        <th style="width: 100px;">삭제일시</th>
+                        <th style="width: 80px;">상태</th>
+                        <th style="width: 100px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2540</td>
+                        <td>자유게시판</td>
+                        <td class="status-deleted">광고) 저렴한 가격에 물건 판매합니다</td>
+                        <td>Анна</td>
+                        <td>관리자</td>
+                        <td>2025.10.01 10:20</td>
+                        <td><span class="status-badge badge-deleted">삭제됨</span></td>
+                        <td>
+                            <button class="action-btn btn-restore" onclick="handleRestorePost(2540)">복구</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2535</td>
+                        <td>자유게시판</td>
+                        <td class="status-deleted">욕설이 포함된 게시글</td>
+                        <td>김민수</td>
+                        <td>본인</td>
+                        <td>2025.09.30 18:45</td>
+                        <td><span class="status-badge badge-deleted">삭제됨</span></td>
+                        <td>
+                            <button class="action-btn btn-restore" onclick="handleRestorePost(2535)">복구</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 삭제된 댓글 -->
+        <div id="deleted-comments" class="tab-content">
+            <div class="section-title">삭제된 댓글 관리</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">번호</th>
+                        <th>댓글 내용</th>
+                        <th style="width: 100px;">작성자</th>
+                        <th style="width: 100px;">게시글</th>
+                        <th style="width: 100px;">삭제자</th>
+                        <th style="width: 100px;">삭제일시</th>
+                        <th style="width: 80px;">상태</th>
+                        <th style="width: 100px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>15180</td>
+                        <td class="status-deleted">광고성 댓글입니다. 여기 연락주세요...</td>
+                        <td>Владимир</td>
+                        <td><a href="/board-view.html">은행계좌 개설...</a></td>
+                        <td>관리자</td>
+                        <td>2025.10.01 09:15</td>
+                        <td><span class="status-badge badge-deleted">삭제됨</span></td>
+                        <td>
+                            <button class="action-btn btn-restore" onclick="handleRestoreComment(15180)">복구</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>15145</td>
+                        <td class="status-deleted">부적절한 욕설이 포함된 댓글</td>
+                        <td>박지영</td>
+                        <td><a href="/board-view.html">생활정보 공유...</a></td>
+                        <td>본인</td>
+                        <td>2025.09.30 16:30</td>
+                        <td><span class="status-badge badge-deleted">삭제됨</span></td>
+                        <td>
+                            <button class="action-btn btn-restore" onclick="handleRestoreComment(15145)">복구</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 운영자 연락 -->
+        <div id="contact-requests" class="tab-content">
+            <div class="section-title">운영자 연락 관리</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">유형</th>
+                        <th>제목</th>
+                        <th style="width: 120px;">이름</th>
+                        <th style="width: 130px;">일시</th>
+                        <th style="width: 160px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody id="contactRequestsTable">
+                    <!-- JavaScript로 동적 로드 -->
+                </tbody>
+            </table>
+            <div id="noContactRequests" style="display: none; text-align: center; padding: 40px; color: #999;">
+                접수된 연락이 없습니다
+            </div>
+        </div>
+
+        <!-- 대시보드 -->
+        <div id="dashboard" class="tab-content active">
+            <div class="section-title">📊 대시보드</div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                <div class="stat-card">
+                    <div class="stat-label">전체 회원 수</div>
+                    <div class="stat-value" id="totalUsers">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">오늘 가입</div>
+                    <div class="stat-value" id="newUsersToday">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">전체 게시글</div>
+                    <div class="stat-value" id="totalPosts">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">오늘 게시글</div>
+                    <div class="stat-value" id="newPostsToday">0</div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-label">처리 대기 신고</div>
+                    <div class="stat-value" id="pendingReports">0</div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-label">활성 파트너</div>
+                    <div class="stat-value" id="activePartners">0</div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: var(--shadow-sm); margin-bottom: 20px;">
+                <h3 style="margin: 0 0 15px 0; font-size: 16px;">최근 활동</h3>
+                <div style="font-size: 13px; color: #666; line-height: 1.8;">
+                    <p>• 시스템이 정상적으로 운영 중입니다.</p>
+                    <p>• 모든 서비스가 활성화되어 있습니다.</p>
+                    <p>• DeepL 번역 API 연동 완료</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 회원관리 -->
+        <div id="users" class="tab-content">
+            <div class="section-title">👥 회원 관리</div>
+
+            <!-- 회원 유형별 탭 -->
+            <div style="display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; align-items: center; justify-content: space-between;">
+                <div style="display: flex; gap: 8px;">
+                    <button class="user-type-tab active" data-type="all" onclick="switchUserTypeTab('all')">
+                        전체 회원
+                    </button>
+                    <button class="user-type-tab" data-type="admin" onclick="switchUserTypeTab('admin')">
+                        🔑 관리자/스탭
+                    </button>
+                    <button class="user-type-tab" data-type="virtual" onclick="switchUserTypeTab('virtual')">
+                        👤 관리 가상회원
+                    </button>
+                    <button class="user-type-tab" data-type="real" onclick="switchUserTypeTab('real')">
+                        ✅ 실제 가입회원
+                    </button>
+                </div>
+                <div id="virtualPasswordInfo" style="display: none; padding: 8px 16px; background: #fef3c7; border: 1px solid #fbbf24; border-radius: 6px; font-size: 13px; font-weight: 600; color: #92400e;">
+                    🔑 가상회원 비밀번호: <span style="color: #b91c1c; font-family: monospace; font-size: 14px;">virtual1234</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
+                <input type="text" id="userSearchInput" placeholder="이메일, 닉네임으로 검색..."
+                    style="flex: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                <button onclick="searchUsers()" class="action-btn" style="padding: 8px 20px; background: var(--admin-primary); color: white; border: none;">
+                    🔍 검색
+                </button>
+            </div>
+
+            <table class="data-table" id="usersTable">
+                <thead id="usersTableHead">
+                    <tr>
+                        <th style="width: 50px;">ID</th>
+                        <th style="width: 150px;">이메일</th>
+                        <th style="width: 100px;">한글 닉네임</th>
+                        <th style="width: 100px;">러시아어 닉네임</th>
+                        <th style="width: 70px;">권한</th>
+                        <th style="width: 80px;">회원유형</th>
+                        <th style="width: 70px;">상태</th>
+                        <th style="width: 100px;">가입일</th>
+                        <th style="width: 120px;">작업</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr><td colspan="9" style="text-align: center; padding: 40px; color: #999;">회원 정보를 불러오는 중...</td></tr>
+                </tbody>
+            </table>
+
+            <!-- 페이징 UI -->
+            <div id="usersPagination" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 15px; background: white; border-radius: 8px; box-shadow: var(--shadow-sm);">
+                <div style="color: #666; font-size: 14px;">
+                    전체 <span id="totalUsers">0</span>명 중
+                    <span id="currentRangeStart">0</span>-<span id="currentRangeEnd">0</span>명 표시
+                </div>
+                <div style="display: flex; gap: 4px; align-items: center;">
+                    <button onclick="goToUserPage(1)" class="action-btn" id="firstPageBtn" style="padding: 8px 12px; font-size: 16px;">
+                        &lt;&lt;
+                    </button>
+                    <button onclick="goToPreviousUserPage()" class="action-btn" id="prevPageBtn" style="padding: 8px 12px; font-size: 16px;">
+                        &lt;
+                    </button>
+                    <div id="pageNumbers" style="display: flex; gap: 4px;">
+                        <!-- 페이지 번호 버튼들이 여기 생성됩니다 -->
+                    </div>
+                    <button onclick="goToNextUserPage()" class="action-btn" id="nextPageBtn" style="padding: 8px 12px; font-size: 16px;">
+                        &gt;
+                    </button>
+                    <button onclick="goToUserPage('last')" class="action-btn" id="lastPageBtn" style="padding: 8px 12px; font-size: 16px;">
+                        &gt;&gt;
+                    </button>
+                </div>
+                <div style="color: #666; font-size: 14px;">
+                    페이지 <span id="currentPage">1</span> / <span id="totalPages">1</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 게시판(카테고리) 관리 -->
+        <div id="posts" class="tab-content">
+            <div class="section-title">📝 게시판 (카테고리) 관리</div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center;">
+                <button onclick="openCategoryModal()" class="action-btn" style="padding: 8px 20px; background: var(--admin-primary); color: white; border: none;">
+                    ➕ 새 게시판 추가
+                </button>
+                <label style="margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px;">
+                    <input type="checkbox" id="showInactive" onchange="loadCategories()" style="width: 16px; height: 16px;">
+                    비활성 게시판 표시
+                </label>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">ID</th>
+                        <th style="width: 120px;">Slug</th>
+                        <th style="width: 150px;">한글명</th>
+                        <th style="width: 150px;">러시아어명</th>
+                        <th style="width: 80px;">아이콘</th>
+                        <th style="width: 80px;">순서</th>
+                        <th style="width: 80px;">상태</th>
+                        <th style="width: 120px;">생성일</th>
+                        <th style="width: 150px;">작업</th>
+                    </tr>
+                </thead>
+                <tbody id="categoriesTableBody">
+                    <tr><td colspan="9" style="text-align: center; padding: 40px; color: #999;">카테고리를 불러오는 중...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 통계 -->
+        <div id="stats" class="tab-content">
+            <div class="section-title">📈 통계</div>
+
+            <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: var(--shadow-sm); margin-bottom: 20px;">
+                <h3 style="margin: 0 0 15px 0; font-size: 16px;">회원 통계</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div class="stat-card">
+                        <div class="stat-label">이번 달 신규 가입</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">이번 주 신규 가입</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">활성 회원</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: var(--shadow-sm); margin-bottom: 20px;">
+                <h3 style="margin: 0 0 15px 0; font-size: 16px;">게시글 통계</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div class="stat-card">
+                        <div class="stat-label">이번 달 게시글</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">이번 주 게시글</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">전체 댓글</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: var(--shadow-sm);">
+                <h3 style="margin: 0 0 15px 0; font-size: 16px;">카테고리별 게시글</h3>
+                <div style="font-size: 13px; color: #666; line-height: 2;">
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                        <span>자유게시판</span>
+                        <span style="font-weight: 600;">0개</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                        <span>공지사항</span>
+                        <span style="font-weight: 600;">0개</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                        <span>구인구직</span>
+                        <span style="font-weight: 600;">0개</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <span>중고장터</span>
+                        <span style="font-weight: 600;">0개</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 신고관리 (기존 컨텐츠) -->
+        <div id="reports" class="tab-content">
+            <div class="section-title">🚨 신고 관리</div>
+
+            <div style="margin-bottom: 15px;">
+                <button class="tab-btn" onclick="showReportTab('reported-posts')">신고된 게시글</button>
+                <button class="tab-btn" onclick="showReportTab('reported-comments')">신고된 댓글</button>
+                <button class="tab-btn" onclick="showReportTab('deleted-posts')">삭제된 게시글</button>
+                <button class="tab-btn" onclick="showReportTab('deleted-comments')">삭제된 댓글</button>
+                <button class="tab-btn" onclick="showReportTab('contact-requests')">운영자 연락</button>
+            </div>
+
+            <div id="reportSubContent">
+                <p style="text-align: center; padding: 40px; color: #999;">좌측 탭을 선택하세요</p>
+            </div>
+        </div>
+
+        <!-- 시스템 설정 -->
+        <div id="system-settings" class="tab-content">
+            <div class="section-title">시스템 설정</div>
+
+            <!-- 번역 설정 -->
+            <div style="background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #333;">🌍 번역 설정</h3>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #555;">번역 서비스 제공자</label>
+                    <select id="translationProvider" style="width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <option value="deepl">DeepL (고품질 번역)</option>
+                        <option value="google">Google Cloud Translation</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #555;">DeepL API Key</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="deeplApiKey" placeholder="8ea8ad3f-c670-4df8-b1b4-abd4fe050c94:fx"
+                               style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace;">
+                        <button onclick="saveDeepLSettings()" class="action-btn" style="padding: 8px 20px;">저장</button>
+                        <button onclick="testDeepLConnection()" class="action-btn" style="padding: 8px 20px; background: #28a745;">테스트</button>
+                    </div>
+                    <div style="margin-top: 5px; font-size: 12px; color: #666;">
+                        💡 DeepL API Key는 <a href="https://www.deepl.com/pro-api" target="_blank" style="color: #0066cc;">DeepL Pro API</a>에서 발급받을 수 있습니다.
+                    </div>
+                    <div id="deeplStatus" style="margin-top: 10px; padding: 10px; border-radius: 4px; display: none;"></div>
+                </div>
+            </div>
+
+            <!-- 기타 설정 섹션 (추후 확장) -->
+            <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #333;">⚙️ 기타 설정</h3>
+                <div style="padding: 20px; text-align: center; color: #999;">
+                    추가 시스템 설정이 곧 제공됩니다.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+
+    <!-- 카테고리 추가/수정 모달 -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <div class="modal-title" id="categoryModalTitle">새 게시판 추가</div>
+                <button class="modal-close" onclick="closeCategoryModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm" onsubmit="saveCategoryForm(event)" style="display: grid; gap: 15px;">
+                    <input type="hidden" id="categoryId">
+
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px;">Slug (영문 식별자) *</label>
+                        <input type="text" id="categorySlug" required
+                            placeholder="예: free, notice, job"
+                            style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                        <small style="color: #666; font-size: 11px;">URL에 사용되는 영문 식별자 (수정 불가)</small>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px;">한글명 *</label>
+                            <input type="text" id="categoryNameKo" required
+                                placeholder="예: 자유게시판"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px;">러시아어명 *</label>
+                            <input type="text" id="categoryNameRu" required
+                                placeholder="예: Свободная доска"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px;">한글 설명</label>
+                            <textarea id="categoryDescKo" rows="3"
+                                placeholder="게시판 설명 (선택사항)"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;"></textarea>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px;">러시아어 설명</label>
+                            <textarea id="categoryDescRu" rows="3"
+                                placeholder="Описание доски (необязательно)"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;"></textarea>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px;">아이콘</label>
+                            <input type="text" id="categoryIcon"
+                                placeholder="예: 💬, 📢, 💼"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px;">정렬 순서</label>
+                            <input type="number" id="categorySortOrder" value="0"
+                                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
+                        </div>
+                    </div>
+
+                    <!-- 레이아웃 타입 선택 -->
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px;">📱 게시판 형태</label>
+                        <select id="categoryLayoutType" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 4px; font-size: 13px; font-weight: 500;">
+                            <option value="list">📋 게시판형 (기본 리스트)</option>
+                            <option value="card">🎴 카드형 (카드 레이아웃)</option>
+                            <option value="gallery">🖼️ 앨범형 (이미지 갤러리)</option>
+                            <option value="form">📝 문의폼형 (문의 제출 양식)</option>
+                        </select>
+                        <small style="color: #666; font-size: 11px; display: block; margin-top: 5px;">
+                            💡 <strong>형태 설명:</strong><br>
+                            • 게시판형: 일반적인 게시글 목록 (자유게시판, 공지사항 등)<br>
+                            • 카드형: 카드 스타일로 표시 (뉴스, 블로그 등)<br>
+                            • 앨범형: 이미지 중심 갤러리 (사진첩, 포트폴리오 등)<br>
+                            • 문의폼형: 문의 제출 양식 (광고요청, 건의사항 등)
+                        </small>
+                    </div>
+
+                    <div style="display: grid; gap: 10px;">
+                        <div style="padding: 10px; background: #f8f9fa; border-radius: 4px; border: 1px solid #e9ecef;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="categoryActive" style="width: 18px; height: 18px; cursor: pointer;" checked>
+                                <span style="font-weight: 600; font-size: 13px;">게시판 활성화</span>
+                            </label>
+                            <small style="color: #666; font-size: 11px; display: block; margin-top: 5px; margin-left: 26px;">
+                                체크 해제하면 게시판이 사용자에게 표시되지 않습니다.
+                            </small>
+                        </div>
+
+                        <div style="padding: 10px; background: #f8f9fa; border-radius: 4px; border: 1px solid #e9ecef;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="categoryIsGroup" style="width: 18px; height: 18px; cursor: pointer;">
+                                <span style="font-weight: 600; font-size: 13px;">그룹 헤더로 설정</span>
+                            </label>
+                            <small style="color: #666; font-size: 11px; display: block; margin-top: 5px; margin-left: 26px;">
+                                체크하면 게시판이 아닌 섹션 제목으로 표시됩니다. (예: "비즈니스", "운영자 연락")
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- 권한 설정 섹션 -->
+                    <div style="padding: 15px; background: #fff9e6; border-radius: 6px; border: 2px solid #ffc107;">
+                        <div style="font-weight: 700; font-size: 14px; margin-bottom: 15px; color: #f57c00;">
+                            🔒 게시판 권한 설정
+                        </div>
+
+                        <div style="display: grid; gap: 12px;">
+                            <!-- 읽기 권한 -->
+                            <div>
+                                <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #333;">
+                                    📖 읽기 권한
+                                </label>
+                                <select id="categoryReadPermission" style="width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 13px; font-weight: 500;">
+                                    <option value="ALL">모두 (비로그인 포함)</option>
+                                    <option value="USER">일반회원 이상</option>
+                                    <option value="PREMIUM">특별회원 이상</option>
+                                    <option value="STAFF">스탭 이상</option>
+                                    <option value="ADMIN">관리자만</option>
+                                </select>
+                            </div>
+
+                            <!-- 쓰기 권한 -->
+                            <div>
+                                <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #333;">
+                                    ✍️ 쓰기 권한
+                                </label>
+                                <select id="categoryWritePermission" style="width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 13px; font-weight: 500;">
+                                    <option value="ALL">모두 (비로그인 포함)</option>
+                                    <option value="USER">일반회원 이상</option>
+                                    <option value="PREMIUM">특별회원 이상</option>
+                                    <option value="STAFF">스탭 이상</option>
+                                    <option value="ADMIN">관리자만</option>
+                                </select>
+                            </div>
+
+                            <!-- 댓글 권한 -->
+                            <div>
+                                <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #333;">
+                                    💬 댓글 권한
+                                </label>
+                                <select id="categoryCommentPermission" style="width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 13px; font-weight: 500;">
+                                    <option value="ALL">모두 (비로그인 포함)</option>
+                                    <option value="USER">일반회원 이상</option>
+                                    <option value="PREMIUM">특별회원 이상</option>
+                                    <option value="STAFF">스탭 이상</option>
+                                    <option value="ADMIN">관리자만</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <small style="display: block; margin-top: 10px; color: #f57c00; font-size: 11px; line-height: 1.5;">
+                            💡 <strong>권한 설명:</strong><br>
+                            • 모두: 로그인하지 않은 방문자도 가능<br>
+                            • 일반회원: 가입 후 로그인한 모든 사용자<br>
+                            • 특별회원: 프리미엄 멤버십 사용자<br>
+                            • 스탭: 운영진 권한이 있는 사용자<br>
+                            • 관리자: 최고 관리자만
+                        </small>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+                        <button type="button" onclick="closeCategoryModal()" class="action-btn" style="padding: 8px 20px;">
+                            취소
+                        </button>
+                        <button type="submit" class="action-btn" style="padding: 8px 20px; background: var(--admin-primary); color: white; border: none;">
+                            저장
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상세보기 모달 -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">연락 상세 정보</div>
+                <button class="modal-close" onclick="closeContactModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- JavaScript로 동적 로드 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== 토큰 관리 함수들 =====
+
+        // 토큰 갱신 함수
+        async function refreshAccessToken() {
+            const refreshToken = localStorage.getItem('refresh_token');
+
+            if (!refreshToken) {
+                console.log('[refreshAccessToken] refresh_token이 없습니다.');
+                return null;
+            }
+
+            try {
+                console.log('[refreshAccessToken] 토큰 갱신 시도...');
+                const response = await fetch('http://localhost:8000/api/auth/refresh', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ refresh_token: refreshToken })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('[refreshAccessToken] 토큰 갱신 성공');
+
+                    // 새 토큰 저장
+                    localStorage.setItem('access_token', data.access_token);
+
+                    // userInfo도 업데이트
+                    const userInfoStr = localStorage.getItem('userInfo');
+                    if (userInfoStr) {
+                        try {
+                            const userInfo = JSON.parse(userInfoStr);
+                            userInfo.access_token = data.access_token;
+                            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                        } catch (e) {
+                            console.error('[refreshAccessToken] userInfo 업데이트 오류:', e);
+                        }
+                    }
+
+                    return data.access_token;
+                } else {
+                    console.error('[refreshAccessToken] 토큰 갱신 실패:', response.status);
+                    return null;
+                }
+            } catch (error) {
+                console.error('[refreshAccessToken] 예외 발생:', error);
+                return null;
+            }
+        }
+
+        // API 호출 시 자동으로 토큰 갱신을 시도하는 fetch 래퍼
+        async function fetchWithTokenRefresh(url, options = {}) {
+            // 첫 번째 시도
+            let response = await fetch(url, options);
+
+            // 401 에러이고 토큰이 만료된 경우
+            if (response.status === 401) {
+                // response.clone()을 사용하여 스트림을 복제 (여러 번 읽을 수 있도록)
+                const responseClone = response.clone();
+                const errorText = await responseClone.text();
+
+                console.log('[fetchWithTokenRefresh] 401 오류 응답:', errorText.substring(0, 200));
+
+                // 토큰 만료 확인
+                if (errorText.includes('expired') || errorText.includes('만료')) {
+                    console.log('[fetchWithTokenRefresh] 토큰 만료 감지, 갱신 시도...');
+
+                    // 토큰 갱신
+                    const newToken = await refreshAccessToken();
+
+                    if (newToken) {
+                        // 헤더에 새 토큰 적용
+                        if (!options.headers) options.headers = {};
+                        options.headers['Authorization'] = `Bearer ${newToken}`;
+
+                        // 재시도
+                        console.log('[fetchWithTokenRefresh] 새 토큰으로 재시도...');
+                        response = await fetch(url, options);
+                    } else {
+                        // 토큰 갱신 실패 - 로그인 페이지로
+                        console.error('[fetchWithTokenRefresh] 토큰 갱신 실패, 로그인 페이지로 이동');
+                        alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+                        localStorage.removeItem('access_token');
+                        localStorage.removeItem('refresh_token');
+                        localStorage.removeItem('userInfo');
+                        window.location.href = '/login.html';
+                        return null;
+                    }
+                } else {
+                    // 토큰 만료가 아닌 다른 401 오류 (권한 부족 등)
+                    console.error('[fetchWithTokenRefresh] 권한 없음 또는 인증 실패');
+                }
+            }
+
+            return response;
+        }
+
+        // 로그아웃 함수
+        function handleLogout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                console.log('[handleLogout] 로그아웃 처리 중...');
+
+                // 모든 인증 정보 삭제
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('userInfo');
+
+                // 로그인 페이지로 리다이렉트
+                alert('로그아웃되었습니다.');
+                window.location.href = '/login.html';
+            }
+        }
+
+        // 관리자 권한 확인 및 운영자 연락 로드
+        window.addEventListener('DOMContentLoaded', function() {
+            const userInfoStr = localStorage.getItem('userInfo');
+
+            if (!userInfoStr) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            try {
+                const userInfo = JSON.parse(userInfoStr);
+                if (!userInfo.isAdmin) {
+                    alert('관리자 권한이 필요합니다.');
+                    window.location.href = '/index.html';
+                    return;
+                }
+
+                // 대시보드 초기 로드
+                loadDashboard();
+            } catch (e) {
+                console.error('사용자 정보 파싱 오류:', e);
+                alert('로그인 정보가 올바르지 않습니다.');
+                window.location.href = '/login.html';
+            }
+        });
+
+        // 운영자 연락 데이터 로드
+        function loadContactRequests() {
+            const contacts = JSON.parse(localStorage.getItem('adminContacts') || '[]');
+            const tableBody = document.getElementById('contactRequestsTable');
+            const noDataDiv = document.getElementById('noContactRequests');
+
+            if (contacts.length === 0) {
+                noDataDiv.style.display = 'block';
+                return;
+            }
+
+            noDataDiv.style.display = 'none';
+
+            tableBody.innerHTML = contacts.map((contact, index) => {
+                const typeLabel = contact.type === 'ad' ? '광고/협력' : '건의';
+                const typeBadge = contact.type === 'ad' ? 'badge-reported' : 'badge-normal';
+
+                // 요청 유형 번역
+                const requestTypeMap = {
+                    // 광고/협력 요청 유형
+                    'banner': '배너 광고',
+                    'content': '콘텐츠 협찬',
+                    'partnership': '비즈니스 제휴',
+                    'event': '이벤트 협력',
+                    // 건의 유형
+                    'improvement': '서비스 개선',
+                    'feature': '기능 추가',
+                    'bug': '버그 신고',
+                    'complaint': '불편 사항',
+                    'question': '질문',
+                    'other': '기타'
+                };
+
+                const requestType = contact.requestType || contact.suggestType || 'other';
+                const requestTypeLabel = requestTypeMap[requestType] || '기타';
+
+                const date = new Date(contact.timestamp);
+                const dateStr = date.toLocaleString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                return `
+                    <tr>
+                        <td><span class="status-badge ${typeBadge}">${typeLabel}</span></td>
+                        <td><strong>${contact.title || '-'}</strong></td>
+                        <td>${contact.name || '-'}</td>
+                        <td>${dateStr}</td>
+                        <td style="white-space: nowrap;">
+                            <button class="action-btn" onclick="viewContactDetail(${index})">상세보기</button>
+                            <button class="action-btn btn-delete" onclick="deleteContactRequest(${index})">삭제</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // 연락 상세보기
+        function viewContactDetail(index) {
+            const contacts = JSON.parse(localStorage.getItem('adminContacts') || '[]');
+            const contact = contacts[index];
+
+            if (!contact) {
+                alert('데이터를 찾을 수 없습니다.');
+                return;
+            }
+
+            const typeLabel = contact.type === 'ad' ? '광고/협력 요청' : '운영자 건의';
+            const requestTypeMap = {
+                'banner': '배너 광고',
+                'content': '콘텐츠 협찬',
+                'partnership': '비즈니스 제휴',
+                'event': '이벤트 협력',
+                'improvement': '서비스 개선',
+                'feature': '기능 추가',
+                'bug': '버그 신고',
+                'complaint': '불편 사항',
+                'question': '질문',
+                'other': '기타'
+            };
+            const requestType = contact.requestType || contact.suggestType || 'other';
+            const requestTypeLabel = requestTypeMap[requestType] || '기타';
+
+            document.getElementById('modalTitle').textContent = typeLabel;
+
+            let modalHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">👤 이름</div>
+                    <div class="detail-value">${contact.name || '-'}</div>
+                </div>
+            `;
+
+            if (contact.company) {
+                modalHTML += `
+                    <div class="detail-row">
+                        <div class="detail-label">🏢 회사명</div>
+                        <div class="detail-value">${contact.company}</div>
+                    </div>
+                `;
+            }
+
+            modalHTML += `
+                <div class="detail-row">
+                    <div class="detail-label">📧 이메일</div>
+                    <div class="detail-value">${contact.email || '-'}</div>
+                </div>
+            `;
+
+            if (contact.phone) {
+                modalHTML += `
+                    <div class="detail-row">
+                        <div class="detail-label">📞 연락처</div>
+                        <div class="detail-value">${contact.phone}</div>
+                    </div>
+                `;
+            }
+
+            modalHTML += `
+                <div class="detail-row">
+                    <div class="detail-label">📂 요청 유형</div>
+                    <div class="detail-value">${requestTypeLabel}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">📌 제목</div>
+                    <div class="detail-value"><strong>${contact.title || '-'}</strong></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">📝 상세 내용</div>
+                    <div class="detail-content">${contact.content || '-'}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">🕐 접수 일시</div>
+                    <div class="detail-value">${new Date(contact.timestamp).toLocaleString('ko-KR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })}</div>
+                </div>
+            `;
+
+            document.getElementById('modalBody').innerHTML = modalHTML;
+            document.getElementById('contactModal').classList.add('show');
+        }
+
+        // 모달 닫기
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.remove('show');
+        }
+
+        // 모달 배경 클릭시 닫기
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'contactModal') {
+                closeContactModal();
+            }
+        });
+
+        // 연락 삭제
+        function deleteContactRequest(index) {
+            if (confirm('이 연락을 삭제하시겠습니까?')) {
+                const contacts = JSON.parse(localStorage.getItem('adminContacts') || '[]');
+                contacts.splice(index, 1);
+                localStorage.setItem('adminContacts', JSON.stringify(contacts));
+                alert('삭제되었습니다.');
+                loadContactRequests();
+            }
+        }
+
+        // 탭 전환
+        function showTab(tabId) {
+            // 모든 탭 버튼과 콘텐츠 비활성화
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // 선택된 탭 활성화
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+
+            // 탭 전환 시 데이터 로드
+            if (tabId === 'dashboard') {
+                loadDashboard();
+            } else if (tabId === 'users') {
+                loadUsers();
+            } else if (tabId === 'posts') {
+                loadCategories();
+            }
+        }
+
+        // ===== 카테고리(게시판) 관리 함수들 =====
+
+        // 카테고리 목록 로드
+        async function loadCategories() {
+            const token = localStorage.getItem('access_token') ||
+                         (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+            console.log('[loadCategories] 토큰 확인:', token ? '있음' : '없음');
+
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                return;
+            }
+
+            const includeInactive = document.getElementById('showInactive')?.checked || false;
+            console.log('[loadCategories] 비활성 포함:', includeInactive);
+
+            const tbody = document.getElementById('categoriesTableBody');
+            tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 40px; color: #999;">카테고리를 불러오는 중...</td></tr>';
+
+            try {
+                const url = `http://localhost:8000/api/admin/categories?include_inactive=${includeInactive}`;
+                console.log('[loadCategories] API 호출:', url);
+
+                const response = await fetchWithTokenRefresh(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                // fetchWithTokenRefresh가 null을 리턴하면 (로그인 페이지로 리다이렉트됨)
+                if (!response) return;
+
+                console.log('[loadCategories] 응답 상태:', response.status);
+
+                if (response.ok) {
+                    const categories = await response.json();
+                    console.log('[loadCategories] 카테고리 수:', categories.length);
+
+                    if (categories.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 40px;">등록된 게시판이 없습니다.</td></tr>';
+                        return;
+                    }
+
+                    tbody.innerHTML = categories.map(cat => `
+                        <tr style="${cat.is_group ? 'background-color: #f8f9fa;' : ''}">
+                            <td>${cat.id}</td>
+                            <td><code>${cat.slug}</code></td>
+                            <td>
+                                ${cat.name_ko || '-'}
+                                ${cat.is_group ? '<span class="badge" style="background: #6c757d; color: white; font-size: 10px; margin-left: 5px;">그룹</span>' : ''}
+                            </td>
+                            <td>${cat.name_ru || '-'}</td>
+                            <td style="font-size: 20px;">${cat.icon || '📋'}</td>
+                            <td>${cat.sort_order}</td>
+                            <td>
+                                <span class="badge ${cat.is_active ? 'badge-success' : 'badge-secondary'}">
+                                    ${cat.is_active ? '활성' : '비활성'}
+                                </span>
+                            </td>
+                            <td>${new Date(cat.created_at).toLocaleDateString('ko-KR')}</td>
+                            <td>
+                                <button onclick="openCategoryModal(${cat.id})" class="btn-sm btn-primary" style="margin-right: 5px;">✏️ 수정</button>
+                                <button onclick="deleteCategory(${cat.id}, '${cat.slug}')" class="btn-sm btn-danger">🗑️ 삭제</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    const errorText = await response.text();
+                    console.error('[loadCategories] 오류 응답:', errorText);
+
+                    let errorMsg = '카테고리 목록을 불러오는데 실패했습니다.';
+                    try {
+                        const errorData = JSON.parse(errorText);
+                        errorMsg += `\n상태: ${response.status}\n상세: ${errorData.detail || errorText}`;
+                    } catch (e) {
+                        errorMsg += `\n상태: ${response.status}\n응답: ${errorText.substring(0, 200)}`;
+                    }
+
+                    tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 40px; color: #f44336;">
+                        오류가 발생했습니다.<br>
+                        상태 코드: ${response.status}<br>
+                        <small style="color: #999;">${errorText.substring(0, 100)}</small>
+                    </td></tr>`;
+                    alert(errorMsg);
+                }
+            } catch (error) {
+                console.error('[loadCategories] 예외 발생:', error);
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 40px; color: #f44336;">
+                    네트워크 오류가 발생했습니다.<br>
+                    <small style="color: #999;">${error.message}</small>
+                </td></tr>`;
+                alert(`카테고리 목록을 불러오는데 실패했습니다.\n\n오류: ${error.message}\n\n백엔드가 실행 중인지 확인해주세요.`);
+            }
+        }
+
+        // 카테고리 모달 열기 (추가 또는 수정)
+        async function openCategoryModal(categoryId = null) {
+            const modal = document.getElementById('categoryModal');
+            const modalTitle = document.getElementById('categoryModalTitle');
+            const form = document.getElementById('categoryForm');
+
+            // 폼 초기화
+            form.reset();
+            document.getElementById('categoryId').value = '';
+
+            if (categoryId) {
+                // 수정 모드
+                modalTitle.textContent = '게시판 수정';
+
+                // 기존 카테고리 데이터 로드
+                const token = localStorage.getItem('access_token') ||
+                             (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+                try {
+                    const response = await fetch(`http://localhost:8000/api/admin/categories`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const categories = await response.json();
+                        const category = categories.find(c => c.id === categoryId);
+
+                        if (category) {
+                            document.getElementById('categoryId').value = category.id;
+                            document.getElementById('categorySlug').value = category.slug;
+                            document.getElementById('categoryNameKo').value = category.name_ko || '';
+                            document.getElementById('categoryNameRu').value = category.name_ru || '';
+                            document.getElementById('categoryDescKo').value = category.description_ko || '';
+                            document.getElementById('categoryDescRu').value = category.description_ru || '';
+                            document.getElementById('categoryIcon').value = category.icon || '';
+                            document.getElementById('categorySortOrder').value = category.sort_order || 0;
+                            document.getElementById('categoryLayoutType').value = category.layout_type || 'list';
+                            document.getElementById('categoryActive').checked = category.is_active;
+                            document.getElementById('categoryIsGroup').checked = category.is_group || false;
+
+                            // 권한 설정 로드 (대소문자 구분 없이)
+                            document.getElementById('categoryReadPermission').value = (category.read_permission || 'ALL').toUpperCase();
+                            document.getElementById('categoryWritePermission').value = (category.write_permission || 'USER').toUpperCase();
+                            document.getElementById('categoryCommentPermission').value = (category.comment_permission || 'USER').toUpperCase();
+                        }
+                    }
+                } catch (error) {
+                    console.error('카테고리 데이터 로드 실패:', error);
+                }
+            } else {
+                // 추가 모드
+                modalTitle.textContent = '새 게시판 추가';
+                document.getElementById('categoryActive').checked = true;
+            }
+
+            modal.classList.add('show');
+        }
+
+        // 카테고리 모달 닫기
+        function closeCategoryModal() {
+            document.getElementById('categoryModal').classList.remove('show');
+        }
+
+        // 카테고리 저장 (추가 또는 수정)
+        async function saveCategoryForm(event) {
+            event.preventDefault();
+
+            const token = localStorage.getItem('access_token') ||
+                         (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                return;
+            }
+
+            const categoryId = document.getElementById('categoryId').value;
+            const formData = {
+                slug: document.getElementById('categorySlug').value.trim(),
+                name_ko: document.getElementById('categoryNameKo').value.trim() || null,
+                name_ru: document.getElementById('categoryNameRu').value.trim() || null,
+                description_ko: document.getElementById('categoryDescKo').value.trim() || null,
+                description_ru: document.getElementById('categoryDescRu').value.trim() || null,
+                icon: document.getElementById('categoryIcon').value.trim() || null,
+                sort_order: parseInt(document.getElementById('categorySortOrder').value) || 0,
+                layout_type: document.getElementById('categoryLayoutType').value,
+                is_active: document.getElementById('categoryActive').checked,
+                is_group: document.getElementById('categoryIsGroup').checked,
+                // 권한 설정
+                read_permission: document.getElementById('categoryReadPermission').value,
+                write_permission: document.getElementById('categoryWritePermission').value,
+                comment_permission: document.getElementById('categoryCommentPermission').value
+            };
+
+            // 유효성 검사
+            if (!formData.slug) {
+                alert('슬러그(Slug)는 필수 입력 항목입니다.');
+                return;
+            }
+
+            if (!formData.name_ko && !formData.name_ru) {
+                alert('한글 이름 또는 러시아어 이름 중 최소 하나는 입력해야 합니다.');
+                return;
+            }
+
+            try {
+                let response;
+
+                if (categoryId) {
+                    // 수정
+                    response = await fetch(`http://localhost:8000/api/admin/categories/${categoryId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                } else {
+                    // 추가
+                    response = await fetch('http://localhost:8000/api/admin/categories', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                }
+
+                if (response.ok) {
+                    alert(categoryId ? '게시판이 수정되었습니다.' : '새 게시판이 추가되었습니다.');
+                    closeCategoryModal();
+                    loadCategories();
+                } else {
+                    const errorData = await response.json();
+                    alert(`저장 실패: ${errorData.detail || '알 수 없는 오류'}`);
+                }
+            } catch (error) {
+                console.error('카테고리 저장 실패:', error);
+                alert('게시판 저장 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 카테고리 삭제
+        async function deleteCategory(categoryId, categorySlug) {
+            if (!confirm(`정말로 "${categorySlug}" 게시판을 삭제하시겠습니까?\n\n게시글이 있는 경우 비활성화되며, 게시글이 없는 경우 완전히 삭제됩니다.`)) {
+                return;
+            }
+
+            const token = localStorage.getItem('access_token') ||
+                         (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8000/api/admin/categories/${categoryId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(result.message || '게시판이 삭제되었습니다.');
+                    loadCategories();
+                } else {
+                    const errorData = await response.json();
+                    alert(`삭제 실패: ${errorData.detail || '알 수 없는 오류'}`);
+                }
+            } catch (error) {
+                console.error('카테고리 삭제 실패:', error);
+                alert('게시판 삭제 중 오류가 발생했습니다.');
+            }
+        }
+
+        // ===== 카테고리 관리 함수 끝 =====
+
+        // 대시보드 로드
+        async function loadDashboard() {
+            const token = localStorage.getItem('access_token') ||
+                         (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+            try {
+                const response = await fetch('http://localhost:8000/api/admin/dashboard', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('totalUsers').textContent = data.total_users;
+                    document.getElementById('newUsersToday').textContent = data.new_users_today;
+                    document.getElementById('totalPosts').textContent = data.total_posts;
+                    document.getElementById('newPostsToday').textContent = data.new_posts_today;
+                    document.getElementById('pendingReports').textContent = data.pending_reports;
+                    document.getElementById('activePartners').textContent = data.total_partners;
+                }
+            } catch (error) {
+                console.error('대시보드 로드 실패:', error);
+            }
+        }
+
+        // 현재 선택된 회원 유형 (전역 변수)
+        let currentUserType = 'all';
+        let currentUserPage = 1;
+        let usersPerPage = 50;
+        let totalUsersCount = 0;
+        let allUsersCache = []; // 전체 회원 데이터 캐시
+
+        // 회원 유형 탭 전환
+        function switchUserTypeTab(userType) {
+            currentUserType = userType;
+            currentUserPage = 1; // 페이지를 1로 리셋
+
+            // 탭 활성화 상태 변경
+            document.querySelectorAll('.user-type-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.user-type-tab[data-type="${userType}"]`).classList.add('active');
+
+            // 가상회원 탭일 때만 비밀번호 정보 표시
+            const passwordInfo = document.getElementById('virtualPasswordInfo');
+            if (userType === 'virtual') {
+                passwordInfo.style.display = 'block';
+            } else {
+                passwordInfo.style.display = 'none';
+            }
+
+            // 회원 목록 다시 로드
+            loadUsers();
+        }
+
+        // 회원 목록 로드
+        async function loadUsers() {
+            const token = localStorage.getItem('access_token') ||
+                         (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+            try {
+                // 서버 사이드 페이지네이션: skip과 limit 사용
+                const skip = (currentUserPage - 1) * usersPerPage;
+                let countUrl = 'http://localhost:8000/api/admin/users/count';
+                let usersUrl = `http://localhost:8000/api/admin/users?skip=${skip}&limit=${usersPerPage}`;
+
+                if (currentUserType !== 'all') {
+                    countUrl += `?user_type=${currentUserType}`;
+                    usersUrl += `&user_type=${currentUserType}`;
+                }
+
+                // 총 회원 수 조회
+                const countResponse = await fetch(countUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!countResponse.ok) {
+                    throw new Error('Failed to fetch user count');
+                }
+
+                const countData = await countResponse.json();
+                totalUsersCount = countData.total;
+
+                // 관리자/스탭 탭의 경우 추가 필터링 필요
+                if (currentUserType === 'admin') {
+                    // admin user_type만 요청하면 ADMIN과 STAFF가 함께 조회됨
+                    totalUsersCount = countData.total;
+                }
+
+                // 회원 목록 조회
+                const response = await fetch(usersUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    let users = await response.json();
+
+                    // 관리자/스탭 탭인 경우 클라이언트에서 필터링 (대소문자 구분 없이)
+                    if (currentUserType === 'admin') {
+                        users = users.filter(u => {
+                            const ut = (u.user_type || '').toUpperCase();
+                            return ut === 'ADMIN' || ut === 'STAFF';
+                        });
+                    }
+
+                    // 페이징 UI 업데이트
+                    updateUsersPagination();
+
+                    const tbody = document.getElementById('usersTableBody');
+
+                    // 역할 한글 표시 매핑
+                    const roleLabels = {
+                        'admin': '관리자',
+                        'staff': '스탭',
+                        'premium': '특별회원',
+                        'user': '일반회원',
+                        'ADMIN': '관리자',
+                        'STAFF': '스탭',
+                        'PREMIUM': '특별회원',
+                        'USER': '일반회원'
+                    };
+
+                    // 회원 유형 한글 표시 매핑
+                    const userTypeLabels = {
+                        'admin': '관리자',
+                        'staff': '스탭',
+                        'virtual': '가상회원',
+                        'real': '실제회원'
+                    };
+
+                    // 역할별 배지 색상
+                    const roleBadgeClass = {
+                        'admin': 'badge-deleted',     // 빨간색
+                        'staff': 'badge-pending',     // 주황색
+                        'premium': 'badge-published', // 파란색
+                        'user': 'badge-normal',       // 회색
+                        'ADMIN': 'badge-deleted',
+                        'STAFF': 'badge-pending',
+                        'PREMIUM': 'badge-published',
+                        'USER': 'badge-normal'
+                    };
+
+                    // 회원 유형별 배지 색상
+                    const userTypeBadgeClass = {
+                        'admin': 'badge-deleted',      // 빨간색
+                        'staff': 'badge-pending',      // 주황색
+                        'virtual': 'badge-normal',     // 회색
+                        'real': 'badge-published'      // 파란색
+                    };
+
+                    // 가상회원 탭인 경우 테이블 헤더 변경
+                    const tableHead = document.getElementById('usersTableHead');
+                    if (currentUserType === 'virtual') {
+                        tableHead.innerHTML = `
+                            <tr>
+                                <th style="width: 40px;">ID</th>
+                                <th style="width: 120px;">이메일</th>
+                                <th style="width: 80px;">한글 닉네임</th>
+                                <th style="width: 80px;">러시아어 닉네임</th>
+                                <th style="width: 60px;">민족</th>
+                                <th style="width: 40px;">나이</th>
+                                <th style="width: 50px;">성별</th>
+                                <th style="width: 80px;">직업</th>
+                                <th style="width: 60px;">활동수준</th>
+                                <th style="width: 80px;">게시스타일</th>
+                                <th style="width: 50px;">한국어</th>
+                                <th style="width: 50px;">러시아어</th>
+                                <th style="width: 60px;">상태</th>
+                                <th style="width: 100px;">작업</th>
+                            </tr>
+                        `;
+                    } else {
+                        tableHead.innerHTML = `
+                            <tr>
+                                <th style="width: 50px;">ID</th>
+                                <th style="width: 150px;">이메일</th>
+                                <th style="width: 100px;">한글 닉네임</th>
+                                <th style="width: 100px;">러시아어 닉네임</th>
+                                <th style="width: 70px;">권한</th>
+                                <th style="width: 80px;">회원유형</th>
+                                <th style="width: 70px;">상태</th>
+                                <th style="width: 100px;">가입일</th>
+                                <th style="width: 120px;">작업</th>
+                            </tr>
+                        `;
+                    }
+
+                    // 민족 한글 표시
+                    const ethnicityLabels = {
+                        'KOREAN': '한국인',
+                        'KOREAN_RUSSIAN': '교포',
+                        'RUSSIAN': '러시아인'
+                    };
+
+                    // 성별 한글 표시
+                    const genderLabels = {
+                        'male': '남성',
+                        'female': '여성'
+                    };
+
+                    // 활동수준 한글 표시
+                    const activityLabels = {
+                        'high': '높음',
+                        'medium': '중간',
+                        'low': '낮음'
+                    };
+
+                    tbody.innerHTML = users.map(user => {
+                        // 가상회원 탭인 경우 페르소나 정보 표시
+                        if (currentUserType === 'virtual') {
+                            let interests = '-';
+                            try {
+                                if (user.persona_interests) {
+                                    const interestsArray = typeof user.persona_interests === 'string' ?
+                                        JSON.parse(user.persona_interests) : user.persona_interests;
+                                    interests = interestsArray.slice(0, 2).join(', ') +
+                                               (interestsArray.length > 2 ? '...' : '');
+                                }
+                            } catch (e) {
+                                interests = '-';
+                            }
+
+                            return `
+                            <tr>
+                                <td>${user.id}</td>
+                                <td style="font-size: 12px;">${user.email}</td>
+                                <td>${user.nickname_ko || user.nickname}</td>
+                                <td>${user.nickname_ru || user.nickname}</td>
+                                <td>${ethnicityLabels[user.ethnicity] || user.ethnicity || '-'}</td>
+                                <td>${user.persona_age || '-'}</td>
+                                <td>${genderLabels[user.persona_gender] || user.persona_gender || '-'}</td>
+                                <td style="font-size: 12px;">${user.persona_occupation || '-'}</td>
+                                <td>${activityLabels[user.persona_activity_level] || user.persona_activity_level || '-'}</td>
+                                <td style="font-size: 12px;">${user.persona_posting_style || '-'}</td>
+                                <td style="font-size: 11px;">${user.persona_korean_level || '-'}</td>
+                                <td style="font-size: 11px;">${user.persona_russian_level || '-'}</td>
+                                <td><span class="status-badge ${user.is_active ? 'badge-normal' : 'badge-deleted'}">${user.is_active ? '활성' : '비활성'}</span></td>
+                                <td>
+                                    <button class="action-btn" onclick="toggleUserActive(${user.id}, ${user.is_active})">
+                                        ${user.is_active ? '비활성화' : '활성화'}
+                                    </button>
+                                </td>
+                            </tr>
+                            `;
+                        } else {
+                            // 일반 회원 표시 (관심사 제외, 두 닉네임 표시)
+                            return `
+                            <tr>
+                                <td>${user.id}</td>
+                                <td>${user.email}</td>
+                                <td>${user.nickname_ko || user.nickname}</td>
+                                <td>${user.nickname_ru || user.nickname}</td>
+                                <td><span class="status-badge ${roleBadgeClass[user.role] || 'badge-normal'}">${roleLabels[user.role] || user.role}</span></td>
+                                <td><span class="status-badge ${userTypeBadgeClass[user.user_type] || 'badge-normal'}">${userTypeLabels[user.user_type] || user.user_type || '-'}</span></td>
+                                <td><span class="status-badge ${user.is_active ? 'badge-normal' : 'badge-deleted'}">${user.is_active ? '활성' : '비활성'}</span></td>
+                                <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                                <td>
+                                    <button class="action-btn" onclick="toggleUserActive(${user.id}, ${user.is_active})">
+                                        ${user.is_active ? '비활성화' : '활성화'}
+                                    </button>
+                                </td>
+                            </tr>
+                            `;
+                        }
+                    }).join('');
+                }
+            } catch (error) {
+                console.error('회원 목록 로드 실패:', error);
+            }
+        }
+
+        // 페이징 정보 업데이트 (간소화)
+        function updateUsersPagination() {
+            const totalPages = Math.ceil(totalUsersCount / usersPerPage);
+
+            // UI 업데이트
+            document.getElementById('totalUsers').textContent = totalUsersCount;
+            document.getElementById('currentPage').textContent = currentUserPage;
+            document.getElementById('totalPages').textContent = totalPages;
+
+            const rangeStart = totalUsersCount === 0 ? 0 : (currentUserPage - 1) * usersPerPage + 1;
+            const rangeEnd = Math.min(currentUserPage * usersPerPage, totalUsersCount);
+            document.getElementById('currentRangeStart').textContent = rangeStart;
+            document.getElementById('currentRangeEnd').textContent = rangeEnd;
+
+            // 페이지 번호 버튼 생성 (최대 10개)
+            const pageNumbers = document.getElementById('pageNumbers');
+            pageNumbers.innerHTML = '';
+
+            const maxPageButtons = 10;
+            let startPage = Math.max(1, currentUserPage - Math.floor(maxPageButtons / 2));
+            let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
+            if (endPage - startPage < maxPageButtons - 1) {
+                startPage = Math.max(1, endPage - maxPageButtons + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.className = 'action-btn';
+                btn.style.padding = '8px 12px';
+                btn.style.minWidth = '40px';
+                btn.style.fontSize = '14px';
+
+                if (i === currentUserPage) {
+                    btn.style.background = 'var(--admin-primary)';
+                    btn.style.color = 'white';
+                    btn.style.fontWeight = 'bold';
+                }
+
+                btn.onclick = () => goToUserPage(i);
+                pageNumbers.appendChild(btn);
+            }
+
+            // 버튼 활성화/비활성화
+            document.getElementById('firstPageBtn').disabled = currentUserPage === 1;
+            document.getElementById('prevPageBtn').disabled = currentUserPage === 1;
+            document.getElementById('nextPageBtn').disabled = currentUserPage === totalPages;
+            document.getElementById('lastPageBtn').disabled = currentUserPage === totalPages;
+        }
+
+        // 특정 페이지로 이동
+        function goToUserPage(page) {
+            if (page === 'last') {
+                const totalPages = Math.ceil(totalUsersCount / usersPerPage);
+                currentUserPage = totalPages;
+            } else {
+                currentUserPage = page;
+            }
+            loadUsers();
+        }
+
+        // 이전 페이지로 이동
+        function goToPreviousUserPage() {
+            if (currentUserPage > 1) {
+                currentUserPage--;
+                loadUsers();
+            }
+        }
+
+        // 다음 페이지로 이동
+        function goToNextUserPage() {
+            const totalPages = Math.ceil(totalUsersCount / usersPerPage);
+            if (currentUserPage < totalPages) {
+                currentUserPage++;
+                loadUsers();
+            }
+        }
+
+        // 게시글 목록 로드
+        async function loadPosts() {
+            const token = localStorage.getItem('access_token') ||
+                         (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+            try {
+                const response = await fetch('http://localhost:8000/api/admin/posts', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const posts = await response.json();
+                    const tbody = document.getElementById('postsTableBody');
+                    tbody.innerHTML = posts.map(post => `
+                        <tr>
+                            <td>${post.id}</td>
+                            <td>${post.category_id}</td>
+                            <td style="text-align: left;">${post.title}</td>
+                            <td>${post.author_id}</td>
+                            <td>${post.views || 0}</td>
+                            <td>${new Date(post.created_at).toLocaleDateString()}</td>
+                            <td>
+                                <button class="action-btn btn-delete" onclick="deletePost(${post.id})">삭제</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('게시글 목록 로드 실패:', error);
+            }
+        }
+
+        // 회원 활성/비활성 토글
+        async function toggleUserActive(userId, isActive) {
+            const token = localStorage.getItem('access_token') ||
+                         (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+            if (!confirm(`이 회원을 ${isActive ? '비활성화' : '활성화'}하시겠습니까?`)) return;
+
+            try {
+                const response = await fetch(`http://localhost:8000/api/admin/users/${userId}/toggle-active`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('처리되었습니다.');
+                    loadUsers();
+                }
+            } catch (error) {
+                console.error('회원 상태 변경 실패:', error);
+                alert('처리 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 게시글 삭제
+        async function deletePost(postId) {
+            const token = localStorage.getItem('access_token') ||
+                         (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+            if (!confirm(`게시글 #${postId}를 삭제하시겠습니까?`)) return;
+
+            try {
+                const response = await fetch(`http://localhost:8000/api/admin/posts/${postId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('삭제되었습니다.');
+                    loadPosts();
+                }
+            } catch (error) {
+                console.error('게시글 삭제 실패:', error);
+                alert('삭제 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 회원 검색
+        function searchUsers() {
+            loadUsers(); // 실제로는 검색 파라미터를 추가해야 함
+        }
+
+        // 회원 필터
+        function filterUsers() {
+            loadUsers(); // 실제로는 필터 파라미터를 추가해야 함
+        }
+
+        // 게시글 검색
+        function searchPosts() {
+            loadPosts(); // 실제로는 검색 파라미터를 추가해야 함
+        }
+
+        // 게시글 필터
+        function filterPosts() {
+            loadPosts(); // 실제로는 필터 파라미터를 추가해야 함
+        }
+
+        // 게시글 삭제
+        function handleDeletePost(postId) {
+            if (confirm(`게시글 #${postId}을(를) 삭제하시겠습니까?\n삭제된 게시글은 "삭제된 게시글" 탭에서 관리할 수 있습니다.`)) {
+                alert(`게시글 #${postId}이(가) 삭제되었습니다.`);
+                // 실제로는 API 호출하여 삭제 처리
+                // 삭제 후 해당 행을 "삭제된 게시글" 탭으로 이동
+                location.reload();
+            }
+        }
+
+        // 댓글 삭제
+        function handleDeleteComment(commentId) {
+            if (confirm(`댓글 #${commentId}을(를) 삭제하시겠습니까?\n삭제된 댓글은 "삭제된 댓글" 탭에서 관리할 수 있습니다.`)) {
+                alert(`댓글 #${commentId}이(가) 삭제되었습니다.`);
+                // 실제로는 API 호출하여 삭제 처리
+                location.reload();
+            }
+        }
+
+        // 신고 무시
+        function handleIgnoreReport(id, type) {
+            const typeName = type === 'post' ? '게시글' : '댓글';
+            if (confirm(`${typeName} #${id}의 신고를 무시하시겠습니까?\n무시된 신고는 더 이상 표시되지 않습니다.`)) {
+                alert(`${typeName} #${id}의 신고가 무시되었습니다.`);
+                // 실제로는 API 호출하여 신고 무시 처리
+                location.reload();
+            }
+        }
+
+        // 게시글 복구
+        function handleRestorePost(postId) {
+            if (confirm(`게시글 #${postId}을(를) 복구하시겠습니까?\n복구된 게시글은 다시 게시판에 표시됩니다.`)) {
+                alert(`게시글 #${postId}이(가) 복구되었습니다.`);
+                // 실제로는 API 호출하여 복구 처리
+                location.reload();
+            }
+        }
+
+        // 댓글 복구
+        function handleRestoreComment(commentId) {
+            if (confirm(`댓글 #${commentId}을(를) 복구하시겠습니까?\n복구된 댓글은 다시 게시글에 표시됩니다.`)) {
+                alert(`댓글 #${commentId}이(가) 복구되었습니다.`);
+                // 실제로는 API 호출하여 복구 처리
+                location.reload();
+            }
+        }
+
+        // ===== 시스템 설정 관련 함수 =====
+
+        // 페이지 로드 시 시스템 설정 불러오기
+        async function loadSystemSettings() {
+            try {
+                const token = localStorage.getItem('access_token') ||
+                             (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+                if (!token) {
+                    console.error('인증 토큰이 없습니다');
+                    return;
+                }
+
+                const API_BASE = 'http://localhost:8000';
+                const response = await fetch(`${API_BASE}/api/admin/settings?category=translation`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const settings = await response.json();
+
+                    // 번역 제공자 설정
+                    const providerSetting = settings.find(s => s.key === 'translation_provider');
+                    if (providerSetting) {
+                        document.getElementById('translationProvider').value = providerSetting.value;
+                    }
+
+                    // DeepL API Key 설정
+                    const deeplKeySetting = settings.find(s => s.key === 'deepl_api_key');
+                    if (deeplKeySetting) {
+                        document.getElementById('deeplApiKey').value = deeplKeySetting.value;
+                    }
+                } else {
+                    console.error('설정 불러오기 실패:', response.status);
+                }
+            } catch (error) {
+                console.error('설정 불러오기 오류:', error);
+            }
+        }
+
+        // DeepL 설정 저장
+        async function saveDeepLSettings() {
+            const apiKey = document.getElementById('deeplApiKey').value.trim();
+            const provider = document.getElementById('translationProvider').value;
+
+            if (!apiKey) {
+                alert('DeepL API Key를 입력해주세요.');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('access_token') ||
+                             (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+                if (!token) {
+                    alert('로그인이 필요합니다.');
+                    return;
+                }
+
+                const API_BASE = 'http://localhost:8000';
+
+                // DeepL API Key 저장
+                const deeplResponse = await fetch(`${API_BASE}/api/admin/settings/deepl_api_key`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ value: apiKey })
+                });
+
+                // Translation Provider 저장
+                const providerResponse = await fetch(`${API_BASE}/api/admin/settings/translation_provider`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ value: provider })
+                });
+
+                if (deeplResponse.ok && providerResponse.ok) {
+                    const statusDiv = document.getElementById('deeplStatus');
+                    statusDiv.style.display = 'block';
+                    statusDiv.style.background = '#d4edda';
+                    statusDiv.style.color = '#155724';
+                    statusDiv.style.border = '1px solid #c3e6cb';
+                    statusDiv.innerHTML = '✅ DeepL 설정이 성공적으로 저장되었습니다!';
+
+                    setTimeout(() => {
+                        statusDiv.style.display = 'none';
+                    }, 3000);
+                } else {
+                    throw new Error('설정 저장 실패');
+                }
+            } catch (error) {
+                console.error('설정 저장 오류:', error);
+                const statusDiv = document.getElementById('deeplStatus');
+                statusDiv.style.display = 'block';
+                statusDiv.style.background = '#f8d7da';
+                statusDiv.style.color = '#721c24';
+                statusDiv.style.border = '1px solid #f5c6cb';
+                statusDiv.innerHTML = '❌ 설정 저장에 실패했습니다: ' + error.message;
+            }
+        }
+
+        // DeepL 연결 테스트
+        async function testDeepLConnection() {
+            const apiKey = document.getElementById('deeplApiKey').value.trim();
+
+            if (!apiKey) {
+                alert('DeepL API Key를 입력해주세요.');
+                return;
+            }
+
+            // 먼저 저장
+            await saveDeepLSettings();
+
+            const statusDiv = document.getElementById('deeplStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = '#d1ecf1';
+            statusDiv.style.color = '#0c5460';
+            statusDiv.style.border = '1px solid #bee5eb';
+            statusDiv.innerHTML = '🔄 DeepL API 연결을 테스트하는 중...';
+
+            const API_BASE = 'http://localhost:8000';
+            const token = localStorage.getItem('access_token') ||
+                         (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+            if (!token) {
+                statusDiv.style.background = '#f8d7da';
+                statusDiv.style.color = '#721c24';
+                statusDiv.style.border = '1px solid #f5c6cb';
+                statusDiv.innerHTML = '❌ 로그인이 필요합니다.';
+                return;
+            }
+
+            try {
+                // 백엔드 API를 통해 테스트
+                const response = await fetch(`${API_BASE}/api/admin/test-deepl`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.style.background = '#d4edda';
+                    statusDiv.style.color = '#155724';
+                    statusDiv.style.border = '1px solid #c3e6cb';
+                    statusDiv.innerHTML = `✅ DeepL API 연결 성공!<br>테스트 번역: "${data.test_translation.original}" → "${data.test_translation.translated}"`;
+                } else if (response.status === 403) {
+                    statusDiv.style.background = '#f8d7da';
+                    statusDiv.style.color = '#721c24';
+                    statusDiv.style.border = '1px solid #f5c6cb';
+                    statusDiv.innerHTML = '❌ API Key가 유효하지 않습니다. DeepL Pro API Key를 확인해주세요.';
+                } else {
+                    const errorData = await response.json();
+                    statusDiv.style.background = '#f8d7da';
+                    statusDiv.style.color = '#721c24';
+                    statusDiv.style.border = '1px solid #f5c6cb';
+                    statusDiv.innerHTML = `❌ DeepL API 오류 (${response.status}): ${errorData.detail || '알 수 없는 오류'}`;
+                }
+            } catch (error) {
+                statusDiv.style.background = '#f8d7da';
+                statusDiv.style.color = '#721c24';
+                statusDiv.style.border = '1px solid #f5c6cb';
+                statusDiv.innerHTML = '❌ 연결 실패: ' + error.message;
+            }
+        }
+
+        // 시스템 설정 탭 표시 시 설정 로드
+        const originalShowTab = showTab;
+        showTab = function(tabId) {
+            originalShowTab(tabId);
+            if (tabId === 'system-settings') {
+                loadSystemSettings();
+            }
+        };
+
+        // 페르소나 모달 표시
+        function showPersonaModal(userId, nickname, userData) {
+            const modal = document.getElementById('personaModal');
+            const user = userData;
+
+            // 민족 라벨
+            const ethnicityLabels = {
+                'korean': '한국인',
+                'korean_russian': '고려인(교포)',
+                'russian': '러시아인'
+            };
+
+            // 관심사 파싱
+            let interests = [];
+            try {
+                interests = user.persona_interests ? JSON.parse(user.persona_interests) : [];
+            } catch(e) {
+                interests = user.persona_interests ? [user.persona_interests] : [];
+            }
+
+            // 모달 내용 구성
+            document.getElementById('personaNickname').textContent = nickname;
+            document.getElementById('personaContent').innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <div style="font-weight: 600; color: #666; margin-bottom: 5px;">민족</div>
+                        <div style="font-size: 14px;">${ethnicityLabels[user.ethnicity] || user.ethnicity || '-'}</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #666; margin-bottom: 5px;">성별</div>
+                        <div style="font-size: 14px;">${user.persona_gender === 'male' ? '남성' : user.persona_gender === 'female' ? '여성' : '-'}</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #666; margin-bottom: 5px;">나이</div>
+                        <div style="font-size: 14px;">${user.persona_age || '-'}세</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #666; margin-bottom: 5px;">직업</div>
+                        <div style="font-size: 14px;">${user.persona_occupation || '-'}</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #666; margin-bottom: 5px;">활동수준</div>
+                        <div style="font-size: 14px;">${user.persona_activity_level === 'high' ? '높음' : user.persona_activity_level === 'medium' ? '보통' : user.persona_activity_level === 'low' ? '낮음' : '-'}</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #666; margin-bottom: 5px;">게시스타일</div>
+                        <div style="font-size: 14px;">${user.persona_posting_style || '-'}</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #666; margin-bottom: 5px;">한국어 수준</div>
+                        <div style="font-size: 14px;">${user.persona_korean_level || '-'}</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #666; margin-bottom: 5px;">러시아어 수준</div>
+                        <div style="font-size: 14px;">${user.persona_russian_level || '-'}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <div style="font-weight: 600; color: #666; margin-bottom: 5px;">관심사</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                        ${interests.map(i => `<span style="background: #f3f4f6; padding: 4px 10px; border-radius: 12px; font-size: 12px;">${i}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+
+            modal.style.display = 'flex';
+        }
+
+        // 페르소나 모달 닫기
+        function closePersonaModal() {
+            document.getElementById('personaModal').style.display = 'none';
+        }
+
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            const modal = document.getElementById('personaModal');
+            if (event.target === modal) {
+                closePersonaModal();
+            }
+        };
+    </script>
+
+    <!-- 페르소나 모달 -->
+    <div id="personaModal" style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
+        <div style="background-color: white; padding: 30px; border-radius: 12px; width: 600px; max-width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 15px;">
+                <h3 style="margin: 0; font-size: 18px; color: var(--admin-primary);">
+                    <span style="font-size: 24px;">👤</span> 페르소나: <span id="personaNickname"></span>
+                </h3>
+                <button onclick="closePersonaModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">&times;</button>
+            </div>
+            <div id="personaContent">
+            </div>
+            <div style="margin-top: 20px; text-align: right;">
+                <button onclick="closePersonaModal()" style="padding: 8px 20px; background: var(--admin-primary); color: white; border: none; border-radius: 4px; cursor: pointer;">
+                    닫기
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

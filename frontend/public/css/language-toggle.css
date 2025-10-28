@@ -1,0 +1,45 @@
+/* 언어 전환 CSS */
+
+/* 한국어만 표시 */
+body[data-lang="ko"] .russian-text,
+body[data-lang="ko"] .russian-label,
+body[data-lang="ko"] .russian-subtitle,
+body[data-lang="ko"] .russian-title {
+    display: none !important;
+}
+
+body[data-lang="ko"] .korean-text,
+body[data-lang="ko"] .korean-label,
+body[data-lang="ko"] .korean-subtitle,
+body[data-lang="ko"] .korean-title {
+    display: block !important;
+}
+
+/* 러시아어만 표시 */
+body[data-lang="ru"] .korean-text,
+body[data-lang="ru"] .korean-label,
+body[data-lang="ru"] .korean-subtitle,
+body[data-lang="ru"] .korean-title {
+    display: none !important;
+}
+
+body[data-lang="ru"] .russian-text,
+body[data-lang="ru"] .russian-label,
+body[data-lang="ru"] .russian-subtitle,
+body[data-lang="ru"] .russian-title {
+    display: block !important;
+    font-size: inherit;
+    color: inherit;
+}
+
+/* 양쪽 언어 모두 표시 */
+body[data-lang="both"] .russian-text,
+body[data-lang="both"] .russian-label,
+body[data-lang="both"] .russian-subtitle,
+body[data-lang="both"] .russian-title,
+body[data-lang="both"] .korean-text,
+body[data-lang="both"] .korean-label,
+body[data-lang="both"] .korean-subtitle,
+body[data-lang="both"] .korean-title {
+    display: block !important;
+}

@@ -1,0 +1,107 @@
+<!-- 표준 좌측 사이드바 -->
+<aside class="sidebar">
+    <!-- 게시판 메뉴 -->
+    <div class="sidebar-section">
+        <div class="sidebar-header">
+            <span class="korean-text">게시판</span>
+            <div class="russian-text">Доски объявлений</div>
+        </div>
+        <div class="sidebar-menu">
+            <a href="/board-notice.html" class="sidebar-item" data-category="notice">
+                <span class="korean-text">공지사항</span>
+                <div class="russian-text">Объявления</div>
+            </a>
+            <a href="/board-free.html" class="sidebar-item" data-category="free">
+                <span class="korean-text">자유게시판</span>
+                <div class="russian-text">Свободное общение</div>
+            </a>
+            <a href="/board-life.html" class="sidebar-item" data-category="life">
+                <span class="korean-text">생활정보</span>
+                <div class="russian-text">Жизнь в Корее</div>
+            </a>
+            <a href="/board-admin.html" class="sidebar-item" data-category="admin">
+                <span class="korean-text">행정정보</span>
+                <div class="russian-text">Админ. информация</div>
+            </a>
+            <a href="/board-job.html" class="sidebar-item" data-category="job">
+                <span class="korean-text">구인구직</span>
+                <div class="russian-text">Работа</div>
+            </a>
+            <a href="/board-market.html" class="sidebar-item" data-category="market">
+                <span class="korean-text">벼룩시장</span>
+                <div class="russian-text">Барахолка</div>
+            </a>
+            <a href="/board-business.html" class="sidebar-item" data-category="business">
+                <span class="korean-text">비즈니스</span>
+                <div class="russian-text">Бизнес</div>
+            </a>
+            <a href="/board-startup.html" class="sidebar-item" data-category="startup">
+                <span class="korean-text">스타트업</span>
+                <div class="russian-text">Стартап</div>
+            </a>
+            <a href="/board-partners.html" class="sidebar-item" data-category="partners">
+                <span class="korean-text">파트너스</span>
+                <div class="russian-text">Партнеры</div>
+            </a>
+            <a href="/board-trade.html" class="sidebar-item" data-category="trade">
+                <span class="korean-text">무역</span>
+                <div class="russian-text">Торговля</div>
+            </a>
+            <a href="/board-ad.html" class="sidebar-item" data-category="ad">
+                <span class="korean-text">광고</span>
+                <div class="russian-text">Реклама</div>
+            </a>
+            <a href="/board-suggest.html" class="sidebar-item" data-category="suggest">
+                <span class="korean-text">건의사항</span>
+                <div class="russian-text">Предложения</div>
+            </a>
+            <a href="/board-contact.html" class="sidebar-item" data-category="contact">
+                <span class="korean-text">문의</span>
+                <div class="russian-text">Контакты</div>
+            </a>
+        </div>
+    </div>
+</aside>
+
+<script>
+// 현재 페이지에 해당하는 사이드바 메뉴 활성화
+(function() {
+    // URL에서 현재 페이지 파일명 추출
+    const currentPage = window.location.pathname.split('/').pop();
+
+    // 카테고리 매핑
+    const categoryMap = {
+        'board-notice.html': 'notice',
+        'board-free.html': 'free',
+        'board-life.html': 'life',
+        'board-admin.html': 'admin',
+        'board-job.html': 'job',
+        'board-market.html': 'market',
+        'board-business.html': 'business',
+        'board-startup.html': 'startup',
+        'board-partners.html': 'partners',
+        'board-trade.html': 'trade',
+        'board-ad.html': 'ad',
+        'board-suggest.html': 'suggest',
+        'board-contact.html': 'contact',
+        'board-view.html': 'from-url',
+        'board-write.html': 'from-url'
+    };
+
+    let activeCategory = categoryMap[currentPage];
+
+    // board-view.html과 board-write.html은 URL 파라미터에서 카테고리 확인
+    if (activeCategory === 'from-url') {
+        const urlParams = new URLSearchParams(window.location.search);
+        activeCategory = urlParams.get('category');
+    }
+
+    // 해당 카테고리 메뉴에 active 클래스 추가
+    if (activeCategory) {
+        const activeItem = document.querySelector(`.sidebar-item[data-category="${activeCategory}"]`);
+        if (activeItem) {
+            activeItem.classList.add('active');
+        }
+    }
+})();
+</script>
