@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구인구직 - Russki.Center</title>
+    <link rel="icon" href="data:,">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+        :root {
+            --russian-red: #DA020E;
+            --russian-blue: #0039A6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-size: 12px;
+            line-height: 1.3;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* 메인 레이아웃 */
+        .main-layout {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        /* 사이드바 */
+        .sidebar-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .sidebar-menu {
+            padding: 4px 0;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 6px 10px;
+            color: #666;
+            text-decoration: none;
+            font-size: 11px;
+            transition: background 0.2s;
+        }
+
+        .sidebar-item:hover {
+            background: #f0f0f0;
+        }
+
+        .sidebar-item.active {
+            background: #e3f2fd;
+            color: var(--russian-blue);
+            font-weight: 600;
+        }
+
+        .russian-text {
+            font-size: 9px;
+            color: #999;
+            margin-top: 1px;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 6px 0;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--russian-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .flag-icon {
+            width: 32px;
+            height: 24px;
+            border-radius: 3px;
+            display: inline-block;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .flag-ru {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5IDYiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDBoOXY2SDB6Ii8+PHBhdGggZmlsbD0iIzAwMzlhNiIgZD0iTTAgMmg5djRIMHoiLz48cGF0aCBmaWxsPSIjZDUyYjFlIiBkPSJNMCA0aDl2MkgweiIvPjwvc3ZnPg==');
+        }
+
+        /* 언어 전환 버튼 */
+        .lang-switcher {
+            display: flex;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-btn.active {
+            background: var(--russian-blue);
+            color: white;
+            border-color: var(--russian-blue);
+        }
+
+        /* 언어 전환 기능 */
+        body[data-lang="ko"] .russian-text,
+        body[data-lang="ko"] .russian-label {
+            display: none;
+        }
+
+        body[data-lang="ru"] .korean-text {
+            display: none;
+        }
+
+        body[data-lang="ru"] .russian-text,
+        body[data-lang="ru"] .russian-label {
+            display: block;
+            font-size: inherit;
+            color: inherit;
+        }
+
+        .korean-text {
+            display: block;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, white 0%, white 33%, var(--russian-blue) 33%, var(--russian-blue) 66%, var(--russian-red) 66%, var(--russian-red) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-menu a:hover {
+            color: var(--russian-blue);
+        }
+
+        .nav-menu .russian-label {
+            font-size: 10px;
+            color: #666;
+        }
+
+        /* 게시판 헤더 */
+        .board-header {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 5px 5px 0 0;
+            border-bottom: 2px solid var(--russian-blue);
+        }
+
+        .board-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .board-title .russian-subtitle {
+            font-size: 12px;
+            color: #666;
+            font-weight: normal;
+            margin-left: 8px;
+        }
+
+        .board-desc {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .board-desc .russian-text {
+            font-size: 10px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        /* 게시판 컨트롤 */
+        .board-controls {
+            background: white;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .total-count {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .total-count strong {
+            color: var(--russian-blue);
+            font-weight: 600;
+        }
+
+        .board-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .write-btn {
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .write-btn:hover {
+            background: #002a75;
+        }
+
+        /* 게시글 목록 */
+        .post-list {
+            background: white;
+        }
+
+        .post-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .post-list th {
+            background: #f8f9fa;
+            padding: 6px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .post-list td {
+            padding: 4px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 11px;
+        }
+
+        .post-list tr:hover {
+            background: #fafafa;
+        }
+
+        .post-number {
+            text-align: center;
+            color: #999;
+            width: 60px;
+        }
+
+        .post-number.notice {
+            color: var(--russian-red);
+            font-weight: 600;
+        }
+
+        .post-title-cell {
+            text-align: left;
+        }
+
+        .post-title-link {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .post-title-link:hover {
+            color: var(--russian-blue);
+        }
+
+        .post-title-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .post-title-text .korean-title {
+            font-size: 11px;
+            color: #333;
+        }
+
+        .post-title-text .russian-title {
+            font-size: 9px;
+            color: #999;
+        }
+
+        .post-badge {
+            display: inline-block;
+            padding: 1px 5px;
+            font-size: 9px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .badge-notice {
+            background: var(--russian-red);
+            color: white;
+        }
+
+        .badge-new {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .badge-hot {
+            background: #ff9800;
+            color: white;
+        }
+
+        .comment-count {
+            color: var(--russian-red);
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .post-author {
+            text-align: center;
+            color: #666;
+            width: 90px;
+        }
+
+        .post-date {
+            text-align: center;
+            color: #999;
+            font-size: 10px;
+            width: 80px;
+        }
+
+        .post-views {
+            text-align: center;
+            color: #999;
+            width: 50px;
+        }
+
+        .post-likes {
+            text-align: center;
+            color: #999;
+            width: 50px;
+        }
+
+        /* 페이지네이션 */
+        .pagination {
+            background: white;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .pagination a,
+        .pagination span {
+            display: inline-block;
+            padding: 4px 10px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            color: #666;
+            text-decoration: none;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        .pagination a:hover {
+            background: var(--russian-blue);
+            color: white;
+            border-color: var(--russian-blue);
+        }
+
+        .pagination .current {
+            background: var(--russian-blue);
+            color: white;
+            border-color: var(--russian-blue);
+            font-weight: 600;
+        }
+
+        /* 검색 영역 */
+        .search-area {
+            background: white;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .search-select {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        .search-input {
+            width: 300px;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        .search-btn {
+            padding: 6px 16px;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .main-layout {
+                display: block;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                width: 100%;
+            }
+
+            .post-list th:not(.post-title-cell),
+            .post-list td:not(.post-title-cell) {
+                display: none;
+            }
+
+            .post-title-cell {
+                width: 100%;
+            }
+
+            .search-area {
+                flex-direction: column;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+        }
+
+        /* 언어 전환 버튼 */
+        .lang-switcher {
+            display: flex;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-btn.active {
+            background: var(--russian-blue);
+            color: white;
+            border-color: var(--russian-blue);
+        }
+
+        /* 러시아어 텍스트 숨기기 옵션 */
+        body[data-lang="ko"] .russian-text,
+        body[data-lang="ko"] .russian-label,
+        body[data-lang="ko"] .russian-subtitle {
+            display: none;
+        }
+
+        body[data-lang="ru"] .korean-text {
+            display: none;
+        }
+
+        body[data-lang="ru"] .russian-text,
+        body[data-lang="ru"] .russian-label,
+        body[data-lang="ru"] .russian-subtitle {
+            display: block;
+            font-size: inherit;
+            color: inherit;
+        }
+
+    </style>
+
+    
+
+    <script>
+        // 로그인 체크 및 모달 표시 (즉시 실행)
+        (function() {
+            const userInfoStr = localStorage.getItem('userInfo');
+            if (!userInfoStr) {
+                // 즉시 모달 표시 함수 정의
+                function showModal() {
+                    const modal = document.getElementById('loginRequiredModal');
+                    if (modal) {
+                        modal.style.display = 'flex';
+                        return true;
+                    }
+                    return false;
+                }
+
+                // 즉시 시도
+                if (!showModal()) {
+                    // 모달이 아직 로드되지 않았다면 DOMContentLoaded에서 재시도
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', showModal);
+                    } else {
+                        // DOM이 이미 로드되었다면 약간의 딜레이 후 재시도
+                        setTimeout(showModal, 10);
+                    }
+                }
+            }
+        })();
+    </script>
+
+</head>
+
+<body>
+    
+
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <div class="logo-icon">RC</div>
+                    Russki.Center
+                </a>
+            <div class="lang-switcher">
+                <button class="lang-btn" data-lang="ko" title="한국어만 표시">한국어</button>
+                <button class="lang-btn" data-lang="ru" title="Показать только русский">Русский</button>
+                <button class="lang-btn active" data-lang="both" title="한국어+러시아어">한국어+Русский</button>
+            </div>
+                <nav class="nav-menu">
+                    <a href="/">
+                        <span>홈으로가기</span>
+                        <span class="russian-label">Главная</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- 좌측 사이드바 -->
+            <aside class="sidebar">
+                <!-- 게시판 메뉴 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <span class="korean-text">게시판</span>
+                        <div class="russian-text">Доски объявлений</div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="/board-notice.html" class="sidebar-item">
+                            <span class="korean-text">공지사항</span>
+                            <div class="russian-text">Объявления</div>
+                        </a>
+                        <a href="/board-free.html" class="sidebar-item">
+                            <span class="korean-text">자유게시판</span>
+                            <div class="russian-text">Свободное общение</div>
+                        </a>
+                        <a href="/board-life.html" class="sidebar-item">
+                            <span class="korean-text">생활정보</span>
+                            <div class="russian-text">Жизнь в Корее</div>
+                        </a>
+                        <a href="/board-admin.html" class="sidebar-item">
+                            <span class="korean-text">행정정보</span>
+                            <div class="russian-text">Админ. информация</div>
+                        </a>
+                        <a href="/board-job.html" class="sidebar-item active">
+                            <span class="korean-text">구인구직</span>
+                            <div class="russian-text">Работа</div>
+                        </a>
+                        <a href="/board-market.html" class="sidebar-item">
+                            <span class="korean-text">벼룩시장</span>
+                            <div class="russian-text">Барахолка</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 비즈니스 메뉴 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <span class="korean-text">비즈니스</span>
+                        <div class="russian-text">Бизнес</div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="/board-startup.html" class="sidebar-item">
+                            <span class="korean-text">창업정보</span>
+                            <div class="russian-text">Информация о стартапах</div>
+                        </a>
+                        <a href="/partners.html" class="sidebar-item">
+                            <span class="korean-text">입점업체</span>
+                            <div class="russian-text">Партнерские компании</div>
+                        </a>
+                        <a href="/trade-partners.html" class="sidebar-item">
+                            <span class="korean-text">무역파트너</span>
+                            <div class="russian-text">Торговые партнеры</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 운영자 연락 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <span class="korean-text">운영자 연락</span>
+                        <div class="russian-text">Связаться с администрацией</div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="/contact-ad.html" class="sidebar-item">
+                            <span class="korean-text">광고 및 협력 요청</span>
+                            <div class="russian-text">Реклама и сотрудничество</div>
+                        </a>
+                        <a href="/contact-suggest.html" class="sidebar-item">
+                            <span class="korean-text">운영자에게 건의</span>
+                            <div class="russian-text">Предложения администрации</div>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 메인 컨텐츠 -->
+            <div class="content">
+        <!-- 게시판 헤더 -->
+        <div class="board-header">
+            <div class="board-title">
+                구인구직
+                <span class="russian-subtitle">Работа</span>
+            </div>
+            <div class="board-desc">
+                <div>구인/구직 정보를 등록하고 찾아보세요.</div>
+                <div class="russian-text">Найдите работу или сотрудников.</div>
+            </div>
+        </div>
+
+        <!-- 게시판 컨트롤 -->
+        <div class="board-controls">
+            <div class="total-count">
+                전체 <strong>128</strong>개
+            </div>
+            <div class="board-actions">
+                <button class="write-btn" onclick="location.href='/job-write.html'">✏️ 등록하기 Опубликовать</button>
+            </div>
+        </div>
+
+        <!-- 게시글 목록 -->
+        <div class="post-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="post-number">
+                            <div>번호</div>
+                            <div class="russian-text">№</div>
+                        </th>
+                        <th class="post-title-cell">
+                            <div>제목</div>
+                            <div class="russian-text">Заголовок</div>
+                        </th>
+                        <th class="post-author">
+                            <div>작성자</div>
+                            <div class="russian-text">Автор</div>
+                        </th>
+                        <th class="post-date">
+                            <div>날짜</div>
+                            <div class="russian-text">Дата</div>
+                        </th>
+                        <th class="post-views">
+                            <div>조회</div>
+                            <div class="russian-text">Просм.</div>
+                        </th>
+                        <th class="post-likes">
+                            <div>추천</div>
+                            <div class="russian-text">Рек.</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 40px;">
+                            <div style="font-size: 18px; color: #666;">로딩 중...</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="pagination">
+            <a href="#">◀</a>
+            <span class="current">1</span>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <span>...</span>
+            <a href="#">128</a>
+            <a href="#">▶</a>
+        </div>
+
+        <!-- 검색 -->
+        <div class="search-area">
+            <select class="search-select">
+                <option>전체</option>
+                <option>제목</option>
+                <option>내용</option>
+                <option>작성자</option>
+                <option>제목+내용</option>
+            </select>
+            <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+            <button class="search-btn">🔍 검색</button>
+        </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+
+    
+
+    
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        const CATEGORY_SLUG = 'job';
+
+        let currentPage = 1;
+        const pageSize = 20;
+
+        // 카테고리 ID 가져오기
+        async function getCategoryId() {
+            try {
+                const response = await fetch(`${API_BASE}/api/categories/`);
+                const categories = await response.json();
+                const category = categories.find(c => c.slug === CATEGORY_SLUG);
+                return category ? category.id : null;
+            } catch (error) {
+                console.error('카테고리 조회 실패:', error);
+                return null;
+            }
+        }
+
+        // 게시글 목록 로드
+        async function loadPosts(page = 1) {
+            const categoryId = await getCategoryId();
+            if (!categoryId) {
+                console.error('카테고리를 찾을 수 없습니다');
+                return;
+            }
+
+            try {
+                // 로그인 토큰 가져오기
+                const userInfo = localStorage.getItem('userInfo');
+                const headers = {};
+
+                if (userInfo) {
+                    const user = JSON.parse(userInfo);
+                    if (user.access_token) {
+                        headers['Authorization'] = `Bearer ${user.access_token}`;
+                    }
+                }
+
+                const response = await fetch(
+                    `${API_BASE}/api/posts/?category_id=${categoryId}&page=${page}&page_size=${pageSize}`,
+                    { headers }
+                );
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        showLoginModal();
+                        return;
+                    }
+                    throw new Error('게시글을 불러오는데 실패했습니다');
+                }
+
+                const data = await response.json();
+                renderPosts(data.items);
+                renderPagination(data.page, data.total_pages);
+
+            } catch (error) {
+                console.error('게시글 로딩 실패:', error);
+                document.querySelector('.post-table tbody').innerHTML =
+                    '<tr><td colspan="5" style="text-align: center; padding: 40px;">게시글을 불러오는데 실패했습니다</td></tr>';
+            }
+        }
+
+        // 게시글 렌더링
+        function renderPosts(posts) {
+            const tbody = document.querySelector('.post-table tbody');
+
+            if (!posts || posts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">게시글이 없습니다</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = posts.map(post => {
+                const titleKo = post.translated_title_ko || post.title;
+                const titleRu = post.translated_title_ru || '';
+                const createdDate = new Date(post.created_at);
+                const timeStr = createdDate.toLocaleTimeString('ko-KR', {hour: '2-digit', minute: '2-digit'});
+
+                return `
+                    <tr>
+                        <td class="post-number">${post.id}</td>
+                        <td class="post-title-cell">
+                            <a href="/board-view.html?category=${CATEGORY_SLUG}&id=${post.id}" class="post-title-link">
+                                <div class="post-title-text">
+                                    <div class="korean-title">${titleKo}</div>
+                                    ${titleRu ? `<div class="russian-title">${titleRu}</div>` : ''}
+                                </div>
+                                ${post.comment_count > 0 ? `<span class="comment-count">[${post.comment_count}]</span>` : ''}
+                            </a>
+                        </td>
+                        <td class="post-author">${post.user?.username || post.user?.email || '익명'}</td>
+                        <td class="post-date">${timeStr}</td>
+                        <td class="post-views">${post.view_count || 0}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // 페이지네이션 렌더링
+        function renderPagination(currentPage, totalPages) {
+            const pagination = document.querySelector('.pagination');
+            if (!pagination) return;
+
+            let html = '';
+
+            // 이전 버튼
+            if (currentPage > 1) {
+                html += `<a href="#" onclick="changePage(${currentPage - 1}); return false;">◀ 이전</a>`;
+            }
+
+            // 페이지 번호
+            const startPage = Math.max(1, currentPage - 5);
+            const endPage = Math.min(totalPages, currentPage + 5);
+
+            for (let i = startPage; i <= endPage; i++) {
+                if (i === currentPage) {
+                    html += `<span class="current-page">${i}</span>`;
+                } else {
+                    html += `<a href="#" onclick="changePage(${i}); return false;">${i}</a>`;
+                }
+            }
+
+            // 다음 버튼
+            if (currentPage < totalPages) {
+                html += `<a href="#" onclick="changePage(${currentPage + 1}); return false;">다음 ▶</a>`;
+            }
+
+            pagination.innerHTML = html;
+        }
+
+        // 페이지 변경
+        function changePage(page) {
+            currentPage = page;
+            loadPosts(page);
+            window.scrollTo(0, 0);
+        }
+
+        // 페이지 로드시 게시글 목록 로드
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!window.LOGGED_IN) return; // 로그인 안되어 있으면 중단
+            loadPosts(1);
+        });
+    </script>
+
+    
+
+    
+
+    <!-- 로그인 필요 모달 -->
+    <div id="loginRequiredModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 40px; border-radius: 12px; max-width: 450px; width: 90%; box-shadow: 0 8px 32px rgba(0,0,0,0.3); text-align: center;">
+            <div style="font-size: 64px; margin-bottom: 20px;">🔒</div>
+            <h2 style="font-size: 24px; font-weight: 700; color: #333; margin-bottom: 20px;">로그인이 필요합니다</h2>
+            <p style="font-size: 15px; color: #666; line-height: 1.8; margin-bottom: 15px;">
+                공지사항을 제외한 모든 게시판은<br>
+                로그인 후 이용하실 수 있습니다.
+            </p>
+            <p style="font-size: 14px; color: #999; line-height: 1.8; margin-bottom: 30px; padding-top: 15px; border-top: 1px solid #eee;">
+                Требуется авторизация.<br>
+                Все доски объявлений, кроме объявлений,<br>
+                доступны после входа в систему.
+            </p>
+            <button onclick="location.href='/'" style="width: 100%; padding: 14px; background: #0039A6; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s;">
+                홈으로 이동 / На главную
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function closeLoginModal() {
+            location.href = '/';
+        }
+    </script>
+
+</body>
+</html>

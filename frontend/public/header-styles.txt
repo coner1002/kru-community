@@ -1,0 +1,63 @@
+        /* 헤더 */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 6px 0;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--russian-blue);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-menu a:hover {
+            color: var(--russian-blue);
+        }
+
+        .nav-menu .russian-label {
+            font-size: 10px;
+            color: #666;
+        }
+
+        .page-header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            color: var(--russian-blue);
+            margin-bottom: 5px;
+        }
+
+        .page-header .subtitle {
+            font-size: 14px;
+            color: #666;
+        }

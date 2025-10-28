@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: kru_postgres
+    environment:
+      POSTGRES_DB: kru_community
+      POSTGRES_USER: kru_user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - kru_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: kru_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - kru_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kru_backend
+    environment:
+      DATABASE_URL: postgresql://kru_user:password@postgres:5432/kru_community
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: dev-secret-key
+      ENVIRONMENT: development
+      DEBUG: "true"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+    networks:
+      - kru_network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  nginx:
+    image: nginx:alpine
+    container_name: kru_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend/public:/usr/share/nginx/html:ro
+    depends_on:
+      - backend
+    networks:
+      - kru_network
+    configs:
+      - source: nginx_config
+        target: /etc/nginx/nginx.conf
+
+configs:
+  nginx_config:
+    content: |
+      events { worker_connections 1024; }
+      http {
+          include /etc/nginx/mime.types;
+          default_type application/octet-stream;
+          server {
+              listen 80;
+              location / {
+                  root /usr/share/nginx/html;
+                  index index.html;
+                  add_header Cache-Control "no-cache";
+              }
+              location /api/ {
+                  proxy_pass http://backend:8000/api/;
+                  proxy_set_header Host $host;
+              }
+          }
+      }
+
+networks:
+  kru_network:
+
+volumes:
+  postgres_data:
+  redis_data:

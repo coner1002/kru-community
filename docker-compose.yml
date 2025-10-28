@@ -52,31 +52,30 @@ services:
       DATABASE_URL: postgresql://kru_user:${DB_PASSWORD:-password}@postgres:5432/kru_community
       REDIS_URL: redis://redis:6379/0
       SECRET_KEY: ${SECRET_KEY:-your-secret-key-here}
-      ENVIRONMENT: ${ENVIRONMENT:-production}
+      ENVIRONMENT: ${ENVIRONMENT:-development}
     ports:
       - "8000:8000"
     depends_on:
       - postgres
       - redis
     volumes:
+      - ./backend/app:/app/app
       - static_files:/app/static
       - media_files:/app/media
     networks:
       - kru_network
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    container_name: kru_frontend
-    restart: unless-stopped
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend
-    networks:
-      - kru_network
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile.dev
+  #   container_name: kru_frontend
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - kru_network
 
   nginx:
     image: nginx:alpine
@@ -89,7 +88,6 @@ services:
       - ./frontend/public:/var/www/html
     depends_on:
       - backend
-      - frontend
     networks:
       - kru_network
     command: |
@@ -120,7 +118,7 @@ services:
                   alias /var/www/media/;
               }
               location / {
-                  proxy_pass http://frontend:3000;
+                  proxy_pass http://frontend:80;
                   proxy_set_header Host \$$host;
                   proxy_set_header X-Real-IP \$$remote_addr;
                   proxy_set_header X-Forwarded-For \$$proxy_add_x_forwarded_for;

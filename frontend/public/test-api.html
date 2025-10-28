@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>API Connection Test</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        h1 { color: #333; }
+        .success { color: green; }
+        .error { color: red; }
+        pre { background: #f5f5f5; padding: 10px; overflow: auto; }
+    </style>
+</head>
+<body>
+    <h1>Russian.Town API Connection Test</h1>
+    <div id="result"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        const resultDiv = document.getElementById('result');
+
+        async function testAPI() {
+            try {
+                // Test 1: Categories
+                resultDiv.innerHTML += '<h2>1. Testing Categories API...</h2>';
+                const catResponse = await fetch(`${API_BASE}/api/categories/`);
+                const categories = await catResponse.json();
+                resultDiv.innerHTML += `<p class="success">✅ Categories: ${categories.length} found</p>`;
+                resultDiv.innerHTML += `<pre>${JSON.stringify(categories, null, 2)}</pre>`;
+
+                // Test 2: Posts (category_id=1 - Free Board)
+                resultDiv.innerHTML += '<h2>2. Testing Posts API (Free Board - category_id=1)...</h2>';
+                const postResponse = await fetch(`${API_BASE}/api/posts/?category_id=1`);
+                const postData = await postResponse.json();
+                resultDiv.innerHTML += `<p class="success">✅ Posts: ${postData.total} found</p>`;
+                resultDiv.innerHTML += `<pre>${JSON.stringify(postData, null, 2)}</pre>`;
+
+                // Test 3: Posts (category_id=2 - Notice Board)
+                resultDiv.innerHTML += '<h2>3. Testing Posts API (Notice Board - category_id=2)...</h2>';
+                const noticeResponse = await fetch(`${API_BASE}/api/posts/?category_id=2`);
+                const noticeData = await noticeResponse.json();
+                resultDiv.innerHTML += `<p class="success">✅ Notice Posts: ${noticeData.total} found</p>`;
+                resultDiv.innerHTML += `<pre>${JSON.stringify(noticeData, null, 2)}</pre>`;
+
+            } catch (error) {
+                resultDiv.innerHTML += `<p class="error">❌ Error: ${error.message}</p>`;
+                console.error('API Test Error:', error);
+            }
+        }
+
+        // Run test on page load
+        testAPI();
+    </script>
+</body>
+</html>

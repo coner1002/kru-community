@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지 - Russian.Town</title>
+    <link rel="icon" href="data:,">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+        :root {
+            --russian-red: #DA020E;
+            --russian-blue: #0039A6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-size: 12px;
+            line-height: 1.3;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 6px 0;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--russian-blue);
+            text-decoration: none;
+        }
+
+        .admin-badge {
+            background: var(--russian-red);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* 탭 메뉴 */
+        .tabs {
+            background: white;
+            margin-top: 10px;
+            border-radius: 5px;
+            padding: 10px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab-btn {
+            padding: 8px 20px;
+            border: none;
+            background: white;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .tab-btn.active {
+            background: var(--russian-blue);
+            color: white;
+        }
+
+        /* 콘텐츠 영역 */
+        .tab-content {
+            display: none;
+            background: white;
+            margin-top: 10px;
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--russian-blue);
+        }
+
+        /* 테이블 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            padding: 6px 8px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+            font-size: 11px;
+        }
+
+        .data-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-deleted {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .status-badge {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .badge-reported {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-deleted {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-normal {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        /* 버튼 */
+        .action-btn {
+            padding: 4px 10px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 10px;
+            margin-right: 4px;
+        }
+
+        .action-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .btn-restore {
+            color: var(--russian-blue);
+            border-color: var(--russian-blue);
+        }
+
+        .btn-delete {
+            color: var(--russian-red);
+            border-color: var(--russian-red);
+        }
+
+        .btn-ignore {
+            color: #666;
+        }
+
+        .report-detail {
+            font-size: 10px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .report-reason {
+            color: var(--russian-red);
+            font-weight: 600;
+        }
+
+        /* 통계 카드 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--russian-blue);
+        }
+
+        .stat-card.warning .stat-value {
+            color: var(--russian-red);
+        }
+
+        /* 사이드바 */
+        .main-layout {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .content-area {
+            flex: 1;
+        }
+
+        .sidebar-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .sidebar-menu {
+            padding: 4px 0;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 6px 10px;
+            color: #666;
+            text-decoration: none;
+            font-size: 11px;
+            transition: background 0.2s;
+        }
+
+        .sidebar-item:hover {
+            background: #f0f0f0;
+        }
+
+        .sidebar-item.active {
+            background: #e3f2fd;
+            color: var(--russian-blue);
+            font-weight: 600;
+        }
+
+        .russian-text {
+            font-size: 9px;
+            color: #999;
+            margin-top: 1px;
+        }
+
+        /* 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 600px;
+            max-width: 90vw;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background: var(--russian-blue);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .detail-row {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 13px;
+            color: #333;
+        }
+
+        .detail-content {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/index.html" class="logo">Russian.Town</a>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <a href="/index.html" style="text-decoration: none; color: #666; font-size: 12px; padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px; transition: all 0.2s;">
+                        🏠 <span style="margin-left: 4px;">홈으로 가기</span>
+                    </a>
+                    <div class="admin-badge">🔐 관리자 모드</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- 좌측 사이드바 -->
+            <aside class="sidebar">
+                <!-- 관리 메뉴 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">관리 메뉴</div>
+                    <div class="sidebar-menu">
+                        <a href="/admin.html" class="sidebar-item active">🚨 신고 관리</a>
+                        <a href="#" class="sidebar-item">👥 회원 관리</a>
+                        <a href="#" class="sidebar-item">📝 게시판 관리</a>
+                        <a href="#" class="sidebar-item">📊 통계</a>
+                        <a href="#" class="sidebar-item">⚙️ 설정</a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 메인 콘텐츠 -->
+            <div class="content-area">
+        <!-- 통계 -->
+        <div class="stats-grid" style="margin-top: 10px;">
+            <div class="stat-card">
+                <div class="stat-label">전체 게시글</div>
+                <div class="stat-value">1,247</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-label">삭제된 게시글</div>
+                <div class="stat-value">35</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-label">신고된 게시글</div>
+                <div class="stat-value">8</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-label">신고된 댓글</div>
+                <div class="stat-value">12</div>
+            </div>
+        </div>
+
+        <!-- 탭 메뉴 -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('reported-posts')">신고된 게시글</button>
+            <button class="tab-btn" onclick="showTab('reported-comments')">신고된 댓글</button>
+            <button class="tab-btn" onclick="showTab('deleted-posts')">삭제된 게시글</button>
+            <button class="tab-btn" onclick="showTab('deleted-comments')">삭제된 댓글</button>
+            <button class="tab-btn" onclick="showTab('contact-requests')">운영자 연락</button>
+            <button class="tab-btn" onclick="showTab('system-settings')">시스템 설정</button>
+        </div>
+
+        <!-- 신고된 게시글 -->
+        <div id="reported-posts" class="tab-content active">
+            <div class="section-title">신고된 게시글 관리</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">번호</th>
+                        <th style="width: 100px;">게시판</th>
+                        <th>제목</th>
+                        <th style="width: 100px;">작성자</th>
+                        <th style="width: 120px;">신고사유</th>
+                        <th style="width: 100px;">신고일시</th>
+                        <th style="width: 80px;">상태</th>
+                        <th style="width: 150px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2546</td>
+                        <td>자유게시판</td>
+                        <td><a href="/board-view.html">여기서 물건 사고파는 사람들 조심하세요</a></td>
+                        <td>Иван</td>
+                        <td><span class="report-reason">스팸/광고</span><br><span class="report-detail">중복 게시물</span></td>
+                        <td>2025.10.01 13:20</td>
+                        <td><span class="status-badge badge-reported">신고됨</span></td>
+                        <td>
+                            <button class="action-btn btn-delete" onclick="handleDeletePost(2546)">삭제</button>
+                            <button class="action-btn btn-ignore" onclick="handleIgnoreReport(2546, 'post')">무시</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2543</td>
+                        <td>자유게시판</td>
+                        <td><a href="/board-view.html">이거 완전 사기입니다!!! 조심하세요!</a></td>
+                        <td>박지영</td>
+                        <td><span class="report-reason">욕설/비방</span><br><span class="report-detail">특정인 비방</span></td>
+                        <td>2025.10.01 11:45</td>
+                        <td><span class="status-badge badge-reported">신고됨</span></td>
+                        <td>
+                            <button class="action-btn btn-delete" onclick="handleDeletePost(2543)">삭제</button>
+                            <button class="action-btn btn-ignore" onclick="handleIgnoreReport(2543, 'post')">무시</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 신고된 댓글 -->
+        <div id="reported-comments" class="tab-content">
+            <div class="section-title">신고된 댓글 관리</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">번호</th>
+                        <th>댓글 내용</th>
+                        <th style="width: 100px;">작성자</th>
+                        <th style="width: 100px;">게시글</th>
+                        <th style="width: 120px;">신고사유</th>
+                        <th style="width: 100px;">신고일시</th>
+                        <th style="width: 80px;">상태</th>
+                        <th style="width: 150px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>15234</td>
+                        <td>이런 쓰레기 같은 정보는 필요없어요. 광고하지 마세요.</td>
+                        <td>Владимир</td>
+                        <td><a href="/board-view.html">은행계좌 개설...</a></td>
+                        <td><span class="report-reason">욕설/비방</span><br><span class="report-detail">부적절한 표현</span></td>
+                        <td>2025.10.01 14:10</td>
+                        <td><span class="status-badge badge-reported">신고됨</span></td>
+                        <td>
+                            <button class="action-btn btn-delete" onclick="handleDeleteComment(15234)">삭제</button>
+                            <button class="action-btn btn-ignore" onclick="handleIgnoreReport(15234, 'comment')">무시</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>15198</td>
+                        <td>여기 전화하면 바로 해결됩니다 010-1234-5678</td>
+                        <td>김철수</td>
+                        <td><a href="/board-view.html">비자 연장 문의...</a></td>
+                        <td><span class="report-reason">개인정보 노출</span><br><span class="report-detail">전화번호 공개</span></td>
+                        <td>2025.10.01 12:30</td>
+                        <td><span class="status-badge badge-reported">신고됨</span></td>
+                        <td>
+                            <button class="action-btn btn-delete" onclick="handleDeleteComment(15198)">삭제</button>
+                            <button class="action-btn btn-ignore" onclick="handleIgnoreReport(15198, 'comment')">무시</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 삭제된 게시글 -->
+        <div id="deleted-posts" class="tab-content">
+            <div class="section-title">삭제된 게시글 관리</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">번호</th>
+                        <th style="width: 100px;">게시판</th>
+                        <th>제목</th>
+                        <th style="width: 100px;">작성자</th>
+                        <th style="width: 100px;">삭제자</th>
+                        <th style="width: 100px;">삭제일시</th>
+                        <th style="width: 80px;">상태</th>
+                        <th style="width: 100px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2540</td>
+                        <td>자유게시판</td>
+                        <td class="status-deleted">광고) 저렴한 가격에 물건 판매합니다</td>
+                        <td>Анна</td>
+                        <td>관리자</td>
+                        <td>2025.10.01 10:20</td>
+                        <td><span class="status-badge badge-deleted">삭제됨</span></td>
+                        <td>
+                            <button class="action-btn btn-restore" onclick="handleRestorePost(2540)">복구</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2535</td>
+                        <td>자유게시판</td>
+                        <td class="status-deleted">욕설이 포함된 게시글</td>
+                        <td>김민수</td>
+                        <td>본인</td>
+                        <td>2025.09.30 18:45</td>
+                        <td><span class="status-badge badge-deleted">삭제됨</span></td>
+                        <td>
+                            <button class="action-btn btn-restore" onclick="handleRestorePost(2535)">복구</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 삭제된 댓글 -->
+        <div id="deleted-comments" class="tab-content">
+            <div class="section-title">삭제된 댓글 관리</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">번호</th>
+                        <th>댓글 내용</th>
+                        <th style="width: 100px;">작성자</th>
+                        <th style="width: 100px;">게시글</th>
+                        <th style="width: 100px;">삭제자</th>
+                        <th style="width: 100px;">삭제일시</th>
+                        <th style="width: 80px;">상태</th>
+                        <th style="width: 100px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>15180</td>
+                        <td class="status-deleted">광고성 댓글입니다. 여기 연락주세요...</td>
+                        <td>Владимир</td>
+                        <td><a href="/board-view.html">은행계좌 개설...</a></td>
+                        <td>관리자</td>
+                        <td>2025.10.01 09:15</td>
+                        <td><span class="status-badge badge-deleted">삭제됨</span></td>
+                        <td>
+                            <button class="action-btn btn-restore" onclick="handleRestoreComment(15180)">복구</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>15145</td>
+                        <td class="status-deleted">부적절한 욕설이 포함된 댓글</td>
+                        <td>박지영</td>
+                        <td><a href="/board-view.html">생활정보 공유...</a></td>
+                        <td>본인</td>
+                        <td>2025.09.30 16:30</td>
+                        <td><span class="status-badge badge-deleted">삭제됨</span></td>
+                        <td>
+                            <button class="action-btn btn-restore" onclick="handleRestoreComment(15145)">복구</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 운영자 연락 -->
+        <div id="contact-requests" class="tab-content">
+            <div class="section-title">운영자 연락 관리</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">유형</th>
+                        <th>제목</th>
+                        <th style="width: 120px;">이름</th>
+                        <th style="width: 130px;">일시</th>
+                        <th style="width: 160px;">관리</th>
+                    </tr>
+                </thead>
+                <tbody id="contactRequestsTable">
+                    <!-- JavaScript로 동적 로드 -->
+                </tbody>
+            </table>
+            <div id="noContactRequests" style="display: none; text-align: center; padding: 40px; color: #999;">
+                접수된 연락이 없습니다
+            </div>
+        </div>
+
+        <!-- 시스템 설정 -->
+        <div id="system-settings" class="tab-content">
+            <div class="section-title">시스템 설정</div>
+
+            <!-- 번역 설정 -->
+            <div style="background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #333;">🌍 번역 설정</h3>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #555;">번역 서비스 제공자</label>
+                    <select id="translationProvider" style="width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <option value="deepl">DeepL (고품질 번역)</option>
+                        <option value="google">Google Cloud Translation</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #555;">DeepL API Key</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="deeplApiKey" placeholder="8ea8ad3f-c670-4df8-b1b4-abd4fe050c94:fx"
+                               style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace;">
+                        <button onclick="saveDeepLSettings()" class="action-btn" style="padding: 8px 20px;">저장</button>
+                        <button onclick="testDeepLConnection()" class="action-btn" style="padding: 8px 20px; background: #28a745;">테스트</button>
+                    </div>
+                    <div style="margin-top: 5px; font-size: 12px; color: #666;">
+                        💡 DeepL API Key는 <a href="https://www.deepl.com/pro-api" target="_blank" style="color: #0066cc;">DeepL Pro API</a>에서 발급받을 수 있습니다.
+                    </div>
+                    <div id="deeplStatus" style="margin-top: 10px; padding: 10px; border-radius: 4px; display: none;"></div>
+                </div>
+            </div>
+
+            <!-- 기타 설정 섹션 (추후 확장) -->
+            <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #333;">⚙️ 기타 설정</h3>
+                <div style="padding: 20px; text-align: center; color: #999;">
+                    추가 시스템 설정이 곧 제공됩니다.
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+
+    <!-- 상세보기 모달 -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">연락 상세 정보</div>
+                <button class="modal-close" onclick="closeContactModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- JavaScript로 동적 로드 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 관리자 권한 확인 및 운영자 연락 로드
+        window.addEventListener('DOMContentLoaded', function() {
+            const userInfoStr = localStorage.getItem('userInfo');
+
+            if (!userInfoStr) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            try {
+                const userInfo = JSON.parse(userInfoStr);
+                if (!userInfo.isAdmin) {
+                    alert('관리자 권한이 필요합니다.');
+                    window.location.href = '/index.html';
+                    return;
+                }
+
+                // 운영자 연락 데이터 로드
+                loadContactRequests();
+            } catch (e) {
+                console.error('사용자 정보 파싱 오류:', e);
+                alert('로그인 정보가 올바르지 않습니다.');
+                window.location.href = '/login.html';
+            }
+        });
+
+        // 운영자 연락 데이터 로드
+        function loadContactRequests() {
+            const contacts = JSON.parse(localStorage.getItem('adminContacts') || '[]');
+            const tableBody = document.getElementById('contactRequestsTable');
+            const noDataDiv = document.getElementById('noContactRequests');
+
+            if (contacts.length === 0) {
+                noDataDiv.style.display = 'block';
+                return;
+            }
+
+            noDataDiv.style.display = 'none';
+
+            tableBody.innerHTML = contacts.map((contact, index) => {
+                const typeLabel = contact.type === 'ad' ? '광고/협력' : '건의';
+                const typeBadge = contact.type === 'ad' ? 'badge-reported' : 'badge-normal';
+
+                // 요청 유형 번역
+                const requestTypeMap = {
+                    // 광고/협력 요청 유형
+                    'banner': '배너 광고',
+                    'content': '콘텐츠 협찬',
+                    'partnership': '비즈니스 제휴',
+                    'event': '이벤트 협력',
+                    // 건의 유형
+                    'improvement': '서비스 개선',
+                    'feature': '기능 추가',
+                    'bug': '버그 신고',
+                    'complaint': '불편 사항',
+                    'question': '질문',
+                    'other': '기타'
+                };
+
+                const requestType = contact.requestType || contact.suggestType || 'other';
+                const requestTypeLabel = requestTypeMap[requestType] || '기타';
+
+                const date = new Date(contact.timestamp);
+                const dateStr = date.toLocaleString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                return `
+                    <tr>
+                        <td><span class="status-badge ${typeBadge}">${typeLabel}</span></td>
+                        <td><strong>${contact.title || '-'}</strong></td>
+                        <td>${contact.name || '-'}</td>
+                        <td>${dateStr}</td>
+                        <td style="white-space: nowrap;">
+                            <button class="action-btn" onclick="viewContactDetail(${index})">상세보기</button>
+                            <button class="action-btn btn-delete" onclick="deleteContactRequest(${index})">삭제</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // 연락 상세보기
+        function viewContactDetail(index) {
+            const contacts = JSON.parse(localStorage.getItem('adminContacts') || '[]');
+            const contact = contacts[index];
+
+            if (!contact) {
+                alert('데이터를 찾을 수 없습니다.');
+                return;
+            }
+
+            const typeLabel = contact.type === 'ad' ? '광고/협력 요청' : '운영자 건의';
+            const requestTypeMap = {
+                'banner': '배너 광고',
+                'content': '콘텐츠 협찬',
+                'partnership': '비즈니스 제휴',
+                'event': '이벤트 협력',
+                'improvement': '서비스 개선',
+                'feature': '기능 추가',
+                'bug': '버그 신고',
+                'complaint': '불편 사항',
+                'question': '질문',
+                'other': '기타'
+            };
+            const requestType = contact.requestType || contact.suggestType || 'other';
+            const requestTypeLabel = requestTypeMap[requestType] || '기타';
+
+            document.getElementById('modalTitle').textContent = typeLabel;
+
+            let modalHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">👤 이름</div>
+                    <div class="detail-value">${contact.name || '-'}</div>
+                </div>
+            `;
+
+            if (contact.company) {
+                modalHTML += `
+                    <div class="detail-row">
+                        <div class="detail-label">🏢 회사명</div>
+                        <div class="detail-value">${contact.company}</div>
+                    </div>
+                `;
+            }
+
+            modalHTML += `
+                <div class="detail-row">
+                    <div class="detail-label">📧 이메일</div>
+                    <div class="detail-value">${contact.email || '-'}</div>
+                </div>
+            `;
+
+            if (contact.phone) {
+                modalHTML += `
+                    <div class="detail-row">
+                        <div class="detail-label">📞 연락처</div>
+                        <div class="detail-value">${contact.phone}</div>
+                    </div>
+                `;
+            }
+
+            modalHTML += `
+                <div class="detail-row">
+                    <div class="detail-label">📂 요청 유형</div>
+                    <div class="detail-value">${requestTypeLabel}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">📌 제목</div>
+                    <div class="detail-value"><strong>${contact.title || '-'}</strong></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">📝 상세 내용</div>
+                    <div class="detail-content">${contact.content || '-'}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">🕐 접수 일시</div>
+                    <div class="detail-value">${new Date(contact.timestamp).toLocaleString('ko-KR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })}</div>
+                </div>
+            `;
+
+            document.getElementById('modalBody').innerHTML = modalHTML;
+            document.getElementById('contactModal').classList.add('show');
+        }
+
+        // 모달 닫기
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.remove('show');
+        }
+
+        // 모달 배경 클릭시 닫기
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'contactModal') {
+                closeContactModal();
+            }
+        });
+
+        // 연락 삭제
+        function deleteContactRequest(index) {
+            if (confirm('이 연락을 삭제하시겠습니까?')) {
+                const contacts = JSON.parse(localStorage.getItem('adminContacts') || '[]');
+                contacts.splice(index, 1);
+                localStorage.setItem('adminContacts', JSON.stringify(contacts));
+                alert('삭제되었습니다.');
+                loadContactRequests();
+            }
+        }
+
+        // 탭 전환
+        function showTab(tabId) {
+            // 모든 탭 버튼과 콘텐츠 비활성화
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // 선택된 탭 활성화
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // 게시글 삭제
+        function handleDeletePost(postId) {
+            if (confirm(`게시글 #${postId}을(를) 삭제하시겠습니까?\n삭제된 게시글은 "삭제된 게시글" 탭에서 관리할 수 있습니다.`)) {
+                alert(`게시글 #${postId}이(가) 삭제되었습니다.`);
+                // 실제로는 API 호출하여 삭제 처리
+                // 삭제 후 해당 행을 "삭제된 게시글" 탭으로 이동
+                location.reload();
+            }
+        }
+
+        // 댓글 삭제
+        function handleDeleteComment(commentId) {
+            if (confirm(`댓글 #${commentId}을(를) 삭제하시겠습니까?\n삭제된 댓글은 "삭제된 댓글" 탭에서 관리할 수 있습니다.`)) {
+                alert(`댓글 #${commentId}이(가) 삭제되었습니다.`);
+                // 실제로는 API 호출하여 삭제 처리
+                location.reload();
+            }
+        }
+
+        // 신고 무시
+        function handleIgnoreReport(id, type) {
+            const typeName = type === 'post' ? '게시글' : '댓글';
+            if (confirm(`${typeName} #${id}의 신고를 무시하시겠습니까?\n무시된 신고는 더 이상 표시되지 않습니다.`)) {
+                alert(`${typeName} #${id}의 신고가 무시되었습니다.`);
+                // 실제로는 API 호출하여 신고 무시 처리
+                location.reload();
+            }
+        }
+
+        // 게시글 복구
+        function handleRestorePost(postId) {
+            if (confirm(`게시글 #${postId}을(를) 복구하시겠습니까?\n복구된 게시글은 다시 게시판에 표시됩니다.`)) {
+                alert(`게시글 #${postId}이(가) 복구되었습니다.`);
+                // 실제로는 API 호출하여 복구 처리
+                location.reload();
+            }
+        }
+
+        // 댓글 복구
+        function handleRestoreComment(commentId) {
+            if (confirm(`댓글 #${commentId}을(를) 복구하시겠습니까?\n복구된 댓글은 다시 게시글에 표시됩니다.`)) {
+                alert(`댓글 #${commentId}이(가) 복구되었습니다.`);
+                // 실제로는 API 호출하여 복구 처리
+                location.reload();
+            }
+        }
+
+        // ===== 시스템 설정 관련 함수 =====
+
+        // 페이지 로드 시 시스템 설정 불러오기
+        async function loadSystemSettings() {
+            try {
+                const token = localStorage.getItem('access_token') ||
+                             (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+                if (!token) {
+                    console.error('인증 토큰이 없습니다');
+                    return;
+                }
+
+                const API_BASE = 'http://localhost:8000';
+                const response = await fetch(`${API_BASE}/api/admin/settings?category=translation`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const settings = await response.json();
+
+                    // 번역 제공자 설정
+                    const providerSetting = settings.find(s => s.key === 'translation_provider');
+                    if (providerSetting) {
+                        document.getElementById('translationProvider').value = providerSetting.value;
+                    }
+
+                    // DeepL API Key 설정
+                    const deeplKeySetting = settings.find(s => s.key === 'deepl_api_key');
+                    if (deeplKeySetting) {
+                        document.getElementById('deeplApiKey').value = deeplKeySetting.value;
+                    }
+                } else {
+                    console.error('설정 불러오기 실패:', response.status);
+                }
+            } catch (error) {
+                console.error('설정 불러오기 오류:', error);
+            }
+        }
+
+        // DeepL 설정 저장
+        async function saveDeepLSettings() {
+            const apiKey = document.getElementById('deeplApiKey').value.trim();
+            const provider = document.getElementById('translationProvider').value;
+
+            if (!apiKey) {
+                alert('DeepL API Key를 입력해주세요.');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('access_token') ||
+                             (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+                if (!token) {
+                    alert('로그인이 필요합니다.');
+                    return;
+                }
+
+                const API_BASE = 'http://localhost:8000';
+
+                // DeepL API Key 저장
+                const deeplResponse = await fetch(`${API_BASE}/api/admin/settings/deepl_api_key`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ value: apiKey })
+                });
+
+                // Translation Provider 저장
+                const providerResponse = await fetch(`${API_BASE}/api/admin/settings/translation_provider`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ value: provider })
+                });
+
+                if (deeplResponse.ok && providerResponse.ok) {
+                    const statusDiv = document.getElementById('deeplStatus');
+                    statusDiv.style.display = 'block';
+                    statusDiv.style.background = '#d4edda';
+                    statusDiv.style.color = '#155724';
+                    statusDiv.style.border = '1px solid #c3e6cb';
+                    statusDiv.innerHTML = '✅ DeepL 설정이 성공적으로 저장되었습니다!';
+
+                    setTimeout(() => {
+                        statusDiv.style.display = 'none';
+                    }, 3000);
+                } else {
+                    throw new Error('설정 저장 실패');
+                }
+            } catch (error) {
+                console.error('설정 저장 오류:', error);
+                const statusDiv = document.getElementById('deeplStatus');
+                statusDiv.style.display = 'block';
+                statusDiv.style.background = '#f8d7da';
+                statusDiv.style.color = '#721c24';
+                statusDiv.style.border = '1px solid #f5c6cb';
+                statusDiv.innerHTML = '❌ 설정 저장에 실패했습니다: ' + error.message;
+            }
+        }
+
+        // DeepL 연결 테스트
+        async function testDeepLConnection() {
+            const apiKey = document.getElementById('deeplApiKey').value.trim();
+
+            if (!apiKey) {
+                alert('DeepL API Key를 입력해주세요.');
+                return;
+            }
+
+            // 먼저 저장
+            await saveDeepLSettings();
+
+            const statusDiv = document.getElementById('deeplStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = '#d1ecf1';
+            statusDiv.style.color = '#0c5460';
+            statusDiv.style.border = '1px solid #bee5eb';
+            statusDiv.innerHTML = '🔄 DeepL API 연결을 테스트하는 중...';
+
+            const API_BASE = 'http://localhost:8000';
+            const token = localStorage.getItem('access_token') ||
+                         (localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).access_token : null);
+
+            if (!token) {
+                statusDiv.style.background = '#f8d7da';
+                statusDiv.style.color = '#721c24';
+                statusDiv.style.border = '1px solid #f5c6cb';
+                statusDiv.innerHTML = '❌ 로그인이 필요합니다.';
+                return;
+            }
+
+            try {
+                // 백엔드 API를 통해 테스트
+                const response = await fetch(`${API_BASE}/api/admin/test-deepl`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.style.background = '#d4edda';
+                    statusDiv.style.color = '#155724';
+                    statusDiv.style.border = '1px solid #c3e6cb';
+                    statusDiv.innerHTML = `✅ DeepL API 연결 성공!<br>테스트 번역: "${data.test_translation.original}" → "${data.test_translation.translated}"`;
+                } else if (response.status === 403) {
+                    statusDiv.style.background = '#f8d7da';
+                    statusDiv.style.color = '#721c24';
+                    statusDiv.style.border = '1px solid #f5c6cb';
+                    statusDiv.innerHTML = '❌ API Key가 유효하지 않습니다. DeepL Pro API Key를 확인해주세요.';
+                } else {
+                    const errorData = await response.json();
+                    statusDiv.style.background = '#f8d7da';
+                    statusDiv.style.color = '#721c24';
+                    statusDiv.style.border = '1px solid #f5c6cb';
+                    statusDiv.innerHTML = `❌ DeepL API 오류 (${response.status}): ${errorData.detail || '알 수 없는 오류'}`;
+                }
+            } catch (error) {
+                statusDiv.style.background = '#f8d7da';
+                statusDiv.style.color = '#721c24';
+                statusDiv.style.border = '1px solid #f5c6cb';
+                statusDiv.innerHTML = '❌ 연결 실패: ' + error.message;
+            }
+        }
+
+        // 시스템 설정 탭 표시 시 설정 로드
+        const originalShowTab = showTab;
+        showTab = function(tabId) {
+            originalShowTab(tabId);
+            if (tabId === 'system-settings') {
+                loadSystemSettings();
+            }
+        };
+    </script>
+</body>
+</html>

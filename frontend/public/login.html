@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - Russian.Town</title>
+    <link rel="icon" href="data:,">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+        :root {
+            --russian-red: #DA020E;
+            --russian-blue: #0039A6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--russian-blue) 0%, var(--russian-red) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            padding: 40px;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--russian-blue);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--russian-blue);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #002a75;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            color: #999;
+            font-size: 12px;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .links a {
+            color: var(--russian-blue);
+            text-decoration: none;
+            font-size: 13px;
+            margin: 0 10px;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid var(--russian-blue);
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .info-box strong {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">Russian.Town</div>
+        <div class="subtitle">러시아 커뮤니티 로그인</div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label">아이디 / ID</label>
+                <input type="text" class="form-input" id="username" placeholder="아이디를 입력하세요" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">비밀번호 / Пароль</label>
+                <input type="password" class="form-input" id="password" placeholder="비밀번호를 입력하세요" required>
+            </div>
+
+            <button type="submit" class="login-btn">로그인</button>
+        </form>
+
+        <div class="divider">또는</div>
+
+        <div class="links">
+            <a href="/signup.html">회원가입</a>
+            <a href="/index.html">홈으로 돌아가기</a>
+        </div>
+
+        <div class="info-box">
+            <strong>테스트 계정:</strong>
+            일반 사용자: test / test<br>
+            관리자: admin1234 / kuro##@@
+        </div>
+    </div>
+
+    <script>
+        // 관리자 계정 정보
+        const ADMIN_ACCOUNT = {
+            username: 'admin1234',
+            password: 'kuro##@@'
+        };
+
+        // 테스트 일반 계정
+        const TEST_ACCOUNT = {
+            username: 'test',
+            password: 'test'
+        };
+
+        // 로그인 폼 제출
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            // 에러 메시지 초기화
+            errorMessage.style.display = 'none';
+
+            // 로딩 표시
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = '로그인 중...';
+
+            try {
+                // 백엔드 API 로그인 시도
+                console.log('[로그인] API 호출 시작');
+                const response = await fetch('http://localhost:8000/api/auth/email/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: username.includes('@') ? username : `${username}@example.com`,
+                        password: password
+                    })
+                });
+
+                console.log('[로그인] API 응답 상태:', response.status);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('[로그인] 로그인 성공, 토큰 저장');
+
+                    // 토큰 저장
+                    localStorage.setItem('access_token', data.access_token);
+                    if (data.refresh_token) {
+                        localStorage.setItem('refresh_token', data.refresh_token);
+                    }
+
+                    // /api/users/me로 사용자 정보 가져오기
+                    try {
+                        const meResponse = await fetch('http://localhost:8000/api/users/me', {
+                            headers: {
+                                'Authorization': `Bearer ${data.access_token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (meResponse.ok) {
+                            const userData = await meResponse.json();
+                            console.log('[로그인] 사용자 정보:', userData);
+
+                            const userInfo = {
+                                id: userData.id,
+                                username: userData.username,
+                                email: userData.email,
+                                nickname: userData.nickname,
+                                role: userData.role,
+                                isAdmin: userData.role === 'ADMIN' || userData.role === 'MODERATOR',
+                                loginTime: new Date().toISOString(),
+                                access_token: data.access_token
+                            };
+
+                            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+                            console.log('[로그인] 저장 완료');
+
+                            alert('로그인되었습니다.');
+                            window.location.href = userInfo.isAdmin ? '/admin.html' : '/';
+                        } else {
+                            throw new Error('사용자 정보 조회 실패');
+                        }
+                    } catch (meError) {
+                        console.error('[로그인] /me API 오류:', meError);
+
+                        // 기본 정보만 저장
+                        const userInfo = {
+                            username: username,
+                            email: username.includes('@') ? username : `${username}@example.com`,
+                            role: 'USER',
+                            isAdmin: false,
+                            loginTime: new Date().toISOString(),
+                            access_token: data.access_token
+                        };
+
+                        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                        alert('로그인되었습니다.');
+                        window.location.href = '/index.html';
+                    }
+                    return;
+                }
+
+                // API 로그인 실패 시 에러 처리
+                try {
+                    const errorData = await response.json();
+                    console.error('[로그인] API 로그인 실패:', errorData);
+                    errorMessage.textContent = errorData.detail || '아이디 또는 비밀번호가 올바르지 않습니다.';
+                } catch (jsonError) {
+                    console.error('[로그인] JSON 파싱 오류:', jsonError);
+                    const textError = await response.text();
+                    console.error('[로그인] 서버 응답:', textError);
+                    errorMessage.textContent = '서버 오류가 발생했습니다. 관리자에게 문의해주세요.';
+                }
+                errorMessage.style.display = 'block';
+
+            } catch (error) {
+                console.error('[로그인] 로그인 오류:', error);
+
+                // 네트워크 오류나 서버 오류
+                errorMessage.textContent = `로그인 중 오류가 발생했습니다: ${error.message}`;
+                errorMessage.style.display = 'block';
+            } finally {
+                // 로딩 상태 해제
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            }
+        });
+
+        // 이미 로그인되어 있으면 리다이렉트
+        window.addEventListener('DOMContentLoaded', function() {
+            const userInfo = localStorage.getItem('userInfo');
+            if (userInfo) {
+                const user = JSON.parse(userInfo);
+                if (user.isAdmin) {
+                    window.location.href = '/admin.html';
+                } else {
+                    window.location.href = '/index.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

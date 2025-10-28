@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글쓰기 - Russian.Town</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="sidebar-styles.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+        :root {
+            --russian-red: #C1272D;
+            --russian-blue: #0039A6;
+            --russian-gold: #D4AF37;
+            --russian-navy: #002B5C;
+            --russian-white: #FFFFFF;
+            --russian-light-blue: #4A90E2;
+            --russian-cream: #F5F3EE;
+            --gradient-primary: linear-gradient(135deg, var(--russian-blue) 0%, var(--russian-light-blue) 100%);
+            --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #F4E4B3 100%);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #2c3e50;
+            background: linear-gradient(to bottom, #f8f9fa 0%, var(--russian-cream) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* 헤더 */
+        .header {
+            background: var(--gradient-primary);
+            box-shadow: var(--shadow-md);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, white 0%, white 33%, var(--russian-blue) 33%, var(--russian-blue) 66%, var(--russian-red) 66%, var(--russian-red) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border: 3px solid white;
+        }
+
+        .search-box {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 38px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 0 45px 0 18px;
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--russian-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            background: white;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            background: var(--gradient-gold);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* 언어 전환 버튼 */
+        .language-switcher {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 3px 8px;
+            margin: 0 2px;
+            cursor: pointer;
+            font-size: 11px;
+            border-radius: 3px;
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: var(--russian-blue);
+            border-color: white;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-btn.active:hover {
+            background: white;
+        }
+
+        /* 메인 레이아웃 */
+        .main-layout {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        .right-sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        /* 사이드바 */
+        .sidebar-section {
+            background: white;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-section:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .sidebar-header {
+            background: var(--gradient-primary);
+            border-bottom: none;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-header .korean-text {
+            font-weight: 700;
+            color: white !important;
+        }
+
+        .sidebar-header .russian-text {
+            font-size: 9px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9) !important;
+            margin-left: 4px;
+        }
+
+        .sidebar-menu {
+            padding: 4px 0;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 6px 12px;
+            font-size: 11px;
+            color: #333 !important;
+            text-decoration: none !important;
+            border-bottom: 1px solid #f5f5f5;
+            transition: all 0.2s ease;
+            position: relative;
+            line-height: 1.3;
+        }
+
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: var(--gradient-gold);
+            transition: width 0.3s ease;
+        }
+
+        .sidebar-item:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-item:hover {
+            background: #f8f9fa;
+            padding-left: 16px;
+        }
+
+        .sidebar-item:hover::before {
+            width: 4px;
+        }
+
+        .sidebar-item.active {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            color: var(--russian-navy) !important;
+            font-weight: 600;
+            border-left: 4px solid var(--russian-gold);
+            padding-left: 8px;
+        }
+
+        .sidebar-item .russian-text {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            font-size: 9px;
+            color: #666;
+            margin-top: 1px;
+            font-weight: normal;
+        }
+
+        /* 우측 사이드바 위젯 */
+        .widget {
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .widget-header {
+            background: var(--gradient-primary);
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .widget-content {
+            padding: 12px;
+        }
+
+        /* 로그인 폼 */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 10px;
+        }
+
+        .register-link a {
+            color: var(--russian-blue);
+            text-decoration: none;
+        }
+
+        /* 통계 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .stats-item {
+            text-align: center;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .stats-number {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--russian-blue);
+        }
+
+        .stats-label {
+            font-size: 9px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        /* 작성 폼 */
+        .write-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .write-header {
+            padding: 15px 20px;
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .write-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .write-title-ru {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 2px;
+        }
+
+        .write-form {
+            padding: 15px;
+        }
+
+        .form-row {
+            margin-bottom: 12px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .form-label .russian-label {
+            font-size: 10px;
+            color: #666;
+            font-weight: normal;
+            margin-left: 6px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--russian-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-select {
+            width: 200px;
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 400px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+            line-height: 1.6;
+            resize: vertical;
+        }
+
+        .form-help {
+            font-size: 10px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        /* 에디터 툴바 */
+        .editor-toolbar {
+            display: flex;
+            gap: 4px;
+            padding: 8px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .toolbar-btn {
+            padding: 6px 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #333;
+        }
+
+        .toolbar-btn:hover {
+            background: #e9ecef;
+        }
+
+        .toolbar-separator {
+            width: 1px;
+            background: #ddd;
+            margin: 0 4px;
+        }
+
+        /* 버튼 영역 */
+        .write-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .btn-cancel {
+            padding: 10px 30px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-temp {
+            padding: 10px 30px;
+            background: white;
+            color: #333;
+            border: 2px solid var(--russian-gold);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-temp:hover {
+            background: var(--gradient-gold);
+            color: var(--russian-navy);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-submit {
+            padding: 10px 30px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            filter: brightness(1.1);
+        }
+
+        /* 언어 표시 제어 */
+        body.korean .russian-text {
+            display: none;
+        }
+
+        body.russian .korean-text {
+            display: none;
+        }
+
+        body.both .korean-text,
+        body.both .russian-text {
+            display: block;
+        }
+    </style>
+</head>
+<body class="both">
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon">🇷🇺</div>
+                    Russian.Town
+                </a>
+
+                <!-- 검색박스 -->
+                <div class="search-box">
+                    <input type="text" class="search-input" id="search-input" placeholder="검색어를 입력하세요 / Введите поисковый запрос">
+                    <button class="search-btn">🔍</button>
+                </div>
+
+                <!-- 네비게이션 메뉴 -->
+                <nav class="nav-menu">
+                    <!-- 언어 전환 버튼 -->
+                    <div class="language-switcher">
+                        <button class="lang-btn" onclick="setLanguage('korean')">한국어</button>
+                        <button class="lang-btn" onclick="setLanguage('russian')">Русский</button>
+                        <button class="lang-btn active" onclick="setLanguage('both')">한+Ru</button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- 좌측 사이드바 -->
+            <aside class="sidebar">
+                <!-- 게시판 메뉴 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <span class="korean-text">게시판</span>
+                        <div class="russian-text">Доски объявлений</div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="/board-notice.html" class="sidebar-item" data-category="notice">
+                            <span class="korean-text">공지사항</span>
+                            <div class="russian-text">Объявления</div>
+                        </a>
+                        <a href="/board-free.html" class="sidebar-item" data-category="free">
+                            <span class="korean-text">자유게시판</span>
+                            <div class="russian-text">Свободное общение</div>
+                        </a>
+                        <a href="/board-life.html" class="sidebar-item" data-category="life">
+                            <span class="korean-text">생활정보</span>
+                            <div class="russian-text">Жизнь в Корее</div>
+                        </a>
+                        <a href="/board-admin.html" class="sidebar-item" data-category="admin">
+                            <span class="korean-text">행정정보</span>
+                            <div class="russian-text">Админ. информация</div>
+                        </a>
+                        <a href="/board-job.html" class="sidebar-item" data-category="job">
+                            <span class="korean-text">구인구직</span>
+                            <div class="russian-text">Работа</div>
+                        </a>
+                        <a href="/board-market.html" class="sidebar-item" data-category="market">
+                            <span class="korean-text">벼룩시장</span>
+                            <div class="russian-text">Барахолка</div>
+                        </a>
+                        <a href="/board-business.html" class="sidebar-item" data-category="business">
+                            <span class="korean-text">비즈니스</span>
+                            <div class="russian-text">Бизнес</div>
+                        </a>
+                        <a href="/board-startup.html" class="sidebar-item" data-category="startup">
+                            <span class="korean-text">스타트업</span>
+                            <div class="russian-text">Стартап</div>
+                        </a>
+                        <a href="/board-partners.html" class="sidebar-item" data-category="partners">
+                            <span class="korean-text">파트너스</span>
+                            <div class="russian-text">Партнеры</div>
+                        </a>
+                        <a href="/board-trade.html" class="sidebar-item" data-category="trade">
+                            <span class="korean-text">무역</span>
+                            <div class="russian-text">Торговля</div>
+                        </a>
+                        <a href="/board-ad.html" class="sidebar-item" data-category="ad">
+                            <span class="korean-text">광고</span>
+                            <div class="russian-text">Реклама</div>
+                        </a>
+                        <a href="/board-suggest.html" class="sidebar-item" data-category="suggest">
+                            <span class="korean-text">건의사항</span>
+                            <div class="russian-text">Предложения</div>
+                        </a>
+                        <a href="/board-contact.html" class="sidebar-item" data-category="contact">
+                            <span class="korean-text">문의</span>
+                            <div class="russian-text">Контакты</div>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 메인 컨텐츠 -->
+            <div class="content">
+                <div class="write-container">
+                    <!-- 헤더 -->
+                    <div class="write-header">
+                        <div class="write-title">글쓰기</div>
+                        <div class="write-title-ru">Написать сообщение</div>
+                    </div>
+
+                    <!-- 작성 폼 -->
+                    <form class="write-form">
+                        <!-- 게시판 선택 -->
+                        <div class="form-row">
+                            <label class="form-label">
+                                게시판
+                                <span class="russian-label">Доска</span>
+                            </label>
+                            <select class="form-select">
+                                <option value="free" selected>자유게시판</option>
+                                <option value="life">생활정보</option>
+                                <option value="admin">행정정보</option>
+                                <option value="job">구인구직</option>
+                                <option value="market">벼룩시장</option>
+                            </select>
+                        </div>
+
+                        <!-- 제목 (한글) -->
+                        <div class="form-row">
+                            <label class="form-label">
+                                제목 (한글)
+                                <span class="russian-label">Заголовок (корейский)</span>
+                                <span style="color: var(--russian-red);">*</span>
+                            </label>
+                            <input type="text" class="form-input" placeholder="제목을 입력하세요" required>
+                        </div>
+
+                        <!-- 제목 (러시아어) -->
+                        <div class="form-row">
+                            <label class="form-label">
+                                제목 (러시아어)
+                                <span class="russian-label">Заголовок (русский)</span>
+                            </label>
+                            <input type="text" class="form-input" placeholder="Введите заголовок">
+                            <div class="form-help">* 러시아어 제목은 선택사항입니다</div>
+                        </div>
+
+                        <!-- 내용 -->
+                        <div class="form-row">
+                            <label class="form-label">
+                                내용
+                                <span class="russian-label">Содержание</span>
+                                <span style="color: var(--russian-red);">*</span>
+                            </label>
+
+                            <!-- 에디터 툴바 -->
+                            <div class="editor-toolbar">
+                                <button type="button" class="toolbar-btn" title="굵게">
+                                    <strong>B</strong>
+                                </button>
+                                <button type="button" class="toolbar-btn" title="기울임">
+                                    <em>I</em>
+                                </button>
+                                <button type="button" class="toolbar-btn" title="밑줄">
+                                    <u>U</u>
+                                </button>
+                                <div class="toolbar-separator"></div>
+                                <button type="button" class="toolbar-btn">글꼴</button>
+                                <button type="button" class="toolbar-btn">크기</button>
+                                <button type="button" class="toolbar-btn">색상</button>
+                                <div class="toolbar-separator"></div>
+                                <button type="button" class="toolbar-btn">링크</button>
+                                <button type="button" class="toolbar-btn">이미지</button>
+                                <button type="button" class="toolbar-btn">동영상</button>
+                            </div>
+
+                            <textarea class="form-textarea" placeholder="내용을 입력하세요" required></textarea>
+                        </div>
+                    </form>
+
+                    <!-- 버튼 영역 -->
+                    <div class="write-actions">
+                        <button class="btn-cancel" onclick="if(confirm('작성을 취소하시겠습니까?')) location.href='/board-free.html'">
+                            취소
+                        </button>
+                        <div class="btn-group">
+                            <button class="btn-temp">임시저장</button>
+                            <button class="btn-submit">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 우측 사이드바 -->
+            <aside class="right-sidebar">
+                <!-- 로그인 -->
+                <div class="widget">
+                    <div class="widget-header">로그인</div>
+                    <div class="widget-content">
+                        <form class="login-form">
+                            <input type="text" class="login-input" placeholder="아이디">
+                            <input type="password" class="login-input" placeholder="비밀번호">
+                            <button type="submit" class="login-btn">로그인</button>
+                            <div class="register-link">
+                                <a href="#">
+                                    <span class="korean-text">회원가입</span>
+                                    <span class="russian-text">Регистрация</span>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 커뮤니티 현황 -->
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="korean-text">커뮤니티 현황</span>
+                        <span class="russian-text">Статистика</span>
+                    </div>
+                    <div class="widget-content">
+                        <div class="stats-grid">
+                            <div class="stats-item">
+                                <div class="stats-number">2,547</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">회원</span>
+                                    <div class="russian-text">Участники</div>
+                                </div>
+                            </div>
+                            <div class="stats-item">
+                                <div class="stats-number">8,932</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">게시글</span>
+                                    <div class="russian-text">Посты</div>
+                                </div>
+                            </div>
+                            <div class="stats-item">
+                                <div class="stats-number">24,681</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">댓글</span>
+                                    <div class="russian-text">Комментарии</div>
+                                </div>
+                            </div>
+                            <div class="stats-item">
+                                <div class="stats-number">156</div>
+                                <div class="stats-label">
+                                    <span class="korean-text">파트너</span>
+                                    <div class="russian-text">Партнеры</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // 언어 전환 함수
+        function setLanguage(lang) {
+            const body = document.body;
+            const buttons = document.querySelectorAll('.lang-btn');
+            const searchInput = document.getElementById('search-input');
+
+            // 버튼 활성화 상태 변경
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[onclick="setLanguage('${lang}')"]`).classList.add('active');
+
+            // 바디 클래스 변경
+            body.className = lang;
+
+            // 검색창 placeholder 변경
+            if (lang === 'korean') {
+                searchInput.placeholder = '검색어를 입력하세요';
+            } else if (lang === 'russian') {
+                searchInput.placeholder = 'Введите поисковый запрос';
+            } else {
+                searchInput.placeholder = '검색어를 입력하세요 / Введите поисковый запрос';
+            }
+
+            console.log('Language changed to:', lang);
+            console.log('Body class:', body.className);
+        }
+
+        // 에디터 툴바 기능
+        const textarea = document.querySelector('.form-textarea');
+
+        document.querySelectorAll('.toolbar-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const btnText = this.textContent.trim();
+
+                switch(btnText) {
+                    case 'B':
+                        wrapText('**', '**');
+                        break;
+                    case 'I':
+                        wrapText('_', '_');
+                        break;
+                    case 'U':
+                        wrapText('<u>', '</u>');
+                        break;
+                    case '링크':
+                        insertLink();
+                        break;
+                    case '이미지':
+                        insertImage();
+                        break;
+                }
+            });
+        });
+
+        function wrapText(before, after) {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            const replacement = before + (selectedText || '텍스트') + after;
+
+            textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + before.length, start + before.length + (selectedText.length || 3));
+        }
+
+        function insertLink() {
+            const url = prompt('링크 URL을 입력하세요:');
+            if (url) {
+                const text = prompt('링크 텍스트를 입력하세요:', url);
+                const start = textarea.selectionStart;
+                const link = `[${text || url}](${url})`;
+                textarea.value = textarea.value.substring(0, start) + link + textarea.value.substring(start);
+                textarea.focus();
+            }
+        }
+
+        function insertImage() {
+            const url = prompt('이미지 URL을 입력하세요:');
+            if (url) {
+                const start = textarea.selectionStart;
+                const img = `![이미지](${url})`;
+                textarea.value = textarea.value.substring(0, start) + img + textarea.value.substring(start);
+                textarea.focus();
+            }
+        }
+
+        // 등록 버튼
+        document.querySelector('.btn-submit').addEventListener('click', async function(e) {
+            e.preventDefault();
+
+            // URL에서 카테고리 가져오기 (또는 선택된 게시판 사용)
+            const urlParams = new URLSearchParams(window.location.search);
+            const categorySlug = urlParams.get('category') || document.querySelector('.form-select').value;
+
+            const titleKo = document.querySelectorAll('.form-input')[0].value;
+            const content = document.querySelector('.form-textarea').value;
+
+            if (!titleKo.trim()) {
+                alert('제목을 입력해주세요.');
+                return;
+            }
+
+            if (!content.trim()) {
+                alert('내용을 입력해주세요.');
+                return;
+            }
+
+            // 로그인 확인 - access_token 우선, 없으면 userInfo에서 가져오기
+            let token = localStorage.getItem('access_token');
+
+            if (!token) {
+                const userInfoStr = localStorage.getItem('userInfo');
+                if (userInfoStr) {
+                    try {
+                        const userInfo = JSON.parse(userInfoStr);
+                        token = userInfo.access_token;
+                    } catch (e) {
+                        console.error('userInfo 파싱 오류:', e);
+                    }
+                }
+            }
+
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                location.href = '/index.html';
+                return;
+            }
+
+            console.log('사용 중인 토큰:', token.substring(0, 20) + '...');
+
+            if (confirm('게시글을 등록하시겠습니까?')) {
+                try {
+                    const API_BASE = window.location.hostname === 'localhost'
+                        ? 'http://localhost:8000'
+                        : 'https://api.russian.town';
+
+                    const postData = {
+                        category_slug: categorySlug,
+                        title: titleKo,
+                        content: content,
+                        status: 'published',
+                        source_lang: 'ko',
+                        auto_translate: true
+                    };
+
+                    console.log('게시글 등록 요청:', postData);
+                    console.log('API URL:', `${API_BASE}/api/posts/`);
+
+                    const response = await fetch(`${API_BASE}/api/posts/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(postData)
+                    });
+
+                    console.log('응답 상태:', response.status);
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log('게시글 등록 성공:', result);
+                        alert('게시글이 등록되었습니다.');
+
+                        // 해당 카테고리 게시판으로 이동
+                        const boardPages = {
+                            'free': 'board-free.html',
+                            'notice': 'board-notice.html',
+                            'life': 'board-life.html',
+                            'admin': 'board-admin.html',
+                            'job': 'board-job.html',
+                            'market': 'board-market.html',
+                            'startup': 'board-startup.html'
+                        };
+
+                        location.href = '/' + (boardPages[categorySlug] || 'board-free.html');
+                    } else {
+                        const error = await response.json();
+                        console.error('게시글 등록 실패:', error);
+                        console.error('응답 전체:', response);
+
+                        // 토큰 만료 또는 인증 오류 시 로그아웃 처리
+                        if (response.status === 401) {
+                            alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+                            localStorage.removeItem('access_token');
+                            localStorage.removeItem('refresh_token');
+                            localStorage.removeItem('userInfo');
+                            location.href = '/index.html';
+                        } else {
+                            alert('등록 실패: ' + (error.detail || '알 수 없는 오류'));
+                        }
+                    }
+                } catch (error) {
+                    console.error('서버 연결 오류:', error);
+                    alert('서버 연결 실패. 다시 시도해주세요.');
+                }
+            }
+        });
+
+        // 임시저장 버튼
+        document.querySelector('.btn-temp').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('임시저장되었습니다.');
+        });
+
+        // 사이드바 메뉴 active 상태 설정
+        (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const categorySlug = urlParams.get('category') || 'free';
+
+            if (categorySlug) {
+                document.querySelectorAll('.sidebar-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.category === categorySlug) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

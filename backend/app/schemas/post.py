@@ -13,7 +13,7 @@ class PostBase(BaseModel):
     title: str = Field(..., min_length=1, max_length=255, description="게시글 제목")
     content: str = Field(..., min_length=1, description="게시글 내용")
     summary: Optional[str] = Field(None, max_length=500, description="요약")
-    category_id: int = Field(..., description="카테고리 ID")
+    category_id: Optional[int] = Field(None, description="카테고리 ID")
     tags: Optional[List[str]] = Field(default_factory=list, description="태그 목록")
     images: Optional[List[str]] = Field(default_factory=list, description="이미지 URL 목록")
     attachments: Optional[List[dict]] = Field(default_factory=list, description="첨부파일 목록")
@@ -22,7 +22,17 @@ class PostBase(BaseModel):
 
 class PostCreate(PostBase):
     """게시글 생성 스키마"""
+    category_slug: Optional[str] = Field(None, description="카테고리 slug (category_id 대신 사용 가능)")
     auto_translate: bool = Field(True, description="자동 번역 여부")
+
+    @field_validator('category_id')
+    @classmethod
+    def validate_category(cls, v, info):
+        # category_id와 category_slug 중 하나는 반드시 있어야 함
+        category_slug = info.data.get('category_slug')
+        if v is None and category_slug is None:
+            raise ValueError('category_id 또는 category_slug 중 하나는 필수입니다')
+        return v
 
     @field_validator('source_lang')
     @classmethod

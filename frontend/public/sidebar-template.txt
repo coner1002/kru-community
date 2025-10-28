@@ -1,0 +1,26 @@
+                    <div class="sidebar-menu">
+                        <a href="/board-notice.html" class="sidebar-item NOTICE_ACTIVE">
+                            <span class="korean-text">공지사항</span>
+                            <div class="russian-text">Объявления</div>
+                        </a>
+                        <a href="/board-free.html" class="sidebar-item FREE_ACTIVE">
+                            <span class="korean-text">자유게시판</span>
+                            <div class="russian-text">Свободное общение</div>
+                        </a>
+                        <a href="/board-life.html" class="sidebar-item LIFE_ACTIVE">
+                            <span class="korean-text">생활정보</span>
+                            <div class="russian-text">Жизнь в Корее</div>
+                        </a>
+                        <a href="/board-admin.html" class="sidebar-item ADMIN_ACTIVE">
+                            <span class="korean-text">행정정보</span>
+                            <div class="russian-text">Админ. информация</div>
+                        </a>
+                        <a href="/board-job.html" class="sidebar-item JOB_ACTIVE">
+                            <span class="korean-text">구인구직</span>
+                            <div class="russian-text">Работа</div>
+                        </a>
+                        <a href="/board-market.html" class="sidebar-item MARKET_ACTIVE">
+                            <span class="korean-text">벼룩시장</span>
+                            <div class="russian-text">Барахолка</div>
+                        </a>
+                    </div>

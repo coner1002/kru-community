@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login Check</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px; }
+        pre { background: #f5f5f5; padding: 15px; border-radius: 5px; }
+        .ok { color: green; font-weight: bold; }
+        .no { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Login Status Check</h1>
+    <div id="result"></div>
+    <script>
+        const ui = localStorage.getItem('userInfo');
+        const at = localStorage.getItem('access_token');
+        const rt = localStorage.getItem('refresh_token');
+        const keys = Object.keys(localStorage);
+        const all = {};
+        keys.forEach(k => all[k] = localStorage.getItem(k));
+        
+        document.getElementById('result').innerHTML = 
+            '<h2>Main Items:</h2>' +
+            '<p><b>userInfo:</b> <span class="' + (ui ? 'ok' : 'no') + '">' + (ui || 'NONE') + '</span></p>' +
+            '<p><b>access_token:</b> <span class="' + (at ? 'ok' : 'no') + '">' + (at ? 'YES (len:' + at.length + ')' : 'NONE') + '</span></p>' +
+            '<p><b>refresh_token:</b> <span class="' + (rt ? 'ok' : 'no') + '">' + (rt ? 'YES (len:' + rt.length + ')' : 'NONE') + '</span></p>' +
+            '<h2>All Items (' + keys.length + '):</h2>' +
+            '<pre>' + JSON.stringify(all, null, 2) + '</pre>' +
+            '<h2>Result:</h2>' +
+            '<p style="font-size:20px" class="' + (ui || at ? 'ok' : 'no') + '">' + 
+            (ui || at ? 'LOGGED IN' : 'NOT LOGGED IN') + '</p>';
+        
+        console.log('userInfo:', ui);
+        console.log('access_token:', at);
+    </script>
+</body>
+</html>

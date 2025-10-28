@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>창업정보 - Russian.Town</title>
+    <link rel="icon" href="data:,">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+        /* PT Sans Narrow 대체 폰트 */
+
+        :root {
+            --russian-red: #C1272D;
+            --russian-blue: #0039A6;
+            --russian-gold: #D4AF37;
+            --russian-navy: #002B5C;
+            --russian-white: #FFFFFF;
+            --russian-light-blue: #4A90E2;
+            --russian-cream: #F5F3EE;
+            --gradient-primary: linear-gradient(135deg, var(--russian-blue) 0%, var(--russian-light-blue) 100%);
+            --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #F4E4B3 100%);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #2c3e50;
+            background: linear-gradient(to bottom, #f8f9fa 0%, var(--russian-cream) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* 헤더 */
+        .header {
+            background: var(--gradient-primary);
+            box-shadow: var(--shadow-md);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--russian-blue) !important;
+            text-decoration: none !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, white 0%, white 33%, var(--russian-blue) 33%, var(--russian-blue) 66%, var(--russian-red) 66%, var(--russian-red) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+
+        .search-box {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 32px;
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            padding: 0 40px 0 15px;
+            font-size: 12px;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 6px;
+            width: 20px;
+            height: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .nav-menu a {
+            color: white !important;
+            text-decoration: none !important;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--russian-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-menu a:hover::after {
+            width: 80%;
+        }
+
+        /* 메인 레이아웃 */
+        .main-layout {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        /* 사이드바 */
+        .sidebar-section {
+            background: white;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-section:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .sidebar-header {
+            background: var(--gradient-primary);
+            border-bottom: none;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-header .korean-text {
+            font-weight: 700;
+            color: white !important;
+        }
+
+        .sidebar-header .russian-text {
+            font-size: 9px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9) !important;
+            margin-left: 4px;
+        }
+
+        .sidebar-menu {
+            padding: 4px 0;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 6px 12px;
+            font-size: 11px;
+            color: #333 !important;
+            text-decoration: none !important;
+            border-bottom: 1px solid #f5f5f5;
+            transition: all 0.2s ease;
+            position: relative;
+            line-height: 1.3;
+        }
+
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: var(--gradient-gold);
+            transition: width 0.3s ease;
+        }
+
+        .sidebar-item:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-item:hover {
+            background: #f8f9fa;
+            padding-left: 16px;
+        }
+
+        .sidebar-item:hover::before {
+            width: 4px;
+        }
+
+        .sidebar-item.active {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            color: var(--russian-navy) !important;
+            font-weight: 600;
+            border-left: 4px solid var(--russian-gold);
+            padding-left: 8px;
+        }
+
+        .russian-text {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            font-size: 9px;
+            color: #666;
+            margin-top: 1px;
+            font-weight: normal;
+        }
+
+        /* 언어 전환 버튼 */
+        .language-switcher {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 3px 8px;
+            margin: 0 2px;
+            cursor: pointer;
+            font-size: 11px;
+            border-radius: 3px;
+        }
+
+        .lang-btn.active {
+            background: var(--russian-blue);
+            color: white;
+            border-color: var(--russian-blue) !important;
+        }
+
+        .lang-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-btn.active:hover {
+            background: var(--russian-blue);
+        }
+
+
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 25px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--russian-blue) !important;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-label {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 4px;
+            font-weight: 500;
+            font-size: 11px;
+            color: #333 !important;
+        }
+
+        .form-label .korean-text {
+            color: #333 !important;
+        }
+
+        .form-label .russian-text {
+            color: #666;
+            font-size: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--russian-blue) !important;
+        }
+
+        .form-submit {
+            width: 100%;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .form-submit:hover {
+            background: #002a75;
+        }
+
+        .form-submit .russian-text {
+            color: white !important;
+        }
+
+        .social-login {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .social-title {
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 11px;
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow: hidden;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
+            padding: 8px 30px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            background: #fff;
+            color: #333 !important;
+            text-decoration: none !important;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            min-height: 35px !important;
+            width: 90% !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transform: none !important;
+        }
+
+        .social-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-right: 4px;
+        }
+
+        .social-btn-text {
+            flex: 1;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .social-btn:hover {
+            background: #f9f9f9;
+        }
+
+        .social-btn.kakao {
+            border-color: #fee500;
+            background: #fee500;
+            color: #000;
+        }
+
+        .social-btn.naver {
+            border-color: #03c75a;
+            background: #03c75a;
+            color: white;
+        }
+
+        .social-btn.yandex {
+            border-color: #ffcc00;
+            background: #ffcc00;
+            color: #000;
+        }
+
+        .social-btn.vk {
+            border-color: #4c75a3;
+            background: #4c75a3;
+            color: white;
+        }
+
+        .social-btn.telegram {
+            border-color: #0088cc;
+            background: #0088cc;
+            color: white;
+        }
+
+        .modal-switch {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .switch-text-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .switch-link-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-switch a {
+            color: var(--russian-blue) !important;
+            text-decoration: none !important;
+        }
+
+        .modal-switch a:hover {
+            text-decoration: underline;
+        }
+
+        /* 언어 표시 클래스 - 우선순위 높임 */
+        body.korean .russian-text { display: none !important; }
+        body.korean .korean-text { display: block !important; }
+
+        body.russian .korean-text { display: none !important; }
+        body.russian .russian-text { display: block !important; }
+
+        body.bilingual .russian-text { display: block !important; }
+        body.bilingual .korean-text { display: block !important; }
+
+        /* 기본 텍스트 표시 */
+        .korean-text {
+            display: block;
+        }
+
+        .russian-text {
+            display: none; /* 기본적으로 숨김 */
+        }
+
+        /* 통계 영역 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            padding: 8px;
+        }
+
+        .stats-item {
+            text-align: center;
+            padding: 6px;
+            background: #f8f9fa;
+            border-radius: 3px;
+        }
+
+        .stats-number {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--russian-blue) !important;
+            margin-bottom: 1px;
+        }
+
+        .stats-label {
+            font-size: 9px;
+            color: #666;
+        }
+
+        /* 컨텐츠 영역 */
+        .content-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .content-tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .tab-item {
+            padding: 8px 15px;
+            font-size: 12px;
+            color: #666;
+            background: #f8f9fa;
+            border-right: 1px solid #e0e0e0;
+            cursor: pointer;
+            text-decoration: none !important;
+        }
+
+        .tab-item:last-child {
+            border-right: none;
+        }
+
+        .tab-item.active {
+            background: white;
+            color: #333 !important;
+            font-weight: 500;
+        }
+
+        /* 게시글 목록 테이블 - Russian Theme */
+        .post-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .post-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .post-table th {
+            background: var(--gradient-primary);
+            padding: 10px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white !important;
+            text-align: center;
+            border: none;
+        }
+
+        .post-table th:first-child {
+            width: 60px;
+            border-radius: 10px 0 0 0;
+        }
+
+        .post-table th:nth-child(2) {
+            text-align: left;
+            padding-left: 15px;
+        }
+
+        .post-table th:nth-child(3) {
+            width: 100px;
+        }
+
+        .post-table th:nth-child(4) {
+            width: 80px;
+        }
+
+        .post-table th:nth-child(5) {
+            width: 60px;
+        }
+
+        .post-table th:nth-child(6) {
+            width: 60px;
+            border-radius: 0 10px 0 0;
+        }
+
+        .post-table td {
+            padding: 12px 8px;
+            font-size: 12px;
+            vertical-align: middle;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .post-table tbody tr:hover {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+            transform: translateX(2px);
+        }
+
+        .post-table tbody tr:hover td {
+            background: transparent;
+        }
+
+        /* 공지글 스타일 - Russian Theme */
+        .notice-row {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.12) 0%, rgba(255, 255, 255, 0) 100%) !important;
+            border-left: 4px solid var(--russian-gold) !important;
+        }
+
+        .notice-row:hover {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.18) 0%, rgba(255, 255, 255, 0) 100%) !important;
+            transform: translateX(2px);
+        }
+
+        .notice-row .post-number {
+            color: var(--russian-gold) !important;
+            font-weight: 700 !important;
+        }
+
+        .notice-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #ff6b00;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 3px;
+            margin-right: 6px;
+        }
+
+        .post-number {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* 제목 영역 */
+        .post-title-cell {
+            text-align: left;
+            padding-left: 15px !important;
+        }
+
+        .post-title-link {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .post-title-link:hover {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        /* 말머리 */
+        .post-prefix {
+            display: inline-block;
+            padding: 2px 6px;
+            background: #f0f0f0;
+            color: #666;
+            font-size: 11px;
+            border-radius: 3px;
+            margin-right: 6px;
+            font-weight: 500;
+        }
+
+        .post-prefix.notice {
+            background: #ff6b00;
+            color: white;
+        }
+
+        /* 제목 텍스트 */
+        .post-title-text {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .korean-title {
+            font-size: 13px;
+            color: #333;
+            font-weight: 400;
+        }
+
+        .russian-title {
+            font-size: 11px;
+            color: #999;
+            margin-left: 4px;
+        }
+
+        /* 댓글 수 */
+        .comment-count {
+            color: #ff3d00 !important;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        /* 작성자 */
+        .post-author {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* 날짜 */
+        .post-date {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* 조회수 */
+        .post-views {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* 추천수 */
+        .post-likes {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* Popular posts styling */
+        .popular-post-link {
+            color: #333;
+            text-decoration: none;
+            display: flex !important;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .popular-post-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .popular-comment-count {
+            color: var(--russian-red);
+            font-size: 11px;
+            font-weight: 500;
+            flex-shrink: 0 !important;
+            white-space: nowrap !important;
+            margin-left: 8px;
+            display: inline-block !important;
+            min-width: fit-content;
+        }
+
+        /* 6-column grid layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 8px;
+            height: 750px;
+            margin: 10px 0;
+        }
+
+        .board-section {
+            background: #f8f9fa;
+            padding: 8px;
+            overflow: hidden;
+        }
+
+        .board-header {
+            font-size: 13px;
+            font-weight: 700;
+            color: #333 !important;
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #e0e0e0;
+            position: relative;
+        }
+
+        .board-header .korean-text {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .board-header .russian-text {
+            display: block;
+            font-size: 10px;
+            color: #666;
+            font-weight: 700;
+            margin-top: 1px;
+        }
+
+        .board-header .view-all {
+            font-size: 11px;
+            color: #666;
+            text-decoration: none !important;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .board-header .view-all:hover {
+            color: var(--russian-blue) !important;
+        }
+
+        .board-posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .board-post-item {
+            margin-bottom: 2px;
+            padding-bottom: 1px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .board-post-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .board-post-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            color: #333 !important;
+            text-decoration: none !important;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        .board-post-link:hover {
+            color: var(--russian-blue) !important;
+        }
+
+        .board-post-title-wrapper {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .board-post-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-bottom: 0px;
+        }
+
+        .board-post-title.korean-text {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .board-post-title.russian-text {
+            font-size: 9px;
+            color: #666;
+            font-weight: normal;
+        }
+
+        .board-post-date {
+            flex-shrink: 0;
+            color: #666;
+            font-size: 9px;
+            margin-left: 6px;
+        }
+
+        /* Register link styling */
+        .register-link {
+            text-align: center;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .register-link a {
+            color: var(--russian-blue) !important;
+            text-decoration: none !important;
+            font-size: 12px;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .post-author {
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .post-date {
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+        }
+
+        .notice-row {
+            background: #fff9e6;
+        }
+
+        .notice-row .post-number {
+            color: #f39c12;
+            font-weight: 600;
+        }
+
+        .notice-row .post-title {
+            color: #e67e22;
+            font-weight: 500;
+        }
+
+        /* 우측 사이드바 */
+        .right-sidebar {
+            width: 238px;
+            flex-shrink: 0;
+        }
+
+        .widget {
+            background: white;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .widget:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .widget-header {
+            background: var(--gradient-primary);
+            border-bottom: none;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .widget-header .korean-text {
+            font-weight: 700;
+            color: white;
+        }
+
+        .widget-header .russian-text {
+            font-size: 9px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-left: 4px;
+        }
+
+        .widget-content {
+            padding: 10px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .login-input {
+            height: 28px;
+            border: 1px solid #ddd;
+            padding: 0 8px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+
+        .login-btn {
+            height: 28px;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            font-size: 12px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .social-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+        }
+
+        .naver { background: #03c75a; }
+        .kakao { background: #fee500; color: #000; }
+        .facebook { background: #4267b2; }
+        .google { background: #db4437; }
+
+        /* 메인 화면 가로 소셜 버튼 */
+        .main-social {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 4px;
+        }
+
+        .main-social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 6px;
+            flex: 1;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            color: white;
+            padding: 0 8px;
+            transition: all 0.2s;
+        }
+
+        .main-social-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .main-social-btn .social-icon {
+            font-weight: bold;
+            font-size: 14px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-social-btn .social-text {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .main-social-btn.naver { background: #03c75a; }
+        .main-social-btn.kakao { background: #fee500; color: #000; }
+        .main-social-btn.yandex { background: #ffcc00; color: #000; }
+        .main-social-btn.vk { background: #4c75a3; }
+        .main-social-btn.telegram { background: #0088cc; }
+
+        /* 국가별 소셜 로그인 섹션 */
+        .country-section {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .country-group {
+            margin-bottom: 15px;
+        }
+
+        .country-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 햄버거 메뉴 버튼 */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 15px;
+            z-index: 1001;
+            background: var(--russian-blue);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-login-btn {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 15px;
+            z-index: 1001;
+            background: var(--russian-red);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .search-box {
+                display: none;
+            }
+
+            .language-switcher {
+                font-size: 10px;
+                gap: 3px;
+            }
+
+            .lang-btn {
+                padding: 3px 6px;
+                font-size: 10px;
+            }
+
+            .mobile-menu-btn,
+            .mobile-login-btn {
+                display: flex;
+            }
+
+            .main-layout {
+                display: block;
+                margin-top: 70px;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 280px;
+                height: 100vh;
+                background: white;
+                z-index: 1000;
+                overflow-y: auto;
+                transition: left 0.3s ease;
+                padding-top: 60px;
+                box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .right-sidebar {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 300px;
+                height: 100vh;
+                background: white;
+                z-index: 1000;
+                overflow-y: auto;
+                transition: right 0.3s ease;
+                padding-top: 60px;
+                box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+            }
+
+            .right-sidebar.active {
+                right: 0;
+            }
+
+            .content {
+                width: 100%;
+                padding: 0 10px;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, auto);
+                height: auto;
+                gap: 10px;
+            }
+
+            .board-section {
+                min-height: 300px;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .main-layout {
+                flex-direction: column;
+            }
+
+            .sidebar, .right-sidebar {
+                width: 100%;
+            }
+        }
+
+        /* 언어 전환 버튼 */
+        .lang-switcher {
+            display: flex;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #666;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-btn.active {
+            background: var(--russian-blue);
+            color: white;
+            border-color: var(--russian-blue) !important;
+        }
+
+        /* 러시아어 텍스트 숨기기 옵션 */
+        body[data-lang="ko"] .russian-text,
+        body[data-lang="ko"] .russian-label,
+        body[data-lang="ko"] .russian-subtitle,
+        body[data-lang="ko"] .russian-title {
+            display: none;
+        }
+
+        body[data-lang="ru"] .korean-text,
+        body[data-lang="ru"] .korean-label,
+        body[data-lang="ru"] .korean-subtitle,
+        body[data-lang="ru"] .korean-title {
+            display: none !important;
+        }
+
+        body[data-lang="ru"] .russian-text,
+        body[data-lang="ru"] .russian-label,
+        body[data-lang="ru"] .russian-subtitle,
+        body[data-lang="ru"] .russian-title {
+            display: block;
+            font-size: inherit;
+            color: inherit;
+        }
+
+        /* 양쪽 언어 모두 표시 */
+        body[data-lang="both"] .russian-text,
+        body[data-lang="both"] .russian-label,
+        body[data-lang="both"] .russian-subtitle {
+            display: block;
+            font-size: inherit;
+            color: inherit;
+        }
+
+        body[data-lang="both"] .korean-text {
+            display: block;
+        }
+
+
+        .post-title-cell {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+.post-table a,        .post-table a:link,        .post-table a:visited,        .post-title-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+color: #333 !important;
+            text-decoration: none !important;
+            width: 100%;
+
+.post-table a:hover,        .post-title-link:hover {
+            color: var(--russian-blue) !important;
+
+        .post-title-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .korean-title {
+            font-size: 13px;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+color: inherit !important;
+        }
+
+        .russian-title {
+font-size: 11px;            color: #666 !important;
+            color: #666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .comment-count {
+            margin-left: 8px;
+            color: var(--russian-red);
+            font-size: 11px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+    </style>
+
+    <script>
+        // 로그인 체크 - 전역 변수로 로그인 상태 저장
+        window.isLoggedIn = false;
+
+        (function() {
+            const userInfoStr = localStorage.getItem('userInfo');
+            const accessToken = localStorage.getItem('access_token');
+
+            console.log('Login check - userInfo:', userInfoStr);
+            console.log('Login check - access_token:', accessToken);
+
+            // userInfo 또는 access_token이 있으면 로그인 상태
+            if (userInfoStr || accessToken) {
+                window.isLoggedIn = true;
+            } else {
+                // 로그인하지 않은 경우 즉시 모달 표시
+                window.addEventListener('DOMContentLoaded', function() {
+                    const modal = document.getElementById('loginRequiredModal');
+                    if (modal) {
+                        modal.style.display = 'flex';
+                    }
+
+                    // 로딩 메시지를 로그인 필요 메시지로 변경
+                    const tbody = document.querySelector('.post-table tbody');
+                    if (tbody) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 40px;">
+                                    <div style="font-size: 18px; color: #666; margin-bottom: 10px;">🔒 로그인이 필요합니다</div>
+                                    <div style="font-size: 14px; color: #999;">이 게시판은 로그인 후 이용하실 수 있습니다.</div>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                });
+            }
+        })();
+    </script>
+
+    <script src="/js/language-init.js"></script>
+</head>
+<body class="bilingual" data-lang="both">
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon">RC</div>
+                    Russian.Town
+                </a>
+            <div class="lang-switcher">
+                <button class="lang-btn" data-lang="ko" title="한국어만 표시">한국어</button>
+                <button class="lang-btn" data-lang="ru" title="Показать только русский">Русский</button>
+                <button class="lang-btn active" data-lang="both" title="한국어+러시아어">한국어+Русский</button>
+            </div>
+                <nav class="nav-menu">
+                    <a href="/index.html">
+                        <span>홈으로가기</span>
+                        <span class="russian-label">Главная</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container">
+        <div class="main-layout">
+                                    <!-- 좌측 사이드바 -->
+            <div id="sidebar-container"></div>
+
+            <!-- 메인 컨텐츠 -->
+            <div class="content">
+                <!-- 게시판 헤더 -->
+        <div class="board-header">
+            <div class="board-title">
+                <span class="korean-text">창업정보</span>
+                <span class="russian-text">Информация о стартапах</span>
+            </div>
+            <div class="board-desc">
+                <div class="korean-text">창업과 스타트업 관련 정보를 공유하는 게시판입니다.</div>
+                <div class="russian-text">Доска для обмена информацией о стартапах.</div>
+            </div>
+        </div>
+
+        <!-- 게시판 컨트롤 -->
+        <div class="board-controls">
+            <div class="total-count">
+                전체 <strong>0</strong>개
+            </div>
+            <div class="board-actions">
+                <button id="writeBtn" class="write-btn" style="display: none;" onclick="location.href='/board-write.html?category=startup'">✏️ 글쓰기</button>
+            </div>
+        </div>
+
+                <!-- 게시글 목록 -->
+        <div class="post-list">
+            <table class="post-table">
+                <thead>
+                    <tr>
+                        <th class="post-number">
+                            <div class="korean-text">번호</div>
+                            <div class="russian-text">№</div>
+                        </th>
+                        <th class="post-title-cell">
+                            <div class="korean-text">제목</div>
+                            <div class="russian-text">Заголовок</div>
+                        </th>
+                        <th class="post-author">
+                            <div class="korean-text">작성자</div>
+                            <div class="russian-text">Автор</div>
+                        </th>
+                        <th class="post-date">
+                            <div class="korean-text">날짜</div>
+                            <div class="russian-text">Дата</div>
+                        </th>
+                        <th class="post-views">
+                            <div class="korean-text">조회</div>
+                            <div class="russian-text">Просм.</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 40px;">
+                            <div style="font-size: 18px; color: #666;">로딩 중...</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 검색 -->
+        <div class="search-area">
+            <select class="search-select">
+                <option>전체</option>
+                <option>제목</option>
+                <option>내용</option>
+                <option>작성자</option>
+                <option>제목+내용</option>
+            </select>
+            <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+            <button class="search-btn">🔍 검색</button>
+        </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+
+    <script>
+        // 언어 전환 기능
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const lang = this.dataset.lang;
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.body.setAttribute('data-lang', lang);
+                localStorage.setItem('preferredLang', lang);
+            });
+        });
+
+        // 저장된 언어 설정 불러오기
+        const savedLang = localStorage.getItem('preferredLang') || 'both';
+        document.body.setAttribute('data-lang', savedLang);
+        document.querySelector(`.lang-btn[data-lang="${savedLang}"]`)?.classList.add('active');
+    </script>
+
+    
+
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        const CATEGORY_SLUG = 'startup';
+
+        let currentPage = 1;
+        const pageSize = 20;
+
+        // 카테고리 ID 가져오기
+        async function getCategoryId() {
+            try {
+                const response = await fetch(`${API_BASE}/api/categories/`);
+                const categories = await response.json();
+                const category = categories.find(c => c.slug === CATEGORY_SLUG);
+                return category ? category.id : null;
+            } catch (error) {
+                console.error('카테고리 조회 실패:', error);
+                return null;
+            }
+        }
+
+        // 게시글 목록 로드
+        async function loadPosts(page = 1) {
+            // 로그인 여부와 관계없이 API 호출
+            const categoryId = await getCategoryId();
+            if (!categoryId) {
+                console.error('카테고리를 찾을 수 없습니다');
+                return;
+            }
+
+            try {
+                // 로그인 토큰 가져오기 (선택사항)
+                const userInfoStr = localStorage.getItem('userInfo');
+                const accessToken = localStorage.getItem('access_token');
+
+                console.log('[창업정보] userInfo:', userInfoStr);
+                console.log('[창업정보] access_token:', accessToken);
+
+                let token = null;
+                if (accessToken) {
+                    token = accessToken;
+                } else if (userInfoStr) {
+                    try {
+                        const userInfo = JSON.parse(userInfoStr);
+                        token = userInfo.access_token;
+                    } catch (e) {
+                        console.error('[창업정보] userInfo 파싱 오류:', e);
+                    }
+                }
+
+                console.log('[창업정보] 사용할 토큰:', token ? token.substring(0, 20) + '...' : 'null');
+
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`; // 토큰이 있으면 추가
+                    console.log('[창업정보] Authorization 헤더 설정됨');
+                } else {
+                    console.error('[창업정보] 토큰이 없습니다!');
+                }
+
+                console.log('[창업정보] API 요청:', `${API_BASE}/api/posts/?category_id=${categoryId}&page=${page}&page_size=${pageSize}`);
+
+                const response = await fetch(
+                    `${API_BASE}/api/posts/?category_id=${categoryId}&page=${page}&page_size=${pageSize}`,
+                    { headers }
+                );
+
+                console.log('[창업정보] API 응답 상태:', response.status);
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        console.warn('인증 실패 - 비로그인 상태로 조회 시도');
+                        // 401 에러가 발생해도 게시글 목록은 볼 수 있어야 함
+                    }
+                    throw new Error('게시글을 불러오는데 실패했습니다');
+                }
+
+                const data = await response.json();
+                renderPosts(data.items);
+                // renderPagination(data.page, data.total_pages); // 페이지네이션 비활성화
+
+            } catch (error) {
+                console.error('[창업정보] 게시글 로딩 실패:', error);
+                const tbody = document.querySelector('.post-table tbody');
+                if (tbody) {
+                    tbody.innerHTML =
+                        '<tr><td colspan="5" style="text-align: center; padding: 40px;">게시글을 불러오는데 실패했습니다</td></tr>';
+                }
+            }
+        }
+
+        // 게시글 렌더링
+        function renderPosts(posts) {
+            const tbody = document.querySelector('.post-table tbody');
+
+            if (!tbody) {
+                console.error('[창업정보] .post-table tbody 요소를 찾을 수 없습니다');
+                return;
+            }
+
+            if (!posts || posts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">게시글이 없습니다</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = posts.map(post => {
+                const titleKo = post.translated_title_ko || post.title;
+                const titleRu = post.translated_title_ru || '';
+                const createdDate = new Date(post.created_at);
+
+                // 네이버 카페 스타일 날짜 포맷: 오늘=시간만, 이전=날짜만
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const postDate = new Date(createdDate.getFullYear(), createdDate.getMonth(), createdDate.getDate());
+
+                let dateTimeStr;
+                if (postDate.getTime() === today.getTime()) {
+                    // 오늘: 시간만 표시 (HH:mm)
+                    const hours = String(createdDate.getHours()).padStart(2, '0');
+                    const minutes = String(createdDate.getMinutes()).padStart(2, '0');
+                    dateTimeStr = `${hours}:${minutes}`;
+                } else {
+                    // 이전: 날짜만 표시 (MM.DD)
+                    const month = String(createdDate.getMonth() + 1).padStart(2, '0');
+                    const day = String(createdDate.getDate()).padStart(2, '0');
+                    dateTimeStr = `${month}.${day}`;
+                }
+
+                // 공지글 여부 확인
+                const isNotice = post.is_notice || false;
+                const noticeClass = isNotice ? ' class="notice-row"' : '';
+                const noticeNumber = isNotice ? '<span class="notice-badge">공지</span>' : post.id;
+
+                return `
+                    <tr${noticeClass}>
+                        <td class="post-number">${noticeNumber}</td>
+                        <td class="post-title-cell">
+                            <a href="/board-view.html?category=${CATEGORY_SLUG}&id=${post.id}" class="post-title-link">
+                                <div class="post-title-text">
+                                    <span class="korean-title">${titleKo}</span>
+                                    ${titleRu ? `<span class="russian-title">${titleRu}</span>` : ''}
+                                </div>
+                                ${post.comment_count > 0 ? `<span class="comment-count">[${post.comment_count}]</span>` : ''}
+                            </a>
+                        </td>
+                        <td class="post-author">${post.user?.username || post.user?.email || '익명'}</td>
+                        <td class="post-date">${dateTimeStr}</td>
+                        <td class="post-views">${post.view_count || 0}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // 페이지네이션 렌더링
+        function renderPagination(currentPage, totalPages) {
+            const pagination = document.querySelector('.pagination');
+            if (!pagination) return;
+
+            let html = '';
+
+            // 이전 버튼
+            if (currentPage > 1) {
+                html += `<a href="#" onclick="changePage(${currentPage - 1}); return false;">◀ 이전</a>`;
+            }
+
+            // 페이지 번호
+            const startPage = Math.max(1, currentPage - 5);
+            const endPage = Math.min(totalPages, currentPage + 5);
+
+            for (let i = startPage; i <= endPage; i++) {
+                if (i === currentPage) {
+                    html += `<span class="current-page">${i}</span>`;
+                } else {
+                    html += `<a href="#" onclick="changePage(${i}); return false;">${i}</a>`;
+                }
+            }
+
+            // 다음 버튼
+            if (currentPage < totalPages) {
+                html += `<a href="#" onclick="changePage(${currentPage + 1}); return false;">다음 ▶</a>`;
+            }
+
+            pagination.innerHTML = html;
+        }
+
+        // 페이지 변경
+        function changePage(page) {
+            currentPage = page;
+            loadPosts(page);
+            window.scrollTo(0, 0);
+        }
+
+        // 페이지 로드시 게시글 목록 로드
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[창업정보] 페이지 로드됨, isLoggedIn:', window.isLoggedIn);
+
+            // 로그인 상태일 때만 게시글 로드
+            if (window.isLoggedIn) {
+                console.log('[창업정보] 로그인 상태, 게시글 로드 시작');
+                loadPosts(1);
+            } else {
+                console.log('[창업정보] 비로그인 상태, 게시글 로드 안 함');
+            }
+
+            // 로그인 사용자 권한 체크 및 글쓰기 버튼 표시
+            const userInfoStr = localStorage.getItem('userInfo');
+            if (userInfoStr) {
+                try {
+                    const userInfo = JSON.parse(userInfoStr);
+
+                    // 로그인 사용자면 글쓰기 버튼 표시
+                    const writeBtn = document.getElementById('writeBtn');
+                    if (writeBtn) {
+                        writeBtn.style.display = 'inline-block';
+                    }
+                } catch (e) {
+                    console.error('사용자 정보 파싱 오류:', e);
+                }
+            }
+        });
+    </script>
+
+
+    
+
+
+    
+
+
+    
+
+
+    <!-- 로그인 필요 모달 -->
+    <div id="loginRequiredModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 40px; border-radius: 12px; max-width: 450px; width: 90%; box-shadow: 0 8px 32px rgba(0,0,0,0.3); text-align: center;">
+            <div style="font-size: 64px; margin-bottom: 20px;">🔒</div>
+            <h2 style="font-size: 24px; font-weight: 700; color: #333 !important; margin-bottom: 20px;">로그인이 필요합니다</h2>
+            <p style="font-size: 15px; color: #666; line-height: 1.8; margin-bottom: 15px;">
+                공지사항을 제외한 모든 게시판은<br>
+                로그인 후 이용하실 수 있습니다.
+            </p>
+            <p style="font-size: 14px; color: #999; line-height: 1.8; margin-bottom: 30px; padding-top: 15px; border-top: 1px solid #eee;">
+                Требуется авторизация.<br>
+                Все доски объявлений, кроме объявлений,<br>
+                доступны после входа в систему.
+            </p>
+            <button onclick="location.href='/index.html'" style="width: 100%; padding: 14px; background: #0039A6; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s;">
+                홈으로 이동 / На главную
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function closeLoginModal() {
+            location.href = '/index.html';
+        }
+    </script>
+
+
+    <!-- 공통 사이드바 로드 스크립트 -->
+    <script src="/js/load-sidebar.js"></script>
+    <script>
+        // 사이드바 메뉴 active 상태 자동 설정
+        (function() {
+            const currentPage = window.location.pathname.split('/').pop();
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // 페이지별 카테고리 매핑
+            const pageToCategory = {
+                'board-notice.html': 'notice',
+                'board-free.html': 'free',
+                'board-life.html': 'life',
+                'board-admin.html': 'admin',
+                'board-job.html': 'job',
+                'board-market.html': 'market',
+                'board-business.html': 'business',
+                'board-startup.html': 'startup',
+                'board-partners.html': 'partners',
+                'board-trade.html': 'trade',
+                'board-ad.html': 'ad',
+                'board-suggest.html': 'suggest',
+                'board-contact.html': 'contact'
+            };
+
+            // 현재 페이지의 카테고리 결정
+            let categorySlug = pageToCategory[currentPage] || urlParams.get('category');
+
+            if (categorySlug) {
+                document.querySelectorAll('.sidebar-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.category === categorySlug) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        })();    </script>
+</body>
+</html>
